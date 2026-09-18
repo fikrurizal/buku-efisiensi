@@ -140,18 +140,18 @@ abline(h = 0, v = 0, col = "grey70")
 # Chunk B1.02 — memakai objek K dan L_iso dari Chunk B1.01.
 book_require("B1.02", c("K", "L_iso"))
 # Tiga rumah sakit buatan untuk satu output q = 40.
-rs <- data.frame(rs = c("A", "B", "C"), beds = c(60, 40, 20),
+tutorial_rs <- data.frame(rs = c("A", "B", "C"), beds = c(60, 40, 20),
                  fte = c(20, 10, 20))
 # Skor input-oriented sederhana: kebutuhan tenaga pada isoquant / tenaga aktual.
-rs$fte_minimum <- 400 / rs$beds
-rs$efisiensi_teknis <- rs$fte_minimum / rs$fte
-rs$biaya <- 2 * rs$beds + 8 * rs$fte
-rs
+tutorial_rs$fte_minimum <- 400 / tutorial_rs$beds
+tutorial_rs$efisiensi_teknis <- tutorial_rs$fte_minimum / tutorial_rs$fte
+tutorial_rs$biaya <- 2 * tutorial_rs$beds + 8 * tutorial_rs$fte
+tutorial_rs
 
 plot(K, L_iso, type = "l", lwd = 2, xlim = c(0, 80), ylim = c(0, 30),
      xlab = "Tempat tidur", ylab = "FTE", main = "Tiga bentuk efisiensi")
-points(rs$beds, rs$fte, pch = 19, col = c("#D55E00", "#0072B2", "#009E73"))
-text(rs$beds, rs$fte, labels = rs$rs, pos = 3)
+points(tutorial_rs$beds, tutorial_rs$fte, pch = 19, col = c("#D55E00", "#0072B2", "#009E73"))
+text(tutorial_rs$beds, tutorial_rs$fte, labels = tutorial_rs$rs, pos = 3)
 abline(a = 30, b = -2/8, lty = 2)           # isocost melalui C
 legend("topright", legend = c("A: inefisien teknis", "B: teknis", "C: produktif/alokatif"),
        pch = 19, col = c("#D55E00", "#0072B2", "#009E73"), bty = "n")
@@ -164,9 +164,9 @@ legend("topright", legend = c("A: inefisien teknis", "B: teknis", "C: produktif/
 Untuk titik A, skor efisiensi teknis orientasi input menunjukkan proporsi FTE yang masih diperlukan bila tempat tidur tetap. Nilai di bawah 1 bukan persentase keberhasilan, melainkan faktor pengurangan input pada model sederhana ini.
 
 ```{r}
-# Chunk B1.03 — memakai tabel rs dari Chunk B1.02.
-book_require("B1.03", "rs")
-A <- subset(rs, rs$rs == "A")
+# Chunk B1.03 — memakai tabel tutorial_rs dari Chunk B1.02.
+book_require("B1.03", "tutorial_rs")
+A <- subset(tutorial_rs, tutorial_rs$rs == "A")
 A$fte_target <- A$fte * A$efisiensi_teknis
 A$fte_dapat_dialihkan <- A$fte - A$fte_target
 A[c("rs", "fte", "fte_target", "fte_dapat_dialihkan", "efisiensi_teknis")]
