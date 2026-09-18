@@ -28,7 +28,9 @@ Pada tahapan ini, pembaca dapat membuka *dataset* “hospital.csv” dan memberi
 # Mengaktifkan package
 library(tidyverse)
 # Mengimpor data dari format csv
-hospital <- read_csv("hospital.csv")
+hospital <- read_csv(
+  "https://raw.githubusercontent.com/fikrurizal/buku-efisiensi/main/data/hospital.csv"
+)
 ```
 
 Selanjutnya, pembaca dapat melakukan pelabelan terhadap variabel-variabel dan nilai yang ada pada data tersebut dengan mengikuti langkah-langkah yang telah dijelaskan pada Bab [III](#sec-pengantar-r) bagian D.
