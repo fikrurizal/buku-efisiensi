@@ -26,6 +26,8 @@ Di sini $x$ adalah input, $y$ output pelayanan, $b$ emisi, dan $s$ pada pembilan
 Script mengubah masalah pecahan menjadi program linear melalui transformasi Charnes–Cooper dan menyelesaikannya dengan `lpSolve`. Untuk model tanpa emisi, skor juga dibandingkan dengan `deaR::model_sbmeff`; selisih terbesar harus di bawah $10^{-5}$.
 
 ```r
+#| label: fig-8-1
+#| fig-cap: "Perbandingan emisi CO2 awal dan target SBM pada rumah sakit sintetis."
 # Chunk B8.01 — persiapan mandiri Bab VIII dan semua hasil contoh 8.1–8.5.
 source("R/chunk_helpers.R")
 book_begin_chapter("Bab 8", c("Benchmarking", "deaR", "lpSolve"))
@@ -33,7 +35,16 @@ source("R/advanced_cases.R")
 rs <- read.csv("data/rs-hijau-sintetis.csv")
 hasil <- sbm(rs[c("beds", "electricity_mwh")],
              rs[c("inpatients", "outpatients")], rs["co2_tonnes"])
-hasil[[1]]
+green_result <- read.csv("results/advanced-green.csv")
+green_result$pengurangan_emisi_ton <- green_result$co2_awal - green_result$co2_target
+head(green_result[order(green_result$sbm_dengan_emisi),
+                  c("id", "sbm_tanpa_emisi", "sbm_dengan_emisi",
+                    "co2_awal", "co2_target", "pengurangan_emisi_ton")], 10)
+plot(green_result$co2_awal, green_result$co2_target,
+     xlab = "Emisi CO2 awal (ton)", ylab = "Target emisi CO2 (ton)",
+     main = "SBM: emisi awal dan target per rumah sakit", pch = 19,
+     col = "#2E8B57")
+abline(0, 1, lty = 2, col = "grey40")
 ```
 
 Hasil tersimpan untuk HIJAU-001 memberikan skor SBM dengan emisi **0,475**, dibanding **0,762** pada model tanpa emisi. Target emisi turun dari **530,41 menjadi 206,03 ton**. Skor 0,475 bukan perintah mengurangi seluruh input sebesar 52,5%: SBM merangkum slack dengan pembobotan tertentu, bukan kontraksi radial tunggal. Target setiap variabel perlu diperiksa bersama kelayakan klinis dan teknologi. Perbedaan skor dua model juga tidak dapat ditafsirkan sebagai dampak kausal emisi.
@@ -53,10 +64,17 @@ Bagian ini merupakan tambahan edisi daring dan tidak ada pada edisi cetak.
 Dataset `lean-sintetis.csv` berisi 30 fasilitas sebelum dan sesudah perubahan proses. Input mencakup tenaga dan jam pelayanan; output mencakup kunjungan dan pelayanan yang diselesaikan. Dalam simulasi, output sengaja dinaikkan pada periode sesudah. Semua 60 observasi dibandingkan terhadap satu frontier VRS gabungan agar basis perbandingan sama.
 
 ```r
+#| label: fig-8-2
+#| fig-cap: "Distribusi skor SBM proses sebelum dan sesudah pada simulasi Lean."
 # Chunk B8.02 — memakai file hasil yang dibuat Chunk B8.01.
 hasil_lean <- read.csv("results/advanced-lean.csv")
-subset(hasil_lean, id == "LEAN-01")
-aggregate(score ~ period, hasil_lean, mean)
+ringkasan_lean <- aggregate(cbind(score, visits, visits_target, fte, fte_target) ~ period,
+                            hasil_lean, mean)
+round(ringkasan_lean, 2)
+boxplot(score ~ period, data = hasil_lean, ylim = c(0, 1),
+        col = c("#F4A261", "#2A9D8F"),
+        ylab = "Skor efisiensi SBM", xlab = "Periode",
+        main = "Perubahan distribusi skor proses")
 ```
 
 Pada periode sebelum, LEAN-01 mempunyai skor **0,631**. Salah satu target mengurangi tenaga ekuivalen penuh dari **111,06 menjadi 74,71**, sementara target kunjungannya tetap sekitar **2.928**. Angka ini adalah proyeksi matematis dalam data buatan. Dalam praktik, pengaturan ulang jadwal dan alur pelayanan perlu ditelaah sebelum menafsirkan pengurangan input sebagai pengurangan pegawai. Fasilitas juga harus menjaga waktu tunggu, keselamatan, dan beban kerja.
@@ -78,11 +96,26 @@ Bagian ini merupakan tambahan edisi daring dan tidak ada pada edisi cetak.
 Setiap bagian mempunyai tenaga sebagai input. Pusat logistik menyediakan tiga jenis layanan antara (*links*) yang digunakan unit klinis untuk menghasilkan pelayanan akhir. Model mencari kontraksi proporsional input $\theta$ dengan output akhir setidaknya tetap. Bobot pembanding $\lambda$ berbeda untuk tiap bagian, jumlah bobot setiap bagian sama dengan satu (VRS), dan aliran antara yang diproyeksikan dari pusat harus sama dengan yang diterima unit klinis.
 
 ```r
+#| label: fig-8-3
+#| fig-cap: "Skor Network DEA dan skor DEA unit terpisah pada rumah sakit sintetis."
 # Chunk B8.03 — memakai fungsi network_fit dan file dari Chunk B8.01.
 book_require("B8.03", "network_fit")
 net <- read.csv("data/jaringan-sintetis.csv")
 theta <- network_fit(net)
-head(data.frame(id = net$id, theta))
+network_result <- read.csv("results/advanced-network.csv")
+network_result$selisih_unit_terendah <- apply(
+  network_result[c("theta_unit1", "theta_unit2", "theta_unit3")], 1, min
+) - network_result$theta_network
+head(network_result[order(network_result$theta_network),
+                    c("id", "theta_network", "theta_unit1", "theta_unit2",
+                      "theta_unit3", "selisih_unit_terendah")], 10)
+matplot(seq_len(nrow(network_result)),
+        network_result[c("theta_network", "theta_unit1", "theta_unit2", "theta_unit3")],
+        type = "p", pch = 1:4, col = c("#264653", "#E76F51", "#2A9D8F", "#E9C46A"),
+        xlab = "Rumah sakit (urutan data)", ylab = "Skor efisiensi",
+        main = "Skor jaringan dibanding skor unit terpisah")
+legend("bottomright", legend = c("Jaringan", "Unit 1", "Unit 2", "Unit 3"),
+       pch = 1:4, col = c("#264653", "#E76F51", "#2A9D8F", "#E9C46A"), bty = "n")
 ```
 
 Pada JEJARING-02, skor jaringan **0,777** berarti potensi kontraksi radial sekitar **22,3%** pada input yang dimodelkan, dengan kendala aliran dan output tetap dipenuhi. Script memeriksa seluruh kendala setelah optimasi. Skor unit yang juga disimpan berasal dari DEA terpisah; skor tersebut **bukan komponen yang dapat langsung dijumlahkan atau dirata-ratakan** untuk menghasilkan skor jaringan.
@@ -102,14 +135,26 @@ Bagian ini merupakan tambahan edisi daring dan tidak ada pada edisi cetak.
 **Masalah nyata:** kabupaten dengan tenaga yang sama dapat mencapai cakupan layanan primer yang berbeda. **Tujuan belajar:** membaca DEA orientasi output sebagai potensi perluasan cakupan dengan tenaga saat ini. **Istilah sederhana:** faktor ekspansi $\phi$ menunjukkan seberapa jauh semua output dapat dinaikkan secara proporsional terhadap frontier VRS. Kode menghasilkan faktor dan target cakupan per kabupaten. Faktor tersebut adalah pembandingan relatif dalam sampel; jangan memperlakukannya sebagai persentase efisiensi tanpa konvensi, target penugasan tenaga, atau bukti bahwa cakupan berarti akses bermutu dan adil.
 
 ```r
+#| label: fig-8-4
+#| fig-cap: "Cakupan ANC4 awal dan target DEA orientasi output menurut wilayah simulasi."
 # Chunk B8.04 — memakai file hasil yang dibuat Chunk B8.01.
 d <- read.csv("data/layanan-primer-sintetis.csv")
 X <- as.matrix(d[c("doctors_100k", "nurses_100k", "midwives_100k")])
 Y <- as.matrix(d[c("outpatient_pct", "anc4_pct",
                    "birth_assisted_pct", "immunization_pct")])
 m <- Benchmarking::dea(X, Y, RTS = "vrs", ORIENTATION = "out")
-data.frame(id = d$id, faktor = m$eff,
-           tambahan_persen = 100 * (m$eff - 1))
+hasil_cakupan <- data.frame(
+  id = d$id, region = d$region, faktor = m$eff,
+  anc4_awal = d$anc4_pct, anc4_target = pmin(100, d$anc4_pct * m$eff)
+)
+round(aggregate(cbind(faktor, anc4_awal, anc4_target) ~ region, hasil_cakupan, mean), 2)
+plot(hasil_cakupan$anc4_awal, hasil_cakupan$anc4_target, pch = 19,
+     col = as.integer(factor(hasil_cakupan$region)) + 1,
+     xlab = "Cakupan ANC4 awal (%)", ylab = "Target ANC4 (%)",
+     main = "Target cakupan menurut DEA orientasi output")
+abline(0, 1, lty = 2, col = "grey40")
+legend("topleft", legend = levels(factor(hasil_cakupan$region)),
+       pch = 19, col = seq_along(levels(factor(hasil_cakupan$region))) + 1, bty = "n")
 ```
 
 Untuk KAB-S001, faktor ekspansi $\phi$ adalah **1,02021**. Target proporsional ANC4 berubah dari **61,43% menjadi 62,67%**. Ini peningkatan sekitar **1,24 poin persentase**, setara peningkatan relatif **2,02%** terhadap angka awal. Jangan menyebut faktor 1,02021 sebagai “efisiensi 102%” tanpa menjelaskan konvensinya. Bila memakai indeks kebalikan $1/\phi$, arah interpretasinya berubah.
@@ -131,6 +176,8 @@ Script menghitung `Benchmarking::sdea` dengan CRS. Unit yang dinilai dikeluarkan
 Contoh metafrontier membagi fasilitas sintetis menurut kapasitas tempat tidur. Pembagian ini hanya untuk menunjukkan perhitungan, bukan bukti adanya teknologi berbeda. Skor terhadap frontier gabungan memenuhi $\theta_M\leq\theta_G$ terhadap frontier kelompok. Rasio kesenjangan teknologi didefinisikan sebagai $TGR=\theta_M/\theta_G$. Rasio ini bergantung pada validitas kelompok dan asumsi teknologi; jangan menafsirkannya otomatis sebagai kualitas manajemen.
 
 ```r
+#| label: fig-8-5
+#| fig-cap: "Perbandingan skor Super DEA aktual dan prediksi pohon keputusan pada data uji."
 # Chunk B8.05 — memakai file hasil yang dibuat Chunk B8.01.
 hasil <- read.csv("results/advanced-meta-super.csv")
 head(hasil)
@@ -150,6 +197,10 @@ model_tree <- rpart::rpart(super_crs ~ staff_fte + beds + case_mix + remote,
 prediksi <- predict(model_tree, newdata = ml_data[uji, ])
 data.frame(id = ml_data$id[uji], skor_super_dea = ml_data$super_crs[uji],
            prediksi_pohon = round(prediksi, 3))
+plot(ml_data$super_crs[uji], prediksi, pch = 19, col = "#457B9D",
+     xlab = "Skor Super DEA aktual", ylab = "Prediksi pohon",
+     main = "Pemeriksaan prediksi skor Super DEA")
+abline(0, 1, lty = 2, col = "grey40")
 ```
 
 **Hasil yang diharapkan:** tabel pertama menampilkan `super_crs`, `theta_group`, `theta_meta`, dan `TGR`. `super_crs` dapat lebih dari 1 hanya karena unit frontier dikeluarkan dari kelompok pembanding. `theta_meta` tidak melebihi `theta_group`; `TGR` yang mendekati 1 berarti frontier kelompok dekat dengan frontier gabungan dalam data contoh. Tabel kedua membandingkan skor Super DEA aktual pada data uji dengan prediksi pohon keputusan. **Interpretasi:** model pohon adalah analogi kecil dari tahap prediksi pada de Oliveira dkk. (2025), bukan replikasi sepuluh algoritme atau hasil XGBoost mereka. Gunakan hasil untuk memeriksa pencilan dan ketidakpastian prediksi, bukan sebagai bukti bahwa tenaga, tempat tidur, atau case-mix menyebabkan perubahan efisiensi.
@@ -179,6 +230,8 @@ Keterangan komponen:
 Di ekosistem R, metodologi O'Donnell (2018) dapat diestimasi menggunakan paket **`productivity`** (melalui fungsi `fareprim()`), paket **`deaR`**, maupun pemodelan linear terprogram berbasis `lpSolve`. Paket `productivity` belum divalidasi pada lingkungan buku ini; karena itu contoh berikut hanya menyediakan struktur panel yang dapat dijalankan, bukan pemanggilan fungsi yang belum diuji.
 
 ```r
+#| label: fig-8-6
+#| fig-cap: "Tren rasio produktivitas deskriptif per fasilitas pada panel sintetis."
 # Chunk B8.06 — panel data mandiri untuk memahami struktur Färe-Primont.
 set.seed(806)
 panel_rs <- expand.grid(id = paste0("FP-", 1:6), tahun = 2022:2024)
@@ -190,7 +243,13 @@ panel_rs$admissions <- round((panel_rs$staff_fte * 18 + panel_rs$beds * 12) *
                              runif(nrow(panel_rs), 0.75, 1.10))
 panel_rs$tfp_deskriptif <- with(panel_rs,
   (outpatients + 8 * admissions) / (staff_fte + 0.4 * beds))
-panel_rs[order(panel_rs$id, panel_rs$tahun), ]
+aggregate(tfp_deskriptif ~ tahun, panel_rs, mean)
+matplot(2022:2024,
+        sapply(split(panel_rs$tfp_deskriptif, panel_rs$id), identity),
+        type = "b", lty = 1, pch = 19, xlab = "Tahun",
+        ylab = "TFP deskriptif", main = "Tren produktivitas ilustratif per fasilitas")
+legend("topleft", legend = unique(panel_rs$id), col = seq_len(length(unique(panel_rs$id))),
+       lty = 1, pch = 19, bty = "n", cex = 0.7)
 ```
 
 **Hasil yang diharapkan:** tabel berisi 18 baris (6 fasilitas × 3 tahun), dengan input, output, dan `tfp_deskriptif`. Nilai tersebut hanya rasio ilustratif untuk memperlihatkan struktur panel, bukan indeks Färe-Primont. **Interpretasi:** untuk estimasi Färe-Primont yang valid, pakai paket dan API yang telah diverifikasi dengan data panel, spesifikasi teknologi, serta aturan agregasi yang terdokumentasi. Buku tidak lagi menyajikan `fareprim()` yang belum diuji sebagai kode siap pakai.
@@ -205,6 +264,8 @@ Bagian ini merupakan tambahan edisi daring dan tidak ada pada edisi cetak.
 **Tujuan belajar:** membangun panel sintetis yang menyatakan hubungan periode sebelum memilih model dinamis formal. **Istilah sederhana:** *carry-over* adalah stok atau akibat yang berpindah dari periode \(t\) ke \(t+1\); *link* adalah keluaran satu divisi yang menjadi masukan divisi lain. Contoh berikut dapat dijalankan mandiri dengan `Benchmarking`. Ia menyiapkan *carry-over* dan menghitung DEA *pooled* yang memperlakukan kapasitas akhir sebagai **output stok yang diinginkan** bersama layanan. Dengan demikian pembaca memperoleh tabel skor, kapasitas awal/akhir, dan target output untuk setiap kabupaten-tahun. Ini adalah alur belajar yang sadar *carry-over*, **bukan** implementasi penuh Dynamic Network DEA artikel tersebut: `Benchmarking::dea()` tidak menegakkan kesamaan stok lintas-periode, *link* antardivisi, atau dekomposisi periode dengan kendala eksplisit.
 
 ```r
+#| label: fig-8-7
+#| fig-cap: "Kapasitas awal dan kapasitas akhir sebagai carry-over pada panel sintetis."
 # Chunk B8.07 — contoh mandiri Dynamic DEA sederhana.
 source("R/chunk_helpers.R")
 book_begin_chapter("Bab 8", "Benchmarking")
@@ -243,8 +304,16 @@ fit_dynamic_workflow <- dea(X, Y, RTS = "vrs", ORIENTATION = "out")
 panel$expansion_factor <- fit_dynamic_workflow$eff
 panel$target_visits <- panel$visits * panel$expansion_factor
 panel$target_capacity_next <- panel$capacity_next * panel$expansion_factor
-panel[c("id", "year", "capacity_start", "capacity_next",
-        "expansion_factor", "target_visits", "target_capacity_next")]
+ringkasan_dinamis <- aggregate(
+  cbind(capacity_start, capacity_next, expansion_factor, visits, target_visits) ~ year,
+  panel, mean
+)
+round(ringkasan_dinamis, 2)
+plot(panel$capacity_start, panel$capacity_next, pch = 19,
+     col = factor(panel$year), xlab = "Kapasitas awal",
+     ylab = "Kapasitas akhir (carry-over)",
+     main = "Carry-over kapasitas pada panel sintetis")
+legend("topleft", legend = years, col = seq_along(years), pch = 19, bty = "n")
 ```
 
 **Hasil yang diharapkan:** tabel berisi 36 baris (12 kabupaten × 3 tahun) dengan `capacity_start`, `capacity_next`, `expansion_factor`, dan target. Periksa bahwa `capacity_next` suatu baris menjadi `capacity_start` pada tahun berikutnya untuk kabupaten yang sama. Faktor lebih besar dari 1 menunjukkan kemungkinan perluasan relatif atas kedua output dalam spesifikasi ini, bukan rekomendasi untuk menaikkan kapasitas tanpa biaya atau tanpa memperhatikan kebutuhan. **Interpretasi:** contoh menunjukkan mengapa periode tidak boleh diperlakukan sepenuhnya terpisah, tetapi tidak menghasilkan skor Dynamic Network DEA formal. Untuk model formal yang relevan dengan kesehatan, gunakan struktur divisi, *link*, *carry-over* baik/buruk, dan kendala antartahun dari [Gavurová, Kočišová, dan Sopko (2021)](https://pmc.ncbi.nlm.nih.gov/articles/PMC8513208/); pilih jenis *carry-over*, diskonto, dan aturan disposabilitas berdasarkan proses operasional serta lakukan analisis sensitivitas.
@@ -261,6 +330,8 @@ Bagian ini merupakan tambahan edisi daring dan tidak ada pada edisi cetak.
 **Masalah nyata:** kabupaten dapat tampak efisien karena menghasilkan banyak kunjungan, tetapi tetap meninggalkan desa terpencil atau kelompok miskin. **Tujuan belajar:** memodelkan capaian akses secara eksplisit dan membandingkan kompromi efisiensi–pemerataan. **Istilah sederhana:** DEA tetap mengukur kinerja relatif; `equity_access_pct` adalah output akses yang diinginkan—persentase penduduk rentan yang dapat menjangkau layanan primer—bukan sekadar catatan konteks.
 
 ```r
+#| label: fig-8-8
+#| fig-cap: "Perbandingan faktor ekspansi dengan dan tanpa indikator akses pemerataan."
 # Chunk B8.08
 source("R/chunk_helpers.R")
 book_begin_chapter("Bab 8", "Benchmarking")
@@ -293,9 +364,14 @@ district$target_access_pct <- pmin(100,
 fit_visits_only <- dea(X, as.matrix(district["completed_visits"]),
                        RTS = "vrs", ORIENTATION = "out")
 district$factor_visits_only <- fit_visits_only$eff
-district[order(-district$expansion_factor),
-         c("id", "remoteness", "equity_access_pct", "expansion_factor",
-           "factor_visits_only", "target_access_pct")]
+head(district[order(-district$expansion_factor),
+              c("id", "remoteness", "equity_access_pct", "expansion_factor",
+                "factor_visits_only", "target_access_pct")], 10)
+plot(district$factor_visits_only, district$expansion_factor, pch = 19,
+     col = "#6A4C93", xlab = "Faktor ekspansi: hanya kunjungan",
+     ylab = "Faktor ekspansi: kunjungan dan akses",
+     main = "Dampak memasukkan akses pemerataan")
+abline(0, 1, lty = 2, col = "grey40")
 ```
 
 Hasil yang diharapkan adalah faktor ekspansi dan target akses untuk tiap kabupaten, serta perbedaan dengan model yang hanya menghitung kunjungan. Perbedaan itu menunjukkan bahwa frontier dan peringkat dapat berubah ketika akses kelompok rentan dihargai sebagai hasil. Namun skor tinggi tidak otomatis adil: DEA dapat masih membandingkan kabupaten terpencil dengan kondisi yang tidak sebanding, dan satu persentase akses dapat menutupi kesenjangan menurut desa, pendapatan, gender, disabilitas, atau mutu layanan. Jangan memakai `target_access_pct` di atas 100 sebagai target literal—contoh membatasinya pada 100 dan kebijakan nyata memerlukan data populasi sasaran, kebutuhan, mutu, serta bobot atau pembatas pemerataan yang dibahas bersama pemangku kepentingan. Rujukan pengembangan kerangka kesehatan tersedia pada [WHO (2018), *Health-system-adapted DEA*](https://www.who.int/publications/i/item/9789241514450).
