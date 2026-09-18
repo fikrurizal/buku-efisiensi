@@ -1,9 +1,12 @@
 # Menggunakan R, R Studio, dan Pengenalan *Dataset* {#sec-pengantar-r}
 
 ```{r}
+# Chunk B3.01
 #| label: setup
 #| include: false
 source("R/setup.R")
+source("R/chunk_helpers.R")
+book_begin_chapter("Bab 3", c("tidyverse", "labelled", "gtsummary", "flextable"))
 ```
 
 Dalam dunia penelitian, banyak dikenal perangkat lunak yang dapat digunakan untuk membantu melakukan pengelolaan, analisis, hingga visualisasi data. Pada buku ini, penulis menggunakan perangkat lunak “R” (selanjutnya disebut R) untuk melakukan analisis data. R memiliki beberapa keunggulan dibandingkan dengan perangkat lunak lainnya.
@@ -103,6 +106,7 @@ R merupakan program yang multifungsi, terutama dengan fleksibilitasnya untuk dap
 Beberapa *package* yang perlu diinstal untuk menjalankan analisis pada buku ini, di antaranya: *tidyverse*, *labelled*, *modelsummary*, *gtsummary*, *gt*, *flextable*, *benchmarking*, *frontier*, *AER*, dan *truncreg*. Untuk menambahkan *package* pada program R, kita dapat menuliskan perintah berikut ini pada *R Script*:
 
 ```{r}
+# Chunk B3.02
 #| eval: false
 install.packages("nama_packages")
 ```
@@ -110,6 +114,7 @@ install.packages("nama_packages")
 Lebih khusus, untuk mengerjakan contoh-contoh analisis yang ada di buku ini, berikut merupakan skrip yang dapat digunakan untuk menginstal *packages* tersebut:
 
 ```{r}
+# Chunk B3.03
 #| eval: false
 install.packages(c("tidyverse", "labelled",
                    "modelsummary", "gtsummary", "gt",
@@ -173,6 +178,7 @@ Setelah data yang dibutuhkan disiapkan, hal yang pertama kali perlu dilakukan, y
 Karena sumber data yang akan kita gunakan memiliki format “csv” atau *comma separated value*, pengguna membutuhkan fungsi “readr” yang merupakan bagian dari *package* “tidyverse” yang biasa digunakan untuk keperluan sains data (*data science*). Oleh karena itu, *package* ini perlu diaktifkan terlebih dahulu dengan menjalankan perintah di bawah ini.
 
 ```{r}
+# Chunk B3.04
 # Mengaktifkan packages
 library(tidyverse)
 ```
@@ -182,6 +188,7 @@ Lalu, dilanjutkan dengan membuka data “hospital.csv” menggunakan perintah di
 Perintah “%>%” biasa disebut sebagai “pipe” atau pipa yang berfungsi untuk mengaitkan suatu objek atau perintah satu dengan perintah selanjutnya. Sementara itu, “tibble” sendiri merupakan modifikasi dari bentuk dasar “data.frame” (bentuk dasar dari suatu tabel di R) yang bersifat lebih “tertib” mengikuti aturan-aturan terkini dari praktik pengelolaan dan analisis data. Informasi lebih lengkap mengenai *package* “tidyverse” serta komponen-komponen yang ada di dalamnya dapat dilihat pada laman [https://www.tidyverse.org/](https://www.tidyverse.org/){target="_blank" rel="noopener"} dan pada buku “*R for Data Science*” yang bisa diakses di [https://r4ds.had.co.nz/](https://r4ds.had.co.nz/){target="_blank" rel="noopener"}.
 
 ```{r}
+# Chunk B3.05
 # Mengimpor data dari format csv
 hospital <- read_csv(
   "https://raw.githubusercontent.com/fikrurizal/buku-efisiensi/main/data/hospital.csv"
@@ -191,6 +198,7 @@ hospital <- read_csv(
 Setelah berhasil mengimpor data ke sistem R, selanjutnya diberikan label pada variabel-variabel tersebut dan ditambahkan penjelasan terkait nilai pada variabel yang bersifat kategorik. Pada proses persiapan data (*data cleaning and preparation*), tahap ini penting untuk dilakukan agar pengguna dapat memahami informasi yang ada pada data dengan lebih mudah. Pada R, salah satu *package* yang cukup lengkap, yaitu “labelled”. Sebelum paket ini digunakan, jalankan terlebih dahulu perintah di bawah ini untuk mengaktifkannya. Adapun informasi dan penjelasan lebih terperinci mengenai paket “labelled” dapat dibaca pada laman [https://larmarange.github.io/labelled/index.html](https://larmarange.github.io/labelled/index.html){target="_blank" rel="noopener"}.
 
 ```{r}
+# Chunk B3.06
 # Mengaktifkan packages
 library(labelled)
 ```
@@ -198,6 +206,7 @@ library(labelled)
 Selanjutnya, terdapat dua tahap yang perlu dilakukan, yaitu memberi label pada variabel (atau kolom pada *data-frame*), lalu memberi label pada nilai variabel dan mengubahnya menjadi variabel kategorikal atau *factor variable*. Pada prinsipnya, variabel kategorik adalah variabel yang isinya bukan berupa angka, misalnya jenis kelamin, status pernikahan, dan lain-lain. Tahap-tahap tersebut dapat dilakukan dengan menjalankan perintah di bawah ini.
 
 ```{r}
+# Chunk B3.07
 # Memberi label variabel
 hospital <- hospital %>%
   set_variable_labels(
@@ -232,6 +241,7 @@ hospital <- hospital %>%
 Selanjutnya, pengguna dapat membuat suatu tabel yang menggambarkan atau merangkum informasi yang ada dalam data. Dalam hal ini, data yang bersifat kontinu akan digambarkan dalam bentuk rerata dan simpang baku (*standard deviation*), sementara data yang bersifat kategorik akan digambarkan dalam bentuk jumlah dan persentase. Berikut merupakan perintah yang bisa dijalankan menggunakan *package* “gtsummary” dan “flextable” dengan hasil pada @tbl-3-2. Fitur utama dari paket “gtsummary” yang digunakan pada buku ini, yaitu “tbl_summary” yang sangat berguna untuk membuat tabel rangkuman statistik atau statistik deskriptif, termasuk juga untuk melakukan analisis bivariat sederhana.
 
 ```{r}
+# Chunk B3.08
 #| label: tbl-3-2
 #| tbl-cap: "Tabel deskripsi menggunakan *package* “gtsummary”"
 # Mengaktifkan packages

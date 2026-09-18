@@ -88,6 +88,9 @@ Bagian ini adalah tambahan edisi daring yang mengadaptasi struktur penghitungan 
 **Masalah:** dua rumah sakit dapat mempunyai jumlah admisi sama, tetapi menangani kasus dengan kerumitan berbeda. Membandingkan angka mentah dapat memberi keuntungan tidak adil pada rumah sakit yang menerima pasien lebih ringan. **Tujuan:** membuat output layanan yang sudah mempertimbangkan kompleksitas kasus dan kualitas. **Metode:** tiap rumah sakit menerima CMI dan rasio mortalitas buatan; skor DEA kemudian dibandingkan sebelum dan sesudah penyesuaian.
 
 ```{r}
+# Chunk B7.01 â€” persiapan mandiri dan data latihan Bab VII.
+source("R/chunk_helpers.R")
+book_begin_chapter("Bab 7", "Benchmarking")
 # 1. Membuat data latihan: setiap baris adalah satu rumah sakit buatan.
 # CMI > 1 berarti rata-rata kasus lebih kompleks daripada rata-rata pembanding.
 set.seed(2018)
@@ -127,7 +130,7 @@ rs_cmi$phi_adjusted <- dea(X, Y_adjusted, RTS = "vrs", ORIENTATION = "out")$eff
 rs_cmi[c("id", "phi_raw", "phi_adjusted", "cmi_inpatient", "mortality_ratio")]
 ```
 
-**Hasil yang diharapkan:** tabel pertama menunjukkan perbedaan volume mentah dan volume terstandar. Pada tabel kedua, `phi_raw` dan `phi_adjusted` dapat berbeda; pada DEA orientasi output, nilai \(\phi\geq1\) adalah faktor ekspansi output menuju frontier. Misalnya, \(\phi=1{,}20\) berarti—dalam model—output perlu meningkat 20% dengan input yang sama. **Interpretasi:** perubahan skor bukan bukti bahwa rumah sakit sebelumnya dikelola buruk atau baik; skor berubah karena pembanding kini mempertimbangkan kompleksitas dan faktor kualitas yang dimodelkan.
+**Hasil yang diharapkan:** tabel pertama menunjukkan perbedaan volume mentah dan volume terstandar. Pada tabel kedua, `phi_raw` dan `phi_adjusted` dapat berbeda; pada DEA orientasi output, nilai \(\phi\geq1\) adalah faktor ekspansi output menuju frontier. Misalnya, \(\phi=1{,}20\) berarti dalam model output perlu meningkat 20% dengan input yang sama. **Interpretasi:** perubahan skor bukan bukti bahwa rumah sakit sebelumnya dikelola buruk atau baik; skor berubah karena pembanding kini mempertimbangkan kompleksitas dan faktor kualitas yang dimodelkan.
 
 ::: {.callout-warning}
 ## Batasan penting
