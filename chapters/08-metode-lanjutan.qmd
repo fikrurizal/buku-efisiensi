@@ -1,0 +1,104 @@
+# Metode lanjutan: contoh kesehatan dan interpretasi {#sec-lanjutan}
+
+Bab ini memperluas analisis dasar dengan pertanyaan yang lebih dekat dengan pengambilan keputusan: bagaimana memasukkan dampak lingkungan, menilai perubahan proses pelayanan, dan memperhitungkan hubungan antarunit? Kerumitan model harus mengikuti pertanyaan dan data, bukan sebaliknya.
+
+Seluruh data dan hasil numerik dalam bab ini **sintetis**. Contoh terinspirasi oleh pertanyaan dan struktur metode artikel, tetapi bukan replikasi angka empiris atau seluruh spesifikasi penulis artikel. Script lengkap berada di [`R/advanced_cases.R`](../R/advanced_cases.R). Jalankan dari akar proyek, bukan dari folder `chapters`. Script menyimpan hasil serta menghentikan proses jika pemeriksaan kendala gagal.
+
+## Rumah sakit dan emisi: memasukkan undesirable outputs
+
+Rumah sakit menghasilkan pelayanan yang dibutuhkan masyarakat sekaligus dampak yang ingin dikurangi. Karena itu emisi tidak boleh dimasukkan sebagai output yang ingin diperbesar. [Masoudian dan Lennerts](https://journal.ifm.tuwien.ac.at/article/id/774/) membahas efisiensi rumah sakit dengan input tempat tidur dan listrik, output pelayanan rawat inap dan rawat jalan, serta emisi CO₂. Artikel berada dalam terbitan bertanda 2025 dan laman mencatat publikasi pada 2026.
+
+Contoh kita berisi 60 rumah sakit buatan. Model *slacks-based measure* (SBM) nonorientasi dengan CRS menggunakan bentuk fungsi tujuan artikel:
+
+$$
+\rho=\frac{1-\frac{1}{m}\sum_i s_i^-/x_{io}}
+{1+\frac{1}{s}\sum_r s_r^+/y_{ro}+\frac{1}{t}\sum_k s_k^b/b_{ko}}.
+$$
+
+Di sini $x$ adalah input, $y$ output pelayanan, $b$ emisi, dan $s$ pada pembilang/penyebut dengan subskrip menunjukkan slack. Huruf $m$, $s$, dan $t$ tanpa subskrip masing-masing menyatakan jumlah input, output baik, dan output buruk. Model memenuhi $X\lambda+s^-=x_o$, $Y\lambda-s^+=y_o$, dan $B\lambda+s^b=b_o$, dengan semua variabel optimasi tidak negatif. Rata-rata slack output baik dan buruk dihitung terpisah, sesuai spesifikasi ini. Bobot alternatif menghasilkan model lain dan harus dinyatakan.
+
+Script mengubah masalah pecahan menjadi program linear melalui transformasi Charnes–Cooper dan menyelesaikannya dengan `lpSolve`. Untuk model tanpa emisi, skor juga dibandingkan dengan `deaR::model_sbmeff`; selisih terbesar harus di bawah $10^{-5}$.
+
+```r
+source("R/advanced_cases.R")
+rs <- read.csv("data/rs-hijau-sintetis.csv")
+hasil <- sbm(rs[c("beds", "electricity_mwh")],
+             rs[c("inpatients", "outpatients")], rs["co2_tonnes"])
+hasil[[1]]
+```
+
+Hasil tersimpan untuk HIJAU-001 memberikan skor SBM dengan emisi **0,475**, dibanding **0,762** pada model tanpa emisi. Target emisi turun dari **530,41 menjadi 206,03 ton**. Skor 0,475 bukan perintah mengurangi seluruh input sebesar 52,5%: SBM merangkum slack dengan pembobotan tertentu, bukan kontraksi radial tunggal. Target setiap variabel perlu diperiksa bersama kelayakan klinis dan teknologi. Perbedaan skor dua model juga tidak dapat ditafsirkan sebagai dampak kausal emisi.
+
+**Latihan:** ubah faktor emisi satu rumah sakit, jalankan kembali model, lalu periksa perubahan target dan rumah sakit pembanding. Jelaskan mengapa perubahan satu unit dapat memengaruhi unit lain.
+
+## Lean dan efisiensi proses: sebelum dan sesudah
+
+[Drei dan Angulo-Meza](https://pubmed.ncbi.nlm.nih.gov/40908491/) menggabungkan Lean healthcare dan DEA pada rumah sakit Brasil. Abstrak menjelaskan penggunaan SBM nonorientasi dan proyeksi perbaikan. Contoh berikut memakai gagasan evaluasi proses tersebut; variabel dan mekanisme perubahan dibuat sendiri, bukan disalin dari data artikel.
+
+Dataset `lean-sintetis.csv` berisi 30 fasilitas sebelum dan sesudah perubahan proses. Input mencakup tenaga dan jam pelayanan; output mencakup kunjungan dan pelayanan yang diselesaikan. Dalam simulasi, output sengaja dinaikkan pada periode sesudah. Semua 60 observasi dibandingkan terhadap satu frontier VRS gabungan agar basis perbandingan sama.
+
+```r
+hasil_lean <- read.csv("results/advanced-lean.csv")
+subset(hasil_lean, id == "LEAN-01")
+aggregate(score ~ period, hasil_lean, mean)
+```
+
+Pada periode sebelum, LEAN-01 mempunyai skor **0,631**. Salah satu target mengurangi tenaga ekuivalen penuh dari **111,06 menjadi 74,71**, sementara target kunjungannya tetap sekitar **2.928**. Angka ini adalah proyeksi matematis dalam data buatan. Dalam praktik, pengaturan ulang jadwal dan alur pelayanan perlu ditelaah sebelum menafsirkan pengurangan input sebagai pengurangan pegawai. Fasilitas juga harus menjaga waktu tunggu, keselamatan, dan beban kerja.
+
+Pemeriksaan script memastikan skor sesudah tidak lebih rendah daripada sebelumnya dalam skenario yang sengaja dibentuk ini. Temuan tersebut tidak membuktikan bahwa Lean selalu meningkatkan efisiensi. Data sebelum–sesudah tanpa kelompok pembanding tidak memisahkan perubahan manajemen dari tren, perubahan pasien, atau teknologi.
+
+**Latihan:** buat skenario kunjungan naik tetapi pelayanan yang selesai turun. Periksa apakah kesimpulan masih sama. Jelaskan indikator mutu yang perlu ditambahkan.
+
+## Network DEA: hubungan logistik dan layanan klinis
+
+[Studi jaringan rumah sakit Isfahan](https://link.springer.com/article/10.1186/s12913-025-13819-x) menunjukkan pentingnya mempertimbangkan hubungan antarbagian. Contoh belajar ini memakai jaringan yang lebih kecil: satu pusat logistik dan tiga unit klinis, bukan replikasi model aditif delapan bagian artikel.
+
+Setiap bagian mempunyai tenaga sebagai input. Pusat logistik menyediakan tiga jenis layanan antara (*links*) yang digunakan unit klinis untuk menghasilkan pelayanan akhir. Model mencari kontraksi proporsional input $\theta$ dengan output akhir setidaknya tetap. Bobot pembanding $\lambda$ berbeda untuk tiap bagian, jumlah bobot setiap bagian sama dengan satu (VRS), dan aliran antara yang diproyeksikan dari pusat harus sama dengan yang diterima unit klinis.
+
+```r
+net <- read.csv("data/jaringan-sintetis.csv")
+theta <- network_fit(net)
+head(data.frame(id = net$id, theta))
+```
+
+Pada JEJARING-02, skor jaringan **0,777** berarti potensi kontraksi radial sekitar **22,3%** pada input yang dimodelkan, dengan kendala aliran dan output tetap dipenuhi. Script memeriksa seluruh kendala setelah optimasi. Skor unit yang juga disimpan berasal dari DEA terpisah; skor tersebut **bukan komponen yang dapat langsung dijumlahkan atau dirata-ratakan** untuk menghasilkan skor jaringan.
+
+Pada JEJARING-01, skor jaringan adalah 1, sementara salah satu analisis unit terpisah memberi skor di bawah 1. Hal ini dapat terjadi karena perbandingan unit yang berdiri sendiri mengabaikan pembatas aliran bersama. Tinjau proses dan definisi link sebelum membuat rekomendasi.
+
+**Latihan:** jelaskan mengapa pemeriksaan laboratorium tidak boleh dihitung dua kali sebagai output akhir dan layanan antara tanpa memperjelas struktur model.
+
+## Tenaga kesehatan dan cakupan: contoh terinspirasi Niedar
+
+[Niedar, Hafidz, dan Hort (2022)](https://scholarhub.ui.ac.id/eki/vol7/iss1/1/) menilai ketersediaan tenaga dan cakupan layanan primer di Indonesia menggunakan DEA berorientasi output dengan VRS. Contoh kita menggunakan 120 kabupaten buatan, tiga input kepadatan tenaga, dan empat output persentase cakupan. Kelompok wilayah pada dataset hanyalah label simulasi.
+
+```r
+d <- read.csv("data/layanan-primer-sintetis.csv")
+X <- as.matrix(d[c("doctors_100k", "nurses_100k", "midwives_100k")])
+Y <- as.matrix(d[c("outpatient_pct", "anc4_pct",
+                   "birth_assisted_pct", "immunization_pct")])
+m <- Benchmarking::dea(X, Y, RTS = "vrs", ORIENTATION = "out")
+data.frame(id = d$id, faktor = m$eff,
+           tambahan_persen = 100 * (m$eff - 1))
+```
+
+Untuk KAB-S001, faktor ekspansi $\phi$ adalah **1,02021**. Target proporsional ANC4 berubah dari **61,43% menjadi 62,67%**. Ini peningkatan sekitar **1,24 poin persentase**, setara peningkatan relatif **2,02%** terhadap angka awal. Jangan menyebut faktor 1,02021 sebagai “efisiensi 102%” tanpa menjelaskan konvensinya. Bila memakai indeks kebalikan $1/\phi$, arah interpretasinya berubah.
+
+Target cakupan harus masuk akal dan tidak melebihi 100%. Empat indikator cakupan mempunyai populasi sasaran berbeda; persentasenya tidak boleh dijumlahkan sebagai jumlah pasien. Analisis ini juga tidak menentukan berapa tenaga yang harus dipindahkan antardaerah. Kebutuhan akses, distribusi penduduk, mutu, dan kekosongan layanan tetap harus diperiksa.
+
+## Super-efficiency dan metafrontier
+
+Script juga menghitung `Benchmarking::sdea` dengan CRS. Unit yang dinilai dikeluarkan dari himpunan pembanding sehingga skor dapat melebihi 1 dalam konvensi input. Skor tinggi dapat membantu mendeteksi unit yang berpengaruh, tetapi bukan bukti bahwa fasilitas tersebut layak menjadi standar kebijakan. Periksa pencilan dan validitas datanya.
+
+Contoh metafrontier membagi fasilitas sintetis menurut kapasitas tempat tidur. Pembagian ini hanya untuk menunjukkan perhitungan, bukan bukti adanya teknologi berbeda. Skor terhadap frontier gabungan memenuhi $\theta_M\leq\theta_G$ terhadap frontier kelompok. Rasio kesenjangan teknologi didefinisikan sebagai $TGR=\theta_M/\theta_G$. Rasio ini bergantung pada validitas kelompok dan asumsi teknologi; jangan menafsirkannya otomatis sebagai kualitas manajemen.
+
+```r
+hasil <- read.csv("results/advanced-meta-super.csv")
+head(hasil)
+stopifnot(all(hasil$theta_meta <= hasil$theta_group + 1e-6))
+```
+
+## Batas contoh dan arah pengembangan
+
+Contoh jaringan di atas adalah statis. *Dynamic DEA* membutuhkan stok penghubung antarperiode (*carry-over*), misalnya kapasitas yang tersedia atau akumulasi investasi; menumpuk baris beberapa tahun saja belum membentuk model dinamis. Demikian pula, perbandingan Lean sebelum–sesudah bukan indeks Malmquist. SFA panel dengan *true fixed/random effects* memisahkan heterogenitas tetap dari inefisiensi melalui asumsi tambahan, sehingga model lintas-seksi tidak cukup untuk mengajarkannya sebagai estimasi panel.
+
+Implementasi dinamis dan SFA panel belum disertakan dalam tambahan ini. Pengembangan berikutnya perlu menyediakan spesifikasi lengkap, data sintetis yang sesuai, pemeriksaan identifikasi dan konvergensi, serta interpretasi keterbatasannya. Pilihan model harus disertai analisis sensitivitas, bukan hanya tabel peringkat.

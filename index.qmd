@@ -63,3 +63,6 @@ Keperawatan, Universitas Gadjah Mada. Profil lengkap ada di halaman
 
 Jika menemukan kesalahan, silakan laporkan melalui tautan *Laporkan isu*
 di setiap halaman.
+
+
+Edisi daring ini dikembangkan oleh penulis berdasarkan buku *Analisis Efisiensi Fasilitas Kesehatan: Aplikasi Menggunakan Software R*. Buku cetak tersedia melalui [UGM Press](https://ugmpress.ugm.ac.id/en/product/kedokteran-umum/analisis-efisiensi-fasilitas-kesehatan-aplikasi-menggunakan-sotware-r). Contoh tambahan dan data sintetis diberi penjelasan terpisah dari materi penelitian asli.
