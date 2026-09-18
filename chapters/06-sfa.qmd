@@ -26,8 +26,13 @@ library(frontier)
 
 ### Tahap 2. Membuka Data
 
-Pada bagian ini, kita akan menggunakan data “charnes1981” yang merupakan *dataset* pada penelitian mengenai program bantuan perbaikan nilai yang diberikan oleh pemerintah AS terhadap 70 sekolah (Bogetoft dan Otto, 2010; Charnes, Cooper, dan Rhodes, 1981). *Dataset* ini terdiri atas variabel hasil dari tiga jenis tes, yaitu skor membaca (y1), skor matematika (y2), dan skor kepercayaan diri (y3), yang dianggap sebagai *output* dalam model. Adapun lima variabel yang berbeda dianggap sebagai *input*, yaitu tingkat pendidikan ibu (x1), pekerjaan tertinggi anggota keluarga (x2), kunjungan orang tua ke sekolah (x3), waktu yang dihabiskan bersama anak-anak dalam topik terkait sekolah (x4), dan jumlah guru di lokasi (x5). Untuk melihat keterangan *dataset* secara lebih lengkap, kita bisa menggunakan perintah “help(charnes1981)”.
+Pada bagian ini, kita menggunakan data `charnes1981`, yaitu dataset contoh dari penelitian program bantuan pendidikan di Amerika Serikat (Bogetoft dan Otto, 2010; Charnes, Cooper, dan Rhodes, 1981). Data ini dipakai hanya untuk memperagakan bentuk garis OLS, COLS, dan SFA dengan satu input dan satu output. Untuk konteks kesehatan, bayangkan `x1` sebagai indeks sumber daya awal fasilitas dan `y1` sebagai indeks capaian layanan; pemetaan ini **hanya analogi pengajaran** dan tidak mengubah angka, asal data, atau hasil estimasi asli. Gunakan `help(charnes1981)` untuk keterangan lengkap dataset.
 
+::: {.callout-note}
+## Catatan edisi daring
+
+Edisi cetak menjelaskan konteks pendidikan asli. Edisi daring menambahkan analogi kesehatan agar pembaca dapat memahami bentuk grafik sebelum memakai data rumah sakit pada bagian berikutnya; angka dan model contoh tidak diubah.
+:::
 ```{r}
 # Membuka data charnes1981
 data("charnes1981")
@@ -111,34 +116,41 @@ Pada @fig-6-3 terlihat tiga garis, yaitu garis OLS (garis hitam tegas), garis CO
 
 Setelah kita memahami bagaimana membuat garis SFA pada konteks produksi dengan satu *output* dan satu *input*, kita akan mempelajari bagaimana cara mengestimasi nilai efisiensi dengan teknik SFA. *Dataset* yang akan kita gunakan adalah data produksi susu di Denmark. Variabel yang ada pada *dataset* ini, yaitu: “farmNo” (nomor urut peternakan); “milk” (susu yang dihasilkan, kg); “energy” (tagihan energi); “vet” (tagihan dokter hewan); dan “cows” (jumlah sapi).
 
-### Tahap 1. Membuka *Dataset*
+### Tahap 1. Membuka *Dataset* dan memberi nama variabel kesehatan
 
-Tahap pertama, yaitu dengan membuka *dataset*. Kita memberi nama *dataset* ini “milkData”. Untuk melihat ringkasan data per variabel, kita bisa menggunakan perintah “summary(milkData)”.
+Dataset `milkProd` pada paket **frontier** adalah data produksi susu Denmark yang dipakai untuk contoh SFA oleh Bogetoft dan Otto (2010). Agar pembaca dapat mengikuti alur secara dekat dengan fasilitas kesehatan, kolomnya diberi **nama analitis**: `milk` menjadi `services` (volume layanan), `cows` menjadi `beds_proxy` (proksi kapasitas), `energy` menjadi `utilities_cost`, dan `vet` menjadi `clinical_support_cost`. Nilainya tidak diubah; ini bukan data rumah sakit dan bukan klaim bahwa biaya hewan sama dengan biaya klinis.
+
+::: {.callout-note}
+## Catatan edisi daring
+
+Edisi cetak memakai nama variabel peternakan. Edisi daring hanya mengganti nama kerja dalam objek baru untuk membantu pembelajaran konteks kesehatan; data sumber, angka, dan spesifikasi SFA tetap sama.
+:::
 
 ```{r}
-# Menggunakan dataMilk Production
+# Memuat data sumber lalu membuat salinan dengan nama analitis kesehatan.
 data("milkProd")
-milkData <- as.data.frame(milkProd)
-# Statistik deskriptif
-tbl_summary(milkData) %>% as_flex_table()
+milkData <- as.data.frame(milkProd)  # Objek asli dipertahankan untuk contoh fungsi jarak berikutnya.
+healthExample <- as.data.frame(milkProd) |>
+  dplyr::transmute(
+    facility_id = farmNo, services = milk, utilities_cost = energy,
+    clinical_support_cost = vet, beds_proxy = cows
+  )
+# Tabel ini adalah keluaran pertama: ringkasan ukuran dan sebaran variabel contoh.
+gtsummary::tbl_summary(healthExample) |> gtsummary::as_flex_table()
 ```
 
-^1^Median (IQR)
-
+**Hasil yang diharapkan:** tabel ringkasan satu baris per variabel. **Interpretasi:** tabel membantu memeriksa apakah semua nilai positif sebelum mengambil logaritma; logaritma tidak dapat dihitung untuk nol atau angka negatif.
 ### Tahap 2. Menghitung Nilai Efisiensi
 
-Untuk menghitung nilai efisiensi yang melibatkan lebih dari satu *input*, kita harus mendefinisikan fungsi produksi terlebih dahulu. Dalam hal ini, kita mengasumsikan bahwa jumlah produksi susu dipengaruhi oleh variabel “vet” (pengeluaran untuk kesehatan ternak), “energy” (pengeluaran energi), dan “cows” (jumlah sapi). Secara formal, model tersebut dapat dituliskan sebagai berikut.
+Untuk menghitung nilai efisiensi dengan lebih dari satu input, kita mendefinisikan fungsi produksi terlebih dahulu. Pada salinan analitis kesehatan, `services` dipengaruhi oleh `clinical_support_cost`, `utilities_cost`, dan `beds_proxy`. Ini adalah perubahan nama variabel untuk pembelajaran; persamaannya tetap sama dengan contoh produksi susu asli.
 
-$$\log(\text{milk}) = \beta_0 + \beta_1\log(\text{vet}) + \beta_2\log(\text{energy}) + \beta_3\log(\text{cows}) + v - u$$
+$$\log(\text{services}) = \beta_0 + \beta_1\log(\text{clinical support cost}) + \beta_2\log(\text{utilities cost}) + \beta_3\log(\text{capacity proxy}) + v - u$$
 
-Keterangan: *v* adalah nilai inefisiensi, sedangkan *u* adalah kesalahan acak.
-
-Sebelum melakukan estimasi, yang perlu dilakukan, yaitu membuat matriks *output* (y) dan *input* (x) dari *dataset* “milkData”. Seperti yang sudah dijelaskan pada bagian sebelumnya, fungsi “select()” dan “as.matrix()” akan digunakan seperti pada perintah berikut.
-
+Keterangan: $v$ adalah gangguan acak dua sisi, sedangkan $u\geq0$ adalah komponen inefisiensi dalam asumsi SFA. Sebelum estimasi, kode membuat matriks output `y` dan matriks input `x`. `select()` memilih kolom, sedangkan `as.matrix()` mengubahnya menjadi bentuk yang diterima fungsi `frontier::sfa()`.
 ```{r}
 # Menentukan Matrix variabel input (x) dan output (y) untuk spesifikasi fungsi produksi
-y <- milkData %>% select(milk) %>% as.matrix()
-x <- milkData %>% select(vet, energy, cows) %>% as.matrix()
+y <- healthExample %>% select(services) %>% as.matrix()
+x <- healthExample %>% select(clinical_support_cost, utilities_cost, beds_proxy) %>% as.matrix()
 # Menghitung nilai efisiensi menggunakan package frontier
 milkProd <- frontier::sfa(log(y) ~ log(x))
 # Menyimpan nilai efisiensi teknis dari hasil analisis SFA dg production function

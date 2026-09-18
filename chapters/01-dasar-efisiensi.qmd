@@ -96,6 +96,76 @@ Terlepas dari teknik yang digunakan, hasil pengukuran efisiensi dapat diinterpre
 
 Orientasi *output* (contohnya meningkatkan kegiatan penjangkauan, mengurangi hambatan fisik dan keuangan, meningkatkan tingkat pemanfaatan, dan lain-lain) mungkin dapat menjadi sikap yang lebih dapat diterima dalam konteks negara berkembang. Selain itu, orientasi *input* bisa sangat sulit diterapkan di fasilitas kesehatan yang dimiliki oleh pemerintah. Proses birokrasi dapat membuat prosedur perekrutan atau pemberhentian karyawan dan pembelian atau pembuangan aset menjadi rumit serta memakan waktu. Namun, jenis orientasi ini mungkin dapat dilakukan jika fasilitas tersebut diberikan peningkatan otonomi sehubungan dengan keputusan manajemen sumber daya.
 
+## Simulasi R: memahami efisiensi dengan data buatan
+
+Bagian ini adalah tambahan edisi daring. Angka di bawah dibuat untuk belajar, bukan data rumah sakit nyata. Jalankan kode secara berurutan di RStudio. Kode membuat grafik yang serupa dengan @fig-1-1 sampai @fig-1-4 agar pembaca dapat mengubah asumsi dan melihat akibatnya.
+
+::: {.callout-note}
+## Catatan edisi daring
+
+Edisi cetak memakai ilustrasi statis pada @fig-1-1 sampai @fig-1-4. Edisi daring menambahkan simulasi R yang menghasilkan ilustrasi sejenis; bentuk kurva, angka, dan titiknya sengaja disederhanakan untuk pembelajaran.
+:::
+
+### Langkah 1. Isoquant dan isocost
+
+**Masalah:** pengelola ingin menghasilkan 40 layanan dengan kombinasi tempat tidur dan tenaga yang berbeda. **Tujuan:** melihat bahwa beberapa kombinasi input dapat menghasilkan output yang sama. **Metode:** fungsi produksi sederhana $q=2\sqrt{KL}$, dengan $K$ = tempat tidur dan $L$ = FTE tenaga. `seq()` membuat deret nilai, sedangkan `curve()` menggambar fungsi.
+
+```{r}
+# Data buatan dan kurva isoquant q = 40.
+K <- seq(10, 100, length.out = 200)        # modal: tempat tidur
+L_iso <- 400 / K                            # tenaga yang diperlukan saat q = 40
+plot(K, L_iso, type = "l", lwd = 2, col = "#0072B2",
+     xlab = "Modal: tempat tidur (K)", ylab = "Tenaga: FTE (L)",
+     main = "Isoquant: 40 layanan")
+points(c(20, 40, 80), c(20, 10, 5), pch = 19)
+text(c(20, 40, 80), c(20, 10, 5), labels = c("a", "b", "c"), pos = 3)
+
+# Garis isocost: anggaran 240, biaya FTE = 8 dan tempat tidur = 2.
+plot(K, (240 - 2 * K) / 8, type = "l", ylim = c(0, 30), lwd = 2,
+     col = "#D55E00", xlab = "Modal: tempat tidur (K)",
+     ylab = "Tenaga: FTE (L)", main = "Isocost: anggaran yang sama")
+abline(h = 0, v = 0, col = "grey70")
+```
+
+**Hasil yang diharapkan:** grafik pertama melengkung ke bawah; titik a, b, dan c berada pada kurva yang sama. Grafik kedua berupa garis lurus. **Interpretasi:** titik pada isoquant menggunakan kombinasi input yang secara teknis cukup untuk menghasilkan 40 layanan; belum tentu paling murah karena harga tenaga dan tempat tidur belum dipertimbangkan.
+
+### Langkah 2. Efisiensi teknis, produktif, dan alokatif
+
+**Masalah:** dua rumah sakit dapat menghasilkan layanan yang sama, tetapi memakai input dan biaya berbeda. **Tujuan:** membedakan tiga istilah yang sering tertukar. **Metode:** titik `A` memakai input berlebih; `B` berada pada isoquant sehingga teknis efisien; `C` berada pada titik singgung isoquant-isocost sehingga juga produktif dan alokatif untuk harga yang diasumsikan.
+
+```{r}
+# Tiga rumah sakit buatan untuk satu output q = 40.
+rs <- data.frame(rs = c("A", "B", "C"), beds = c(60, 40, 20),
+                 fte = c(20, 10, 20))
+# Skor input-oriented sederhana: kebutuhan tenaga pada isoquant / tenaga aktual.
+rs$fte_minimum <- 400 / rs$beds
+rs$efisiensi_teknis <- rs$fte_minimum / rs$fte
+rs$biaya <- 2 * rs$beds + 8 * rs$fte
+rs
+
+plot(K, L_iso, type = "l", lwd = 2, xlim = c(0, 80), ylim = c(0, 30),
+     xlab = "Tempat tidur", ylab = "FTE", main = "Tiga bentuk efisiensi")
+points(rs$beds, rs$fte, pch = 19, col = c("#D55E00", "#0072B2", "#009E73"))
+text(rs$beds, rs$fte, labels = rs$rs, pos = 3)
+abline(a = 30, b = -2/8, lty = 2)           # isocost melalui C
+legend("topright", legend = c("A: inefisien teknis", "B: teknis", "C: produktif/alokatif"),
+       pch = 19, col = c("#D55E00", "#0072B2", "#009E73"), bty = "n")
+```
+
+**Hasil yang diharapkan:** tabel menunjukkan `efisiensi_teknis` A kurang dari 1, sedangkan B dan C sama dengan 1. **Interpretasi:** efisiensi teknis hanya bertanya apakah input dapat dikurangi untuk output yang sama. Efisiensi produktif menambahkan pertanyaan biaya terendah. Efisiensi alokatif menambahkan tujuan sosial: kombinasi layanan dan input yang hemat belum otomatis adil; akses kelompok terpencil, mutu, dan kebutuhan pasien tetap harus dipertimbangkan.
+
+### Langkah 3. Menghitung kebutuhan perbaikan secara sederhana
+
+Untuk titik A, skor efisiensi teknis orientasi input menunjukkan proporsi FTE yang masih diperlukan bila tempat tidur tetap. Nilai di bawah 1 bukan persentase keberhasilan, melainkan faktor pengurangan input pada model sederhana ini.
+
+```{r}
+A <- subset(rs, rs$rs == "A")
+A$fte_target <- A$fte * A$efisiensi_teknis
+A$fte_dapat_dialihkan <- A$fte - A$fte_target
+A[c("rs", "fte", "fte_target", "fte_dapat_dialihkan", "efisiensi_teknis")]
+```
+
+**Hasil yang diharapkan:** A memerlukan 6,67 FTE untuk mencapai isoquant pada 60 tempat tidur, sehingga sekitar 13,33 FTE merupakan potensi pengalihan dalam ilustrasi ini. **Interpretasi:** hasil bukan rekomendasi mengurangi staf. Dalam fasilitas kesehatan, tenaga dapat dialihkan untuk memperluas layanan, menurunkan waktu tunggu, atau meningkatkan mutu; keputusan nyata membutuhkan data kebutuhan dan keselamatan pasien.
 ## Kesimpulan
 
 - Produksi adalah suatu proses yang dilakukan oleh organisasi atau badan usaha untuk menghasilkan sesuatu menggunakan kombinasi *input* tertentu.

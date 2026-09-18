@@ -81,6 +81,59 @@ $$adj\_beddays_i = beddays_i \times (1 - death\_rate \times mort\_ratio_i)$$ {#e
 
 Rumah sakit dengan rasio kematian yang lebih rendah meningkatkan jumlah pemulangan di rumah sakit, atau rasio kematian yang lebih tinggi mengurangi tingkat kelangsungan hidup. Indeks campuran kasus Jamkesmas dapat mencerminkan campuran kasus rumah sakit karena jumlah penerima manfaatnya yang besar. Rata-rata, berdasarkan HFCS, pasien Jamkesmas mewakili 24% pasien rawat inap dan 14% dari kunjungan rawat jalan. Empat puluh tujuh persen penerima Jamkesmas berada di tiga desil pendapatan terbawah, 32% di desil pendapatan menengah, dan 20% di desil pendapatan tiga teratas (Marzoeki *et al*., 2014). *Dataset* dipasok oleh Pusat Pembiayaan Kesehatan dan Asuransi di Departemen Kesehatan Indonesia. Penelitian ini menggunakan *dataset* INA-CBGs 2011, yang menghubungkannya dengan *dataset* HFCS menggunakan ID fasilitas kesehatan unik yang dihasilkan oleh Kementerian Kesehatan.
 
+### Tutorial R: menyesuaikan output dengan *case-mix index*
+
+Bagian ini adalah tambahan edisi daring yang mengadaptasi struktur penghitungan *case-mix* dan penyesuaian mortalitas dari skrip pendamping tesis doktoral penulis (2018). Contoh menggunakan data **sintetis**, bukan data pasien atau hasil empiris tesis. Karena itu, kode ini mengajarkan alur kerja dan tidak boleh dipakai untuk menyimpulkan kinerja rumah sakit nyata.
+
+**Masalah:** dua rumah sakit dapat mempunyai jumlah admisi sama, tetapi menangani kasus dengan kerumitan berbeda. Membandingkan angka mentah dapat memberi keuntungan tidak adil pada rumah sakit yang menerima pasien lebih ringan. **Tujuan:** membuat output layanan yang sudah mempertimbangkan kompleksitas kasus dan kualitas. **Metode:** tiap rumah sakit menerima CMI dan rasio mortalitas buatan; skor DEA kemudian dibandingkan sebelum dan sesudah penyesuaian.
+
+```{r}
+# 1. Membuat data latihan: setiap baris adalah satu rumah sakit buatan.
+# CMI > 1 berarti rata-rata kasus lebih kompleks daripada rata-rata pembanding.
+set.seed(2018)
+rs_cmi <- data.frame(
+  id = sprintf("CMI-%02d", 1:30),
+  doctors = runif(30, 5, 25), nurses = runif(30, 30, 150),
+  beds = runif(30, 30, 250),
+  outpatients = runif(30, 3000, 35000),
+  admissions = runif(30, 500, 6500),
+  bed_days = runif(30, 2500, 50000),
+  surgery = runif(30, 30, 1300),
+  cmi_outpatient = runif(30, 0.80, 1.25),
+  cmi_inpatient = runif(30, 0.80, 1.45),
+  death_rate = runif(30, 0.005, 0.040),
+  mortality_ratio = runif(30, 0.75, 1.25)
+)
+
+# 2. Menghitung output terstandar.
+# pmax() mencegah faktor kualitas nol/negatif akibat data masukan yang tidak layak.
+rs_cmi$quality_factor <- pmax(0.01,
+  1 - rs_cmi$death_rate * rs_cmi$mortality_ratio)
+rs_cmi$outpatients_adjusted <- rs_cmi$outpatients * rs_cmi$cmi_outpatient
+rs_cmi$bed_days_adjusted <- rs_cmi$bed_days * rs_cmi$cmi_inpatient * rs_cmi$quality_factor
+rs_cmi$admissions_adjusted <- rs_cmi$admissions * rs_cmi$cmi_inpatient * rs_cmi$quality_factor
+
+# 3. Membandingkan nilai mentah dan nilai yang sudah disesuaikan.
+head(rs_cmi[c("id", "outpatients", "outpatients_adjusted", "admissions",
+              "admissions_adjusted", "cmi_inpatient", "quality_factor")])
+
+# 4. DEA orientasi output VRS. Jalankan install.packages("Benchmarking") sekali bila perlu.
+library(Benchmarking)
+X <- as.matrix(rs_cmi[c("doctors", "nurses", "beds")])
+Y_raw <- as.matrix(rs_cmi[c("outpatients", "bed_days", "surgery")])
+Y_adjusted <- as.matrix(rs_cmi[c("outpatients_adjusted", "bed_days_adjusted", "surgery")])
+rs_cmi$phi_raw <- dea(X, Y_raw, RTS = "vrs", ORIENTATION = "out")$eff
+rs_cmi$phi_adjusted <- dea(X, Y_adjusted, RTS = "vrs", ORIENTATION = "out")$eff
+rs_cmi[c("id", "phi_raw", "phi_adjusted", "cmi_inpatient", "mortality_ratio")]
+```
+
+**Hasil yang diharapkan:** tabel pertama menunjukkan perbedaan volume mentah dan volume terstandar. Pada tabel kedua, `phi_raw` dan `phi_adjusted` dapat berbeda; pada DEA orientasi output, nilai \(\phi\geq1\) adalah faktor ekspansi output menuju frontier. Misalnya, \(\phi=1{,}20\) berarti—dalam model—output perlu meningkat 20% dengan input yang sama. **Interpretasi:** perubahan skor bukan bukti bahwa rumah sakit sebelumnya dikelola buruk atau baik; skor berubah karena pembanding kini mempertimbangkan kompleksitas dan faktor kualitas yang dimodelkan.
+
+::: {.callout-warning}
+## Batasan penting
+
+CMI harus dihitung dari kelompok kasus, bobot/tarif referensi, dan periode yang terdokumentasi. Rasio mortalitas harus berbasis model risiko yang tervalidasi, bukan sekadar angka kematian mentah. Jangan mengalikan semua indikator dengan CMI tanpa justifikasi klinis. Hindari pula mengubah nol layanan menjadi data hilang otomatis: nol dapat berarti layanan memang tidak tersedia. DEA sensitif terhadap pencilan, jumlah variabel, dan pilihan kelompok pembanding; lakukan analisis sensitivitas sebelum memakai hasil untuk kebijakan.
+:::
 ### Penyusunan Variabel Kontekstual
 
 Permasalahan selanjutnya yang perlu diperhatikan, yaitu banyaknya variabel kontekstual yang tersedia dalam *dataset* dapat meningkatkan potensi terjadinya korelasi yang kuat antarvariabel, terutama saat melakukan analisis regresi multivariat (Everitt dan Hothorn, 2011). Dampaknya, hasil estimasi statistik bisa mengalami bias. Untuk mengatasi masalah tersebut, *principal component analysis* (PCA) dapat digunakan untuk membuat variabel baru yang lebih sedikit dari beberapa variabel yang saling berkorelasi (Jolliffe *et al.*, 2020).

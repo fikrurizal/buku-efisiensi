@@ -6,6 +6,10 @@ Seluruh data dan hasil numerik dalam bab ini **sintetis**. Contoh terinspirasi o
 
 ## Rumah sakit dan emisi: memasukkan undesirable outputs
 
+::: {.callout-note title="Catatan edisi daring"}
+**Masalah nyata:** pimpinan rumah sakit perlu meningkatkan pelayanan tanpa menganggap emisi sebagai hasil yang patut diperbanyak. **Tujuan belajar:** membedakan output yang diinginkan dari *undesirable output* dan membaca target SBM. **Istilah sederhana:** SBM memakai *slack* (kelebihan input, kekurangan layanan, atau emisi yang dapat dikurangi) alih-alih hanya satu pengurangan proporsional. Setelah kode dijalankan, pembaca memperoleh skor, target tiap variabel, dan unit pembanding. Skor rendah menunjukkan ruang perbaikan relatif terhadap sampel, bukan ukuran dampak lingkungan absolut, penilaian klinis, ataupun hubungan sebab-akibat.
+:::
+
 Rumah sakit menghasilkan pelayanan yang dibutuhkan masyarakat sekaligus dampak yang ingin dikurangi. Karena itu emisi tidak boleh dimasukkan sebagai output yang ingin diperbesar. [Masoudian dan Lennerts](https://journal.ifm.tuwien.ac.at/article/id/774/) membahas efisiensi rumah sakit dengan input tempat tidur dan listrik, output pelayanan rawat inap dan rawat jalan, serta emisi CO₂. Artikel berada dalam terbitan bertanda 2025 dan laman mencatat publikasi pada 2026.
 
 Contoh kita berisi 60 rumah sakit buatan. Model *slacks-based measure* (SBM) nonorientasi dengan CRS menggunakan bentuk fungsi tujuan artikel:
@@ -33,6 +37,10 @@ Hasil tersimpan untuk HIJAU-001 memberikan skor SBM dengan emisi **0,475**, diba
 
 ## Lean dan efisiensi proses: sebelum dan sesudah
 
+::: {.callout-note title="Catatan edisi daring"}
+**Masalah nyata:** perubahan alur, jadwal, atau pengurangan waktu tunggu perlu dievaluasi tanpa mengorbankan mutu. **Tujuan belajar:** memakai DEA sebagai pembanding produktivitas proses sebelum dan sesudah. **Istilah sederhana:** *frontier* gabungan adalah praktik terbaik relatif dari seluruh observasi; VRS mengizinkan ukuran fasilitas berbeda. Kode menghasilkan skor tiap fasilitas-periode dan rata-rata skor per periode. Bacalah perubahan sebagai asosiasi dalam simulasi, bukan bukti kausal Lean: komposisi pasien, mutu, dan perubahan luar fasilitas dapat ikut berubah.
+:::
+
 [Drei dan Angulo-Meza](https://pubmed.ncbi.nlm.nih.gov/40908491/) menggabungkan Lean healthcare dan DEA pada rumah sakit Brasil. Abstrak menjelaskan penggunaan SBM nonorientasi dan proyeksi perbaikan. Contoh berikut memakai gagasan evaluasi proses tersebut; variabel dan mekanisme perubahan dibuat sendiri, bukan disalin dari data artikel.
 
 Dataset `lean-sintetis.csv` berisi 30 fasilitas sebelum dan sesudah perubahan proses. Input mencakup tenaga dan jam pelayanan; output mencakup kunjungan dan pelayanan yang diselesaikan. Dalam simulasi, output sengaja dinaikkan pada periode sesudah. Semua 60 observasi dibandingkan terhadap satu frontier VRS gabungan agar basis perbandingan sama.
@@ -50,6 +58,10 @@ Pemeriksaan script memastikan skor sesudah tidak lebih rendah daripada sebelumny
 **Latihan:** buat skenario kunjungan naik tetapi pelayanan yang selesai turun. Periksa apakah kesimpulan masih sama. Jelaskan indikator mutu yang perlu ditambahkan.
 
 ## Network DEA: hubungan logistik dan layanan klinis
+
+::: {.callout-note title="Catatan edisi daring"}
+**Masalah nyata:** layanan antara dari logistik, laboratorium, atau farmasi menghubungkan bagian-bagian rumah sakit sehingga DEA terpisah dapat kehilangan keterkaitannya. **Tujuan belajar:** mengenali *link* sebagai keluaran satu tahap yang menjadi masukan tahap lain. **Istilah sederhana:** Network DEA membatasi aliran antarbagian agar konsisten, bukan sekadar menjumlahkan skor departemen. Setelah kode berjalan, pembaca melihat skor jaringan dan skor unit pembanding. Interpretasi hanya sah jika link, arah aliran, dan batas sistem telah didefinisikan benar; skor tidak mengukur mutu atau keselamatan yang tidak dimodelkan.
+:::
 
 [Studi jaringan rumah sakit Isfahan](https://link.springer.com/article/10.1186/s12913-025-13819-x) menunjukkan pentingnya mempertimbangkan hubungan antarbagian. Contoh belajar ini memakai jaringan yang lebih kecil: satu pusat logistik dan tiga unit klinis, bukan replikasi model aditif delapan bagian artikel.
 
@@ -69,6 +81,10 @@ Pada JEJARING-01, skor jaringan adalah 1, sementara salah satu analisis unit ter
 
 ## Tenaga kesehatan dan cakupan: contoh terinspirasi Niedar
 
+::: {.callout-note title="Catatan edisi daring"}
+**Masalah nyata:** kabupaten dengan tenaga yang sama dapat mencapai cakupan layanan primer yang berbeda. **Tujuan belajar:** membaca DEA orientasi output sebagai potensi perluasan cakupan dengan tenaga saat ini. **Istilah sederhana:** faktor ekspansi $\phi$ menunjukkan seberapa jauh semua output dapat dinaikkan secara proporsional terhadap frontier VRS. Kode menghasilkan faktor dan target cakupan per kabupaten. Faktor tersebut adalah pembandingan relatif dalam sampel; jangan memperlakukannya sebagai persentase efisiensi tanpa konvensi, target penugasan tenaga, atau bukti bahwa cakupan berarti akses bermutu dan adil.
+:::
+
 [Niedar, Hafidz, dan Hort (2022)](https://scholarhub.ui.ac.id/eki/vol7/iss1/1/) menilai ketersediaan tenaga dan cakupan layanan primer di Indonesia menggunakan DEA berorientasi output dengan VRS. Contoh kita menggunakan 120 kabupaten buatan, tiga input kepadatan tenaga, dan empat output persentase cakupan. Kelompok wilayah pada dataset hanyalah label simulasi.
 
 ```r
@@ -87,6 +103,10 @@ Target cakupan harus masuk akal dan tidak melebihi 100%. Empat indikator cakupan
 
 ## Super-efficiency dan metafrontier
 
+::: {.callout-note title="Catatan edisi daring"}
+**Masalah nyata:** banyak unit berada pada skor 1 dan fasilitas dari teknologi atau konteks berbeda dapat dibandingkan secara tidak adil. **Tujuan belajar:** memahami *super-efficiency* untuk membedakan unit frontier dan *metafrontier* untuk membandingkan frontier kelompok dengan frontier bersama. Setelah kode berjalan, pembaca memperoleh skor super-efficiency, skor frontier kelompok dan bersama, serta rasio kesenjangan teknologi. Peringkat di atas 1 peka terhadap pencilan; rasio metafrontier tidak membuktikan bahwa kelompok atau manajernya lebih baik tanpa dasar substantif bagi pengelompokan.
+:::
+
 Script juga menghitung `Benchmarking::sdea` dengan CRS. Unit yang dinilai dikeluarkan dari himpunan pembanding sehingga skor dapat melebihi 1 dalam konvensi input. Skor tinggi dapat membantu mendeteksi unit yang berpengaruh, tetapi bukan bukti bahwa fasilitas tersebut layak menjadi standar kebijakan. Periksa pencilan dan validitas datanya.
 
 Contoh metafrontier membagi fasilitas sintetis menurut kapasitas tempat tidur. Pembagian ini hanya untuk menunjukkan perhitungan, bukan bukti adanya teknologi berbeda. Skor terhadap frontier gabungan memenuhi $\theta_M\leq\theta_G$ terhadap frontier kelompok. Rasio kesenjangan teknologi didefinisikan sebagai $TGR=\theta_M/\theta_G$. Rasio ini bergantung pada validitas kelompok dan asumsi teknologi; jangan menafsirkannya otomatis sebagai kualitas manajemen.
@@ -98,6 +118,10 @@ stopifnot(all(hasil$theta_meta <= hasil$theta_group + 1e-6))
 ```
 
 ## Dekomposisi Produktivitas Färe-Primont: Pendekatan O'Donnell (2018)
+
+::: {.callout-note title="Catatan edisi daring"}
+**Masalah nyata:** manajer ingin membedakan perubahan produktivitas antarwaktu dari perubahan efisiensi, skala, bauran, dan teknologi. **Tujuan belajar:** memahami alasan memakai indeks Färe-Primont yang transitif untuk perbandingan panel. **Istilah sederhana:** produktivitas adalah rasio agregat output terhadap input; dekomposisi memisahkan sumber perubahan menurut asumsi teknologi yang dipilih. Jika estimasi paket dijalankan dengan data panel yang sesuai, keluaran yang diharapkan adalah indeks TFP dan komponennya per unit-periode. Hasil tetap peka terhadap pilihan orientasi, returns to scale, agregasi, serta kualitas data; komponen bukan klaim kausal tentang kebijakan tertentu.
+:::
 
 Evaluasi kinerja fasilitas kesehatan antarperiode sering kali memerlukan pengukuran perubahan produktivitas total (*Total Factor Productivity*, TFP). Pendekatan tradisional umumnya memakai indeks Malmquist. Namun, Christopher J. O'Donnell (2018) dalam *Productivity and Efficiency Analysis: An Economic Approach to Measuring and Explaining Managerial Performance* menunjukkan bahwa indeks Malmquist standar tidak memenuhi sifat transitivitas (*circularity/transitivity failure*). Konsekuensinya, perbandingan produktivitas lintas fasilitas dan lintas tahun menjadi tidak konsisten karena hasilnya bergantung pada unit atau periode dasar yang dipilih.
 
@@ -125,8 +149,97 @@ Di ekosistem R, metodologi O'Donnell (2018) dapat diestimasi menggunakan paket *
 #                      rts = "vrs", orientation = "out")
 ```
 
-## Batas contoh dan arah pengembangan
+## Dynamic DEA: panel layanan kesehatan dan carry-over
 
-Contoh jaringan di atas adalah statis. *Dynamic DEA* membutuhkan stok penghubung antarperiode (*carry-over*), misalnya kapasitas yang tersedia atau akumulasi investasi; menumpuk baris beberapa tahun saja belum membentuk model dinamis. Demikian pula, perbandingan Lean sebelum–sesudah bukan indeks Malmquist. SFA panel dengan *true fixed/random effects* memisahkan heterogenitas tetap dari inefisiensi melalui asumsi tambahan, sehingga model lintas-seksi tidak cukup untuk mengajarkannya sebagai estimasi panel.
+::: {.callout-note title="Catatan edisi daring"}
+**Masalah nyata:** keputusan tahun ini—misalnya anggaran pelatihan yang belum dipakai atau kapasitas terpelihara—mempengaruhi kemampuan memberi layanan tahun berikutnya. **Tujuan belajar:** membangun panel sintetis yang menyatakan hubungan tersebut secara eksplisit sebelum memilih model dinamis. **Istilah sederhana:** *carry-over* adalah stok yang dibawa dari periode $t$ ke $t+1$; di sini `capacity_next` berasal dari kapasitas sebelumnya, investasi pelatihan, dan depresiasi.
 
-Implementasi dinamis dan SFA panel belum disertakan dalam tambahan ini. Pengembangan berikutnya perlu menyediakan spesifikasi lengkap, data sintetis yang sesuai, pemeriksaan identifikasi dan konvergensi, serta interpretasi keterbatasannya. Pilihan model harus disertai analisis sensitivitas, bukan hanya tabel peringkat.
+Contoh berikut dapat dijalankan mandiri dengan `Benchmarking`. Ia menyiapkan carry-over dan menghitung DEA pooled yang memperlakukan kapasitas akhir sebagai **output stok yang diinginkan** bersama layanan. Dengan demikian pembaca memperoleh tabel skor, kapasitas awal/akhir, dan target output untuk setiap kabupaten-tahun. Ini adalah alur belajar yang sadar carry-over, **bukan** implementasi penuh Dynamic DEA: `Benchmarking::dea()` tidak menegakkan kesamaan stok lintas-periode melalui kendala antartahun atau mendekomposisi efisiensi dinamis seperti model yang dipublikasikan.
+
+```r
+# install.packages("Benchmarking")  # jalankan sekali bila paket belum tersedia
+library(Benchmarking)
+
+set.seed(802)
+districts <- paste0("DYN-", sprintf("%02d", 1:12))
+years <- 2022:2024
+panel <- expand.grid(id = districts, year = years, KEEP.OUT.ATTRS = FALSE)
+panel <- panel[order(panel$id, panel$year), ]
+panel$staff_fte <- round(runif(nrow(panel), 35, 100), 1)
+panel$training_budget <- round(runif(nrow(panel), 20, 70), 1)
+panel$capacity_start <- NA_real_
+panel$capacity_next <- NA_real_
+panel$visits <- NA_real_
+
+for (id in districts) {
+  rows <- which(panel$id == id)
+  capacity <- runif(1, 45, 100)
+  for (r in rows) {
+    panel$capacity_start[r] <- capacity
+    panel$visits[r] <- round(18 * panel$staff_fte[r] +
+                              7 * capacity + rnorm(1, 0, 90))
+    # Carry-over yang diinginkan: kapasitas tersisa setelah depresiasi
+    # dan ditambah kapasitas yang dibentuk oleh anggaran pelatihan.
+    capacity <- max(5, 0.88 * capacity + 0.22 * panel$training_budget[r] +
+                    rnorm(1, 0, 3))
+    panel$capacity_next[r] <- round(capacity, 1)
+  }
+}
+
+# DEA pooled: dua input tahun berjalan, layanan dan stok akhir sebagai output.
+X <- as.matrix(panel[c("staff_fte", "training_budget")])
+Y <- as.matrix(panel[c("visits", "capacity_next")])
+fit_dynamic_workflow <- dea(X, Y, RTS = "vrs", ORIENTATION = "out")
+panel$expansion_factor <- fit_dynamic_workflow$eff
+panel$target_visits <- panel$visits * panel$expansion_factor
+panel$target_capacity_next <- panel$capacity_next * panel$expansion_factor
+panel[c("id", "year", "capacity_start", "capacity_next",
+        "expansion_factor", "target_visits", "target_capacity_next")]
+```
+
+Periksa bahwa `capacity_next` suatu baris menjadi `capacity_start` pada tahun berikutnya untuk kabupaten yang sama (sebelum pembulatan tampilan bila diperlukan). Faktor lebih besar dari 1 menunjukkan kemungkinan perluasan relatif atas kedua output dalam spesifikasi ini, bukan rekomendasi untuk menaikkan kapasitas tanpa biaya atau tanpa memperhatikan kebutuhan. Untuk Dynamic DEA formal dengan jenis carry-over baik/buruk dan kendala penghubung eksplisit, lihat pembahasan [Tone dan Tsutsui (2010)](https://doi.org/10.1016/j.omega.2010.03.003) serta artikel tentang [dynamic network DEA pada rumah sakit universitas](https://pmc.ncbi.nlm.nih.gov/articles/PMC6507266/). Pilih jenis carry-over, diskonto, dan aturan disposabilitas berdasarkan proses operasional; lakukan analisis sensitivitas.
+:::
+
+## Efisiensi dan pemerataan: cakupan layanan primer antarkabupaten
+
+::: {.callout-note title="Catatan edisi daring"}
+**Masalah nyata:** kabupaten dapat tampak efisien karena menghasilkan banyak kunjungan, tetapi tetap meninggalkan desa terpencil atau kelompok miskin. **Tujuan belajar:** memodelkan capaian akses secara eksplisit dan membandingkan kompromi efisiensi–pemerataan. **Istilah sederhana:** DEA tetap mengukur kinerja relatif; `equity_access_pct` adalah output akses yang diinginkan—persentase penduduk rentan yang dapat menjangkau layanan primer—bukan sekadar catatan konteks.
+
+```r
+# install.packages("Benchmarking")  # jalankan sekali bila paket belum tersedia
+library(Benchmarking)
+
+set.seed(808)
+n <- 40
+district <- data.frame(
+  id = paste0("EQ-", sprintf("%02d", 1:n)),
+  clinicians_fte = round(runif(n, 25, 110), 1),
+  operating_budget = round(runif(n, 45, 180), 1),
+  remoteness = runif(n, 0, 1)
+)
+# Kunjungan dan akses dibuat berbeda agar kompromi dapat terlihat.
+district$completed_visits <- round(28 * district$clinicians_fte +
+                                   5 * district$operating_budget -
+                                   400 * district$remoteness + rnorm(n, 0, 180))
+district$equity_access_pct <- pmin(100, pmax(15,
+  48 + 0.18 * district$operating_budget - 25 * district$remoteness +
+  rnorm(n, 0, 7)))
+
+X <- as.matrix(district[c("clinicians_fte", "operating_budget")])
+Y <- as.matrix(district[c("completed_visits", "equity_access_pct")])
+fit_equity <- dea(X, Y, RTS = "vrs", ORIENTATION = "out")
+district$expansion_factor <- fit_equity$eff
+district$target_access_pct <- pmin(100,
+  district$equity_access_pct * district$expansion_factor)
+
+# Bandingkan peringkat jika pembuat kebijakan mengabaikan akses pemerataan.
+fit_visits_only <- dea(X, as.matrix(district["completed_visits"]),
+                       RTS = "vrs", ORIENTATION = "out")
+district$factor_visits_only <- fit_visits_only$eff
+district[order(-district$expansion_factor),
+         c("id", "remoteness", "equity_access_pct", "expansion_factor",
+           "factor_visits_only", "target_access_pct")]
+```
+
+Hasil yang diharapkan adalah faktor ekspansi dan target akses untuk tiap kabupaten, serta perbedaan dengan model yang hanya menghitung kunjungan. Perbedaan itu menunjukkan bahwa frontier dan peringkat dapat berubah ketika akses kelompok rentan dihargai sebagai hasil. Namun skor tinggi tidak otomatis adil: DEA dapat masih membandingkan kabupaten terpencil dengan kondisi yang tidak sebanding, dan satu persentase akses dapat menutupi kesenjangan menurut desa, pendapatan, gender, disabilitas, atau mutu layanan. Jangan memakai `target_access_pct` di atas 100 sebagai target literal—contoh membatasinya pada 100 dan kebijakan nyata memerlukan data populasi sasaran, kebutuhan, mutu, serta bobot atau pembatas pemerataan yang dibahas bersama pemangku kepentingan. Rujukan pengembangan kerangka kesehatan tersedia pada [WHO (2018), *Health-system-adapted DEA*](https://www.who.int/publications/i/item/9789241514450).
+:::
