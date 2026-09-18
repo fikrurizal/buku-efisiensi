@@ -20,6 +20,7 @@ book:
   search: true
   chapters:
     - index.qmd
+    - prakata.qmd
     - kata-pengantar.qmd
     - singkatan.qmd
     - chapters/01-dasar-efisiensi.qmd
