@@ -1,0 +1,60 @@
+# Glosarium dan singkatan {.unnumbered}
+
+Istilah Indonesia digunakan sebagai pengantar; istilah Inggris dipertahankan agar pembaca mudah mengikuti dokumentasi R dan artikel ilmiah.
+
+| Istilah | Arti dan contoh |
+|---|---|
+| Input | Sumber daya yang digunakan, misalnya tenaga, tempat tidur, dan biaya. |
+| Output | Pelayanan yang dihasilkan, misalnya kunjungan atau pasien selesai dirawat. |
+| Outcome | Hasil kesehatan, misalnya perubahan fungsi atau kelangsungan hidup; berbeda dari banyaknya layanan. |
+| Efisiensi teknis | Kemampuan menghasilkan output tertentu dengan input sesedikit mungkin, atau menghasilkan output sebanyak mungkin dengan input tersedia. |
+| Efisiensi biaya | Kemampuan menghasilkan output dengan biaya minimal, dengan mempertimbangkan harga input. |
+| Efisiensi alokatif input | Ketepatan kombinasi input menurut harga relatifnya. Dalam kebijakan, alokasi layanan juga berkaitan dengan manfaat sosial; artinya perlu dinyatakan. |
+| Produktivitas | Hubungan output dan input; rasio satu output/input disebut produktivitas parsial. |
+| Frontier | Batas produksi/pelayanan terbaik yang dijadikan pembanding dalam model. Bukan standar klinis universal. |
+| DMU | *Decision-Making Unit*, unit yang dibandingkan: RS, puskesmas, atau kabupaten. Jangan mencampur tingkat analisis. |
+| DEA | *Data Envelopment Analysis*, metode nonparametrik untuk membentuk frontier dari kombinasi unit pembanding. |
+| SFA | *Stochastic Frontier Analysis*, metode parametrik yang memisahkan gangguan acak dan inefisiensi dengan asumsi tertentu. |
+| CRS | *Constant Returns to Scale*: kenaikan semua input secara proporsional memungkinkan kenaikan output dengan proporsi sama. |
+| VRS | *Variable Returns to Scale*: hubungan perubahan input/output dapat berbeda menurut skala. |
+| Orientasi input | Mencari potensi pengurangan input dengan mempertahankan output. |
+| Orientasi output | Mencari potensi peningkatan output dengan input yang tersedia. |
+| Radial | Perubahan proporsional semua input atau semua output pada arah yang dipilih. |
+| Slack | Sisa kelebihan input atau kekurangan output yang masih mungkin diperbaiki setelah perubahan radial. Bukan *slack time* atau waktu luang pegawai. |
+| Peer | Unit atau kombinasi unit yang menjadi pembanding. Bobotnya dilambangkan $\lambda$. |
+| SBM | *Slacks-Based Measure*: ukuran efisiensi yang memperhitungkan kelebihan input dan kekurangan output secara langsung. |
+| Super-efficiency | Evaluasi dengan mengeluarkan unit yang dinilai dari himpunan pembanding; dapat membedakan unit frontier, tetapi sensitif terhadap observasi ekstrem. |
+| Bootstrap | Pengulangan pengambilan sampel sesuai algoritme untuk mempelajari ketidakpastian; bukan sekadar mengulang model pada data yang sama. |
+| Bias correction | Koreksi terhadap bias estimator berdasarkan prosedur tertentu; bukan jaminan semua bias data hilang. |
+| BOR | *Bed Occupancy Rate*, persentase hari tempat tidur tersedia yang terisi. |
+| BTO | *Bed Turnover*, jumlah pasien keluar per tempat tidur dalam periode tertentu. |
+| ALOS | *Average Length of Stay*, rata-rata lama rawat. Definisi kohort pasien keluar harus dibedakan dari pendekatan rasio periode. |
+| FTE | *Full-Time Equivalent*, tenaga ekuivalen penuh waktu; dua pekerja paruh waktu dapat setara satu FTE. |
+| CMI | *Case-Mix Index*, indeks bauran kasus menurut bobot kompleksitas/sumber daya yang ditentukan. Bukan skor kualitas. |
+| O/E | *Observed/Expected*, rasio kejadian teramati terhadap yang diharapkan berdasarkan model risiko. |
+| Undesirable output | Keluaran yang ingin dikurangi, misalnya emisi; tidak boleh diperlakukan sebagai layanan yang ingin diperbanyak. |
+| Network DEA | DEA yang menggambarkan hubungan antartahap/unit melalui arus perantara. |
+| Link | Besaran penghubung, misalnya bahan pelayanan dari logistik yang digunakan unit layanan. |
+| Carry-over | Stok yang menghubungkan periode, misalnya modal yang masih digunakan tahun berikutnya. |
+| Dynamic DEA | DEA yang memasukkan hubungan antarperiode secara eksplisit, bukan sekadar DEA tahunan. |
+| Malmquist | Indeks perubahan produktivitas yang dapat diuraikan menjadi perubahan efisiensi dan teknologi. |
+| Metafrontier | Frontier pembanding lintas kelompok teknologi. |
+| TGR | *Technology Gap Ratio*, rasio efisiensi terhadap metafrontier dan frontier kelompok pada konvensi yang dinyatakan. |
+| Lean Healthcare | Pendekatan perbaikan proses dengan mengenali pemborosan dan memperbaiki aliran pelayanan. |
+| Case-mix adjustment | Penyesuaian perbedaan jenis/berat kasus agar perbandingan lebih adil. |
+| Equity / ekuitas | Keadilan distribusi akses, beban, dan manfaat kesehatan. |
+| Cost-effectiveness | Perbandingan biaya dan manfaat kesehatan antaralternatif; tidak sama dengan skor efisiensi fasilitas. |
+| renv | Perangkat R untuk mencatat dan memulihkan versi paket proyek. |
+| Quarto / knitr | Perangkat untuk menggabungkan narasi, kode, rumus, dan keluaran menjadi dokumen atau buku. |
+
+## Cara membaca simbol
+
+| Simbol | Makna dalam buku |
+|---|---|
+| $x$, $y$, $b$ | Input, output yang diinginkan, output yang tidak diinginkan |
+| $\theta$ | Faktor pengali input; pada DEA biasa $0<\theta\leq1$ |
+| $\varphi$ | Faktor ekspansi output; pada contoh DEA $\varphi\geq1$ |
+| $\rho$ | Skor SBM; makin dekat satu, makin efisien pada model yang digunakan |
+| $\lambda_j$ | Bobot unit pembanding ke-$j$; tidak selalu berjumlah satu pada CRS |
+| $s^-$, $s^+$ | Kelebihan input dan kekurangan output terhadap target |
+| $u$, $v$ | Inefisiensi nonnegatif dan gangguan acak dua sisi dalam SFA produksi |

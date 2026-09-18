@@ -1,0 +1,7 @@
+PASS SBM tanpa emisi dibanding deaR: selisih < 1e-5
+PASS SBM target emisi tidak melebihi emisi awal; semua LP optimal dan residual < 1e-5
+PASS Lean: skor sesudah >= sebelum pada frontier gabungan yang sama
+PASS jaringan: semua LP optimal, neraca link dan kendala diperiksa
+PASS layanan primer: phi >= 1 dan seluruh target cakupan <= 100%
+PASS super-efficiency CRS finite; theta meta <= theta kelompok
+Semua angka sintetis; bukan replikasi hasil empiris artikel.

@@ -1,0 +1,37 @@
+# Petunjuk belajar dan menjalankan kode {.unnumbered}
+
+Buku ini dapat dibaca tanpa memasang R. Mulailah dari konsep pada Bab 1, kemudian analisis rasio, sebelum mengikuti praktikum DEA dan SFA. Glosarium menjelaskan singkatan dan istilah yang digunakan.
+
+## Mengunduh buku, data, dan script
+
+Repositori bersama ada di [fikrurizal/buku-efisiensi](https://github.com/fikrurizal/buku-efisiensi). Pilih **Code → Download ZIP**, lalu ekstrak seluruh folder. Folder `chapters` memuat naskah dan tutorial, `R` memuat script, dan `data` memuat dataset. Simpan struktur folder ini agar alamat berkas tetap bekerja. Berkas `.qmd` dapat dibuka sebagai teks dan dibangun menjadi buku dengan Quarto.
+
+Dataset tambahan dengan nama `*-sintetis.csv` adalah data buatan untuk belajar, bukan data fasilitas yang sebenarnya. Hasilnya tidak boleh dipakai untuk menyimpulkan kinerja daerah atau rumah sakit tertentu. Dataset `hospital.csv` berasal dari data penelitian asli yang telah diolah oleh penulis untuk pelatihan dan diizinkan untuk didistribusikan ulang. Baca [asal dan penggunaan data](data/README.md). Variabel simulasi pada turunan data harus dibedakan dari hasil pengamatan asli.
+
+## R melalui browser
+
+GitHub menyimpan naskah dan kode; halaman GitHub Pages tidak menjalankan R. Mahasiswa dapat menggunakan akun masing-masing di [Posit Cloud](https://posit.cloud/), memilih **New Project → New Project from Git Repository**, lalu memasukkan alamat repositori di atas. Setiap mahasiswa bekerja pada salinan proyeknya sendiri. Buka Console R dan jalankan:
+
+```r
+renv::restore()
+```
+
+Ikuti praktikum dari awal dan jalankan kode bertahap. Layanan dapat membatasi jam komputasi, memori, dan jumlah proyek sesuai paket akun; periksa ketentuan akun sebelum perkuliahan. Alur ini mengikuti [dokumentasi Posit Cloud](https://docs.posit.co/cloud/guide/advanced/), tetapi proyek kelas ini belum diuji langsung pada akun mahasiswa.
+
+## Menggunakan komputer sendiri
+
+Pasang R, RStudio, dan Quarto. Buka folder proyek di RStudio melalui **File → New Project → Existing Directory**. Jalankan `renv::restore()` pada Console. Dari Terminal di folder proyek, jalankan `quarto preview` untuk membaca sambil menyunting atau `quarto render` untuk menghasilkan buku dalam `_book`.
+
+Untuk contoh lanjutan sintetis, jalankan:
+
+```r
+# Jika paket tambahan belum tersedia dalam lingkungan proyek:
+renv::install(c("Benchmarking", "deaR", "lpSolve"))
+source("R/advanced_cases.R")
+```
+
+Script membuat ulang data sintetis dan hasil contoh lanjutan dengan seed tetap. Hasil disimpan di `results/advanced-*.csv`; pemeriksaan model tercatat di `results/advanced-tests.txt`. Catat versi paket dengan `sessionInfo()`. Pengelola buku memperbarui `renv.lock` setelah seluruh contoh lolos pengujian.
+
+## Jika terjadi kesalahan
+
+Pesan *file not found* biasanya berarti proyek belum dibuka dari folder yang memuat `_quarto.yml`. Pesan *there is no package called* berarti dependensi belum dipulihkan. Jangan mengganti data hilang dengan nol agar model berjalan: periksa definisi variabel dan sumber kehilangan data. Laporkan masalah melalui **Issues**, disertai langkah, pesan kesalahan, dan versi R tanpa mengunggah data pribadi.

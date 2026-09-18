@@ -3,7 +3,10 @@ project:
   output-dir: _book
   execute-dir: project
   resources:
-    - data/hospital.csv
+    - data/*.csv
+    - data/README.md
+    - R/*.R
+    - results/advanced-*.csv
 
 lang: id
 
@@ -23,6 +26,8 @@ book:
     - prakata.qmd
     - kata-pengantar.qmd
     - singkatan.qmd
+    - 00-petunjuk.qmd
+    - 00-glosarium.qmd
     - chapters/01-dasar-efisiensi.qmd
     - chapters/02-pengukuran-efisiensi.qmd
     - chapters/03-pengantar-r.qmd
@@ -30,6 +35,7 @@ book:
     - chapters/05-dea.qmd
     - chapters/06-sfa.qmd
     - chapters/07-isu-pengukuran.qmd
+    - chapters/08-metode-lanjutan.qmd
     - daftar-pustaka.qmd
     - tentang-penulis.qmd
 
