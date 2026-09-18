@@ -16,7 +16,7 @@ Ada juga beberapa kekurangan yang dimiliki oleh R. *Pertama*, tidak terlalu *use
 
 R dan *R Studio* dapat digunakan pada perangkat berbasis Mac, Windows, dan Linux. Berikut merupakan tahapan-tahapan untuk menginstal R dan *R Studio*, terutama bagi pengguna Windows.
 
-1. Unduh *file* untuk instalasi R di https://cran.r-project.org/. Klik salah satu dari “Download R for Linux, Mac, atau Windows” sesuai dengan sistem operasi yang Anda gunakan.
+1. Unduh *file* untuk instalasi R di [CRAN](https://cran.r-project.org). Klik salah satu dari “Download R for Linux, Mac, atau Windows” sesuai dengan sistem operasi yang Anda gunakan.
 
 2. Untuk pengguna Windows, ketika Anda sudah mengeklik “Download R for Windows” maka akan muncul beberapa pilihan *file* yang bisa diunduh. Untuk keperluan analisis dasar, pilih “Base”. Setelah itu, di bagian paling atas akan muncul tautan untuk mengunduh R versi terakhir. Klik tautan tersebut dan tunggu hingga proses pengunduhan selesai.
 
