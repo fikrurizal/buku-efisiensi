@@ -28,7 +28,7 @@ jobs:
           version: 1.9.37
 
       - name: Render book
-        run: quarto render
+        run: quarto render --no-execute
 
       - uses: actions/upload-pages-artifact@v3
         with:
