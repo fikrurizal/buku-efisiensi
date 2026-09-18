@@ -3,11 +3,18 @@
 ::: {.callout-note}
 ## Edisi daring
 
-Ini adalah edisi daring dari buku *Analisis Efisiensi Fasilitas Kesehatan:
-Aplikasi Menggunakan Software R* (UGM Press, 2021). Isinya mengikuti naskah final
-edisi cetak. Kode R pada Bab IIIâ€“VI dijalankan ulang setiap kali buku dibangun,
-sehingga grafik dan tabel merupakan keluaran langsung dari kode yang ditampilkan.
-Beberapa perbaikan kecil pada kode ditandai dengan kotak **Catatan edisi daring**.
+Ini adalah edisi daring dari [*Analisis Efisiensi Fasilitas Kesehatan:
+Aplikasi Menggunakan Software R*](https://ugmpress.ugm.ac.id/en/product/kedokteran-umum/analisis-efisiensi-fasilitas-kesehatan-aplikasi-menggunakan-sotware-r)
+(UGM Press, 2021), karya Firdaus Hafidz dan Muhammad Fikru Rizal. Versi cetak dapat
+dibeli melalui [UGM Press](https://ugmpress.ugm.ac.id/en/product/kedokteran-umum/analisis-efisiensi-fasilitas-kesehatan-aplikasi-menggunakan-sotware-r)
+dan dicari di [Google Books](https://books.google.com/books?q=Analisis+Efisiensi+Fasilitas+Kesehatan%3A+Aplikasi+Menggunakan+Software+R).
+
+Versi daring ini **terus berkembang**: materi dasar mengikuti naskah final edisi cetak,
+sedangkan contoh R, data sintetis, serta penjelasan tambahan dapat diperbaiki atau
+ditambah setelah penelaahan. Kode R pada Bab III–VI dijalankan ulang setiap kali buku
+dibangun, sehingga grafik dan tabel merupakan keluaran langsung dari kode yang
+ditampilkan. Setiap perbedaan bermakna dari edisi cetak ditandai dengan kotak
+**Catatan edisi daring**.
 :::
 
 Penilaian efisiensi menjadi perhatian penting dalam layanan kesehatan.
