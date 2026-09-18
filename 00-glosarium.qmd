@@ -11,12 +11,15 @@ Istilah Indonesia digunakan sebagai pengantar; istilah Inggris dipertahankan aga
 | Efisiensi biaya | Kemampuan menghasilkan output dengan biaya minimal, dengan mempertimbangkan harga input. |
 | Efisiensi alokatif input | Ketepatan kombinasi input menurut harga relatifnya. Dalam kebijakan, alokasi layanan juga berkaitan dengan manfaat sosial; artinya perlu dinyatakan. |
 | Produktivitas | Hubungan output dan input; rasio satu output/input disebut produktivitas parsial. |
+| AR | Analisis Rasio, yaitu pendekatan yang membandingkan indikator input, output, atau biaya. |
 | Frontier | Batas produksi/pelayanan terbaik yang dijadikan pembanding dalam model. Bukan standar klinis universal. |
 | DMU | *Decision-Making Unit*, unit yang dibandingkan: RS, puskesmas, atau kabupaten. Jangan mencampur tingkat analisis. |
 | DEA | *Data Envelopment Analysis*, metode nonparametrik untuk membentuk frontier dari kombinasi unit pembanding. |
 | SFA | *Stochastic Frontier Analysis*, metode parametrik yang memisahkan gangguan acak dan inefisiensi dengan asumsi tertentu. |
 | CRS | *Constant Returns to Scale*: kenaikan semua input secara proporsional memungkinkan kenaikan output dengan proporsi sama. |
 | VRS | *Variable Returns to Scale*: hubungan perubahan input/output dapat berbeda menurut skala. |
+| EE | *Econometric Estimation*, pendekatan estimasi ekonometrika. |
+| OLS | *Ordinary Least Squares*, metode estimasi regresi linear. |
 | Orientasi input | Mencari potensi pengurangan input dengan mempertahankan output. |
 | Orientasi output | Mencari potensi peningkatan output dengan input yang tersedia. |
 | Radial | Perubahan proporsional semua input atau semua output pada arah yang dipilih. |
@@ -28,10 +31,19 @@ Istilah Indonesia digunakan sebagai pengantar; istilah Inggris dipertahankan aga
 | Bias correction | Koreksi terhadap bias estimator berdasarkan prosedur tertentu; bukan jaminan semua bias data hilang. |
 | BOR | *Bed Occupancy Rate*, persentase hari tempat tidur tersedia yang terisi. |
 | BTO | *Bed Turnover*, jumlah pasien keluar per tempat tidur dalam periode tertentu. |
+| BTR | *Bed Turnover Rate*, istilah yang digunakan pada edisi cetak untuk indikator *bed turnover*. |
 | ALOS | *Average Length of Stay*, rata-rata lama rawat. Definisi kohort pasien keluar harus dibedakan dari pendekatan rasio periode. |
 | FTE | *Full-Time Equivalent*, tenaga ekuivalen penuh waktu; dua pekerja paruh waktu dapat setara satu FTE. |
 | CMI | *Case-Mix Index*, indeks bauran kasus menurut bobot kompleksitas/sumber daya yang ditentukan. Bukan skor kualitas. |
+| DRG | *Diagnosis-Related Group*, kelompok diagnosis untuk klasifikasi kasus dan pembiayaan. |
+| HFCS | *Health Facility Costing Study*, studi pembiayaan fasilitas kesehatan. |
+| IBK | Indeks Bauran Kasus. |
+| JKN | Jaminan Kesehatan Nasional. |
+| OECD | *Organisation for Economic Co-operation and Development*. |
 | O/E | *Observed/Expected*, rasio kejadian teramati terhadap yang diharapkan berdasarkan model risiko. |
+| ROC | *Receiver Operating Characteristic*, kurva untuk menilai kemampuan diskriminasi suatu model. |
+| USD | *United States dollar*, dolar Amerika Serikat. |
+| WHO | *World Health Organization*, Organisasi Kesehatan Dunia. |
 | Undesirable output | Keluaran yang ingin dikurangi, misalnya emisi; tidak boleh diperlakukan sebagai layanan yang ingin diperbanyak. |
 | Network DEA | DEA yang menggambarkan hubungan antartahap/unit melalui arus perantara. |
 | Link | Besaran penghubung, misalnya bahan pelayanan dari logistik yang digunakan unit layanan. |
