@@ -1,6 +1,6 @@
 # Builds the book and deploys it to GitHub Pages on every push to main.
-# R code is NOT run here: computations are frozen locally (execute: freeze: auto)
-# and committed in _freeze/. R is installed only so Quarto can select knitr.
+# Executing the teaching chunks keeps rendered figures, tables, and cross-references
+# available to readers of the static GitHub Pages site.
 name: Publish book
 
 on:
@@ -25,15 +25,15 @@ jobs:
 
       - uses: r-lib/actions/setup-r@v2
 
-      - name: Restore Quarto R dependencies
-        run: Rscript -e 'renv::restore(packages = c("knitr", "rmarkdown"), prompt = FALSE)'
+      - name: Restore R dependencies
+        run: Rscript -e 'renv::restore(prompt = FALSE); install.packages(c("deaR", "lpSolve"))'
 
       - uses: quarto-dev/quarto-actions/setup@v2
         with:
           version: 1.9.37
 
       - name: Render book
-        run: quarto render --no-execute
+        run: quarto render
 
       - uses: actions/upload-pages-artifact@v3
         with:
