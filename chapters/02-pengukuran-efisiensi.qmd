@@ -179,6 +179,13 @@ Selain adanya variasi terkait teknik yang dipakai, kita juga dapat melihat bahwa
 
 Keterangan: VRS: *Variable Return to Scale* CR*S: Constant Return to Sc*ale
 
+### Perkembangan Mutakhir: Produktivitas Multi-periode dan Kritik O'Donnell (2018)
+
+Dalam analisis antarwaktu (*panel data*), studi efisiensi kesehatan umumnya mengandalkan indeks Malmquist konvensional. Namun, O’Donnell (2018) mengajukan telaah kritis mendasar mengenai keabsahan aksiomatik indeks Malmquist:
+1. **Kegagalan Transitivitas (*Transitivity Failure*)**: Indeks Malmquist standar tidak memenuhi uji sirkularitas/transitivitas. Artinya, membandingkan fasilitas kesehatan antar-tahun atau antar-wilayah secara rantai (*chaining*) menghasilkan inkonsistensi matematis yang bergantung pada periode dasar yang dipilih.
+2. **Indeks Produktivitas yang Tepat (*Proper Productivity Indexes*)**: O’Donnell (2018) merekomendasikan penggunaan indeks yang transitif secara penuh, terutama **indeks Färe-Primont** dan **indeks Lowe**, agar perbandingan produktivitas total (*Total Factor Productivity*, TFP) lintas-fasilitas dan lintas-periode bersifat konsisten dan adil (*multilaterally valid*).
+3. **Dekomposisi TFP yang Lengkap**: Dalam kerangka O’Donnell (2018), perubahan TFP tidak hanya dipilah menjadi efisiensi teknis dan perubahan teknologi, tetapi juga memperhitungkan efisiensi skala (*scale efficiency*), efisiensi bauran (*mix efficiency*), dan efek residu skala-bauran (*residual scale-mix efficiency*). Pembahasan dan penerapan praktis pendekatan ini disajikan pada Bab [VIII](#sec-lanjutan).
+
 ## Pemilihan Variabel Input dan Output
 
 Setelah teknik pengukuran efisiensi ditentukan maka tahap berikutnya adalah memilih variabel *input* dan *output* apa saja yang akan dimasukkan dalam analisis. Pada @fig-2-8, dapat dilihat bahwa secara umum variabel *input* dapat dibagi menjadi dua, yaitu variabel fisik dan variabel keuangan. Sementara itu, variabel *output* dapat meliputi jumlah aktivitas maupun kualitas pelayanan.

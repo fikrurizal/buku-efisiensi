@@ -50,6 +50,13 @@ Istilah Indonesia digunakan sebagai pengantar; istilah Inggris dipertahankan aga
 | Carry-over | Stok yang menghubungkan periode, misalnya modal yang masih digunakan tahun berikutnya. |
 | Dynamic DEA | DEA yang memasukkan hubungan antarperiode secara eksplisit, bukan sekadar DEA tahunan. |
 | Malmquist | Indeks perubahan produktivitas yang dapat diuraikan menjadi perubahan efisiensi dan teknologi. |
+| Färe-Primont | Indeks produktivitas total (TFP) berbasis fungsi jarak yang memenuhi sifat transitivitas penuh untuk perbandingan multi-unit dan multi-periode (O’Donnell, 2018). |
+| Lowe | Indeks TFP berbasis kuantitas agregat dengan vektor harga/bobot referensi tetap yang memenuhi aksioma sirkularitas (O’Donnell, 2018). |
+| TFP | *Total Factor Productivity*, rasio agregat output total terhadap agregat input total. |
+| OTE | *Output-oriented Technical Efficiency*, efisiensi teknis orientasi output. |
+| OSE | *Output-oriented Scale Efficiency*, efisiensi skala orientasi output yang mengukur jarak ke skala produktivitas optimal. |
+| OME | *Output-oriented Mix Efficiency*, efisiensi bauran output yang mengukur potensi peningkatan output melalui perubahan proporsi bauran. |
+| ROSE | *Residual Output-oriented Scale-Mix Efficiency*, ukuran sisa interaksi antara perubahan skala dan bauran output (O’Donnell, 2018). |
 | Metafrontier | Frontier pembanding lintas kelompok teknologi. |
 | TGR | *Technology Gap Ratio*, rasio efisiensi terhadap metafrontier dan frontier kelompok pada konvensi yang dinyatakan. |
 | Lean Healthcare | Pendekatan perbaikan proses dengan mengenali pemborosan dan memperbaiki aliran pelayanan. |
