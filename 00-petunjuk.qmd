@@ -16,7 +16,7 @@ GitHub menyimpan naskah dan kode; halaman GitHub Pages tidak menjalankan R. Maha
 renv::restore()
 ```
 
-Ikuti praktikum dari awal dan jalankan kode bertahap. Layanan dapat membatasi jam komputasi, memori, dan jumlah proyek sesuai paket akun; periksa ketentuan akun sebelum perkuliahan. Alur ini mengikuti [dokumentasi Posit Cloud](https://docs.posit.co/cloud/guide/advanced/), tetapi proyek kelas ini belum diuji langsung pada akun mahasiswa.
+Ikuti praktikum dari awal dan jalankan kode bertahap. Setiap chunk praktikum diberi komentar nomor, misalnya `Chunk B5.03`. Mulailah setiap bab dengan **Chunk Bx.01 (Persiapan bab)**; chunk itu memeriksa paket yang diperlukan dan membuat ulang objek awal bab tersebut. Jika sebuah chunk memerlukan objek yang belum ada, R akan menghentikan proses dengan pesan yang menyebut nomor chunk awal yang harus dijalankan. Jadi pembaca tidak perlu menjalankan Bab I–IV sebelum mulai Bab V, tetapi tetap perlu menjalankan chunk dalam bab yang sama sesuai urutan. Layanan dapat membatasi jam komputasi, memori, dan jumlah proyek sesuai paket akun; periksa ketentuan akun sebelum perkuliahan. Alur ini mengikuti [dokumentasi Posit Cloud](https://docs.posit.co/cloud/guide/advanced/), tetapi proyek kelas ini belum diuji langsung pada akun mahasiswa.
 
 ## Menggunakan komputer sendiri
 

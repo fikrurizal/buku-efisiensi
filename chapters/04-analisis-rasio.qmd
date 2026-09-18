@@ -1,9 +1,12 @@
 # Analisis Rasio {#sec-rasio}
 
 ```{r}
+# Chunk B4.01
 #| label: setup
 #| include: false
 source("R/setup.R")
+source("R/chunk_helpers.R")
+book_begin_chapter("Bab 4", c("tidyverse", "labelled", "gtsummary", "flextable"))
 ```
 
 Seperti yang telah dibahas pada Bab [II](#sec-pengukuran), hampir sepertiga dari studi mengenai efisiensi fasilitas kesehatan di negara berkembang dilakukan dengan teknik analisis rasio (AR). Terutama pada kondisi ketika ada keterbatasan waktu, data, keahlian, atau anggaran, AR lebih disukai oleh pembuat kebijakan dan peneliti untuk melakukan penilaian efisiensi fasilitas kesehatan. Bitran (1992) mengategorikan dua jenis analisis rasio, yaitu efisiensi teknis (rasio *input* fisik ke *output*) dan efisiensi ekonomi (rasio *input* biaya ke *output*).
@@ -25,6 +28,7 @@ Seperti yang sudah dijelaskan pada Bab [I](#sec-dasar), salah satu jenis analisi
 Pada tahapan ini, pembaca dapat membuka *dataset* “hospital.csv” dan memberi nama objek *dataset* tersebut menjadi “hospital” menggunakan *R Script* berikut.
 
 ```{r}
+# Chunk B4.02
 # Mengaktifkan package
 library(tidyverse)
 # Mengimpor data dari format csv
@@ -36,6 +40,7 @@ hospital <- read_csv(
 Selanjutnya, pembaca dapat melakukan pelabelan terhadap variabel-variabel dan nilai yang ada pada data tersebut dengan mengikuti langkah-langkah yang telah dijelaskan pada Bab [III](#sec-pengantar-r) bagian D.
 
 ```{r}
+# Chunk B4.03
 #| code-fold: true
 #| code-summary: "Kode pelabelan data (lihat Bab III)"
 hospital <- hospital %>%
@@ -65,6 +70,7 @@ Untuk membuat grafik Pabon-Lasso, *packages* yang diperlukan adalah “ggplot2�
 Pada tahap ini, paket “ggplot2” akan digunakan untuk membuat grafik Pabon-Lasso seperti pada @fig-4-1. Secara sederhana, grafik ini membandingkan *bed occupancy* (pada sumbu x) dan *bed turnover* (pada sumbu y) dari masing-masing rumah sakit yang dianalisis dalam bentuk diagram titik (atau *scatter plot*). Untuk menambah kedalaman informasi yang disajikan, ukuran rumah sakit (berdasarkan jumlah tempat tidur) digambarkan dengan ukuran titik yang berbeda, sementara kepemilikan rumah sakit (milik pemerintah atau swasta) digambarkan dengan warna titik atau lingkaran yang berbeda. Selanjutnya, masing-masing sumbu dibagi menjadi dua bagian berdasarkan rerata nilai dari variabel *bed occupancy* (sumbu x) dan *bed turnover* (sumbu y). Adapun nilai rerata tersebut akan direkam pada suatu objek dengan nama masing-masing “mean_bor” dan “mean_btr” dapat dihitung menggunakan fungsi “mean()” yang menjadi bawaan dari R. Adapun untuk memilih suatu kolom atau variabel dari sebuah tabel atau *dataframe*, perintah yang digunakan adalah “\$” sehingga “hospital\$bed_occ” mewakili variabel “bed_occ” yang ada pada tabel “hospital”.
 
 ```{r}
+# Chunk B4.04
 # Rerata bed turnover dan bed occupancy
 mean_btr <-mean(hospital$throughput)
 mean_bor <-mean(hospital$bed_occ)
@@ -75,6 +81,7 @@ Seperti yang dicontohkan pada *script* di bawah ini, perintah untuk membuat graf
 Selanjutnya, garis yang membagi sumbu y dan x dihasilkan dengan menambah lapisan “geom_hline” untuk garis horizontal dan “geom_vline” untuk garis vertikal. Parameter yang perlu didefinisikan, yaitu masing-masing “yintercept” dan “xintercept” yang artinya pada nilai berapa garis tersebut akan memotong sumbu y dan x. Terakhir, untuk memudahkan pembaca, perlu ditambahkan juga lapisan “labs” yang berisi judul utama (*title*), judul untuk sumbu x dan y, serta label untuk keterangan warna dan ukuran.
 
 ```{r}
+# Chunk B4.05
 #| label: fig-4-1
 #| fig-cap: "Grafik Pabon-Lasso dari data rumah sakit yang dianalisis"
 # Menambahkan judul, label, dan keterangan kepemilikan dan ukuran RS
@@ -101,6 +108,7 @@ Pada tahap ini, kita akan menambahkan informasi atau variabel “sektor” yang 
 Dalam hal ini, perintah “mutate( sector= case_when(throughput <= mean_btr) & (bed_occ <= mean_bor) ~ 1” dapat diterjemahkan menjadi: “buatlah variabel baru bernama ‘sector’ yang bernilai 1 jika rumah sakit berada pada kuadran kiri bawah di mana nilai BTR kurang dari atau sama dengan reratanya **DAN** nilai BOR kurang dari atau sama dengan reratanya”. Penjelasan yang sama berlaku pada perintah untuk mengidentifikasi sektor-sektor yang lain.
 
 ```{r}
+# Chunk B4.06
 # Membuat variabel sektor berdasarkan hasil Analisis Pabon-Lasso
 hospital <- hospital %>%
   mutate(sector = case_when (
@@ -114,6 +122,7 @@ hospital <- hospital %>%
 Langkah selanjutnya, yaitu memberikan label pada variabel-variabel yang baru dibuat tersebut serta mengubahnya menjadi variabel kategorikal. Sekali lagi, paket “labelled” akan digunakan untuk menjalankan perintah ini, terutama dengan fungsi “var_label() <-” serta “val_labels() <-” seperti yang ditunjukkan pada perintah di bawah ini.
 
 ```{r}
+# Chunk B4.07
 # Mengaktifkan package
 library(labelled)
 # Label sector pada Model Pabon-Lasso
@@ -129,6 +138,7 @@ hospital$sector <- to_factor(hospital$sector)
 Perintah di bawah ini perlu dijalankan untuk mengetahui secara sekilas berapa jumlah RS yang masuk sektor 1–4. Dalam hal ini fungsi “summary()” yang merupakan bawaan (fungsi dasar atau *base function*) digunakan karena sifatnya yang sederhana dan cocok digunakan untuk melihat rangkuman data secara cepat.
 
 ```{r}
+# Chunk B4.08
 # Menampilkan proporsi sektor hasil analisis PL menggunakan fungsi bawaan
 summary(hospital$sector)
 ```
@@ -136,6 +146,7 @@ summary(hospital$sector)
 Sementara itu, jika pengguna menginginkan tampilan berupa tabel yang lebih rapi maka fungsi “tbl_summary()” dari paket “gtsummary” dapat digunakan seperti perintah di bawah ini.
 
 ```{r}
+# Chunk B4.09
 # Menampilkan proporsi sektor hasil analisis PL menggunakan package tbl_summary
 hospital %>% select(sector) %>% tbl_summary() %>%
   as_flex_table()
@@ -148,6 +159,7 @@ Setelah menjalankan perintah di atas, dapat dilihat bahwa terdapat 77 RS yang be
 Jenis analisis rasio (AR) lainnya yang akan dibahas, yaitu analisis biaya atau *costing analysis.* Menggunakan *dataset* rumah sakit, kita akan menghitung satuan biaya per layanan yang mencakup rawat jalan (*outpatient*), rawat inap (*inpatient*), dan per *bed*/hari (*bed-days*). Pada dasarnya, kita akan membuat variabel (kolom baru) pada *dataset* “hospital” menggunakan perintah “mutate” yang ada dalam *packages* “tidyverse”. Sebagai contoh, kita akan membuat variabel unitcost_ip = “totalcost_ip” (total biaya untuk rawat inap) dibagi dengan “admissions1” (jumlah total admisi rawat inap).
 
 ```{r}
+# Chunk B4.10
 # Menghitung unit cost per jenis layanan
 hospital <- hospital %>%
   mutate(
@@ -165,6 +177,7 @@ Kita bisa menjalankan perintah “view(hospital)” untuk melihat variabel *unit
 Hasil analisis efisiensi pada model Pabon-Lasso dapat dikombinasikan dengan hasil analisis biaya untuk memberikan gambaran yang lebih lengkap. Fasilitas kesehatan dianggap berkinerja tinggi jika berada pada sektor 3 pada grafik Pabon-Lasso dan memiliki satuan biaya pelayanan (*unit cost*) di bawah rata-rata. Di luar itu, rumah sakit dikelompokkan menjadi faskes berkinerja rendah. Dengan demikian, tingkat kinerja rumah sakit dapat dijadikan suatu variabel biner (kinerja tinggi = 1; kinerja rendah = 0) dan bisa dianalisis hubungannya dengan variabel-variabel lain yang relevan.
 
 ```{r}
+# Chunk B4.11
 # Menghitung unit cost per jenis layanan
 hospital <- hospital %>%
   mutate(
@@ -190,6 +203,7 @@ daripada angka pada edisi cetak.
 Perintah di atas akan menghasilkan tambahan tiga kolom atau variabel pada data “hospital”. Variabel “efisien_ar_ip” merupakan suatu indikator biner yang bernilai 1 jika rumah sakit termasuk yang berkinerja tinggi (sektor 3 pada analisis PL) dan memiliki satuan biaya rawat inap (*inpatient*) di bawah rata-rata. Demikian juga dengan variabel “efisien_ar_op” dan “efisien_ar_bd” yang mengindikasikan informasi yang sama, namun pada ukuran satuan biaya rawat jalan (*outpatient*) dan *bed-days.* Untuk selanjutnya, hasil perhitungan dapat ditampilkan dalam bentuk tabel dengan menjalankan skrip di bawah ini (memberi label dengan fungsi “set_variable_labels” dari paket “labelled” dan membuat tabel siap pakai dengan fungsi “tbl_summary” dari paket “gtsummary”).
 
 ```{r}
+# Chunk B4.12
 # Memberi label pada lebih dari satu variabel
 hospital <- hospital %>%
   set_variable_labels(
@@ -227,6 +241,7 @@ Analisis bivariat bertujuan untuk mendapatkan gambaran hubungan (asosiasi) antar
 Sebelum melakukan analisis bivariat terhadap satuan biaya rumah sakit, perlu diperhatikan distribusi datanya. Hal ini karena distribusi dari variabel biaya umumnya cenderung condong (*skew*). Dengan dilakukan transformasi log, variabel unit *cost* dapat dianalisis dengan pemodelan parametrik (lihat @fig-4-3). Sama seperti sebelumnya, fungsi “mutate()” digunakan untuk membuat variabel baru.
 
 ```{r}
+# Chunk B4.13
 # Membuat variabel log dari unit cost
 ## Karena unit cost tidak berdistribusi normal
 hospital <- hospital %>% mutate(
@@ -239,6 +254,7 @@ hospital <- hospital %>% mutate(
 @fig-4-3 dihasilkan menggunakan paket “ggplot2” dengan objek grafis berupa “geom_histogram” yang—sesuai namanya—digunakan untuk membuat histogram. Dapat dilihat bahwa penggunaan “ggplot2” sama dengan yang sudah dijelaskan pada bagian sebelumnya, hanya pilihan jenis diagramnya saja yang berbeda. Pada histogram bawah, variasi warna bisa dilakukan dengan menambahkan paramater “color” untuk warna garis dan “fill” untuk warna isiannya. Informasi mengenai jenis warna yang bisa dipilih dapat dilihat pada laman https://www.r-graph-gallery.com/ggplot2color.html.
 
 ```{r}
+# Chunk B4.14
 #| label: fig-4-3
 #| fig-cap: "Histogram dari variabel “unitcost_ip” sebelum (atas) dan sesudah (bawah) ditransformasi dengan fungsi log"
 #| fig-subcap:
@@ -258,6 +274,7 @@ hospital %>% ggplot() +
 Jika belum dilakukan transformasi log, grafik *box-plot* dapat digunakan untuk memvisualisasikan perbedaan median dari nilai unit *cost* berdasarkan variabel tertentu. Dalam hal ini, kita tertarik untuk melihat gambaran tersebut berdasarkan kelas rumah sakit. Grafik ini juga dihasilkan menggunakan paket “ggplot2” dan pilihan jenis diagramnya adalah “geom_boxplot” dengan memberikan judul atau label pada sumbu x dan y untuk memudahkan pembaca.
 
 ```{r}
+# Chunk B4.15
 #| label: fig-4-4
 #| fig-cap: "Grafik *box-plot* dari variabel biaya satuan rawat inap berdasarkan kelas rumah sakit"
 #Boxplot berdasarkan kelas rumah sakit
@@ -274,6 +291,7 @@ Berdasarkan @fig-4-4, dapat dilihat bahwa median (garis tegas di tengah kotak pu
 Kita tidak dapat menarik kesimpulan secara statistik hanya dengan melihat grafik sehingga diperlukan suatu uji hipotesis formal. Pada aplikasi R, kita dapat menggunakan *packages* “gtsummary” yang sudah diinstal dan diaktifkan sebelumnya untuk melakukan uji beda rerata antara dua kelompok. Sebagai contoh, perintah di bawah ini melakukan analisis beda rerata antara rumah sakit milik pemerintah dan rumah sakit swasta. Perlu diperhatikan bahwa, berbeda dengan penggunaan fungsi “tbl_summary()” pada bagian sebelumnya, pada perintah kali ini terdapat parameter “by” yang bertujuan untuk menghitung statistik (dalam hal ini rerata dan deviasi standar) dari suatu variabel berdasarkan suatu variabel kategorik (dalam hal ini kepemilikan rumah sakit atau variabel “publichospital”). Perintah ini juga memanfaatkan fungsi “select()” yang ada pada paket “dplyr” untuk memilih variabel-variabel apa saja dari data “hospital” yang akan digunakan dan dianalisis.
 
 ```{r}
+# Chunk B4.16
 # Beda rerata berdasarkan kepemilikan RS
 hospital %>%
   select(lnuc_op, lnuc_ip, lnuc_bd, publichospital) %>%
@@ -292,6 +310,7 @@ Berdasarkan tabel di atas, dapat dilihat bahwa berdasarkan *Welch Two Sample t-t
 Secara teoretis, tidak ada faktor tunggal yang memengaruhi efisiensi suatu fasilitas kesehatan. Oleh karena itu, perlu dilakukan analisis multivariat untuk mengetahui kontribusi dari masing-masing faktor yang secara bersama-sama berpengaruh pada tingkat efisiensi. Beberapa metode estimasi yang bisa digunakan, antara lain regresi linear berganda (model probabilitas linear) dan regresi logistik berganda. Pada contoh di bawah ini, kita akan menggunakan model regresi linear dengan variabel dependen “lnuc_ip” atau log biaya satuan rawat inap dan variabel independen: kelas rumah sakit, kepemilikan, dan lokasi.
 
 ```{r}
+# Chunk B4.17
 # Model regresi linear
 model_lpm_ip <- lm(lnuc_ip ~ classCD + publichospital + non_JavaBali, data = hospital)
 ```
@@ -301,6 +320,7 @@ Fungsi “lm()” merupakan bawaan dari *software* R yang dapat digunakan untuk 
 Untuk melihat hasil estimasi tersebut (koefisien dan statistik-statistik lainnya), ada banyak alternatif yang bisa dilakukan. *Pertama*, yaitu menggunakan fungsi “summary()” yang merupakan fungsi bawaan dari R. Perintah dan hasil dari fungsi tersebut seperti di bawah ini. Terlihat bahwa hasil yang dikeluarkan masih bersifat “kasar” dan tidak siap pakai.
 
 ```{r}
+# Chunk B4.18
 # Hasil regresi dengan fungsi dasar
 summary(model_lpm_ip)
 ```
@@ -308,6 +328,7 @@ summary(model_lpm_ip)
 Alternatif *kedua*, yaitu menggunakan fungsi “tbl_regression()” dari paket “gtsummary”. Dengan perintah yang sederhana seperti yang ada di bawah ini, tabel siap pakai bisa langsung dihasilkan. Akan tetapi, kelemahan fungsi ini terletak pada tampilannya yang tidak bisa banyak diubah.
 
 ```{r}
+# Chunk B4.19
 # Tabel regresi menggunakan package gtsummary
 tbl_regression(model_lpm_ip) %>%
   as_flex_table()
@@ -316,6 +337,7 @@ tbl_regression(model_lpm_ip) %>%
 Alternatif *ketiga*, yaitu menggunakan paket “modelsummary”. Paket ini terutama ditujukan untuk menghasilkan tabel (dengan fungsi “modelsummary()”) dan plot (dengan fungsi “modelplot”) dari hasil estimasi suatu model statistik. Kelebihan dari fungsi ini, yaitu fleksibilitas serta cakupan pemodelan yang bisa diakomodasi. Akan tetapi, hal ini menyebabkan kompleksitas penggunaannya yang cukup tinggi serta perlunya mendefinisikan label (menggunakan fungsi “names() <-” dari paket “labelled”) dari masing-masing variabel untuk menghasilkan tabel yang siap pakai.
 
 ```{r}
+# Chunk B4.20
 # Tabel regresi menggunakan package modelsummary
 ## Memberi label koefisien
 model_lpm_ip_label <- model_lpm_ip

@@ -20,6 +20,8 @@ Bitran, Ricardo. 1992. “Technical and Economic Efficiency in the Production of
 
 Bogetoft, Peter, dan Lars Otto. 2010. *Benchmarking with DEA, SFA, and R*. Vol. 157. Springer Science & Business Media.
 
+Bousmah, Marwân-al-Qays, Mohammad Abu-Zaineh, Simon Combes, dan Bruno Ventelou. 2025. “Is the Quest for Efficiency Harmful to Health Equity? An Examination of the Health Efficiency-Equity Nexus in OECD Countries over the Past Two Decades”. *Social Science & Medicine*, 383: 118379. <https://doi.org/10.1016/j.socscimed.2025.118379>.
+
 Breitenbach, Marthinus C., Victor Ngobeni, dan Goodness C. Aye. 2021. “Global Healthcare Resource Efficiency in the Management of COVID-19 Death and Infection Prevalence Rates”. *Frontiers in Public Health*, 9 (April): 638481.
 
 Cashin, Cheryl E., Michael Borowitz, dan Olga Zuess. 2002. “The Gender Gap in Primary Health Care Resource Utilization in Central Asia”. *Health Policy and Planning*, 17 (3): 264–272.
@@ -36,11 +38,15 @@ Coelli, Timothy J., D.S. Prasada Rao, Christopher J. O’Donnell, dan George E. 
 
 Conteh, Lesong, dan Damian Walker. 2004. “Cost and Unit Cost Calculations Using Step-down Accounting”. *Health Policy and Planning*, 19 (2): 127–35.
 
+de Oliveira, Mariana Baptista, Miguel Alves Pereira, dan José Rui Figueira. 2025. “An Integrated Approach to Hospital Efficiency Using Machine Learning and Slacks-Based Super-Efficiency Evaluation”. *Decision Analytics Journal*, 17: 100640. <https://doi.org/10.1016/j.dajour.2025.100640>.
+
 Ensor, Tim, dan Stephanus Indradjaya. 2012. “The Costs of Delivering Health Services in Indonesia: Report on A Prospective Survey 2010–2011”. Jakarta: Kementerian Kesehatan.
 
 Everitt, Brian, dan Torsten Hothorn. 2011. “An Introduction to Applied Multivariate Analysis with R”. <https://doi.org/10.1007/978-1-4419-9650-3>.
 
 Glied, Sherry, dan Peter Smith. 2011. *The Oxford Handbook of Health Economics*. Oxford: Oxford University Press.
+
+Gavurová, Beáta, Kristína Kočišová, dan Jakub Sopko. 2021. “Health System Efficiency in OECD Countries: Dynamic Network DEA Approach”. *Health Economics Review*, 11: 40. <https://doi.org/10.1186/s13561-021-00337-9>.
 
 Goolsbee, Austan, Steven Levitt, dan Chad Syverson. 2013. *Microeconomics*. *International*. New York: Worth Publishers.
 
@@ -95,6 +101,8 @@ Pindyck, Robert S., dan Daniel L. Rubinfeld. 2008. *Microeconomics*. 7^th^ Ed. U
 Rokx, Claudia. 2009. *Health Financing in Indonesia: A Reform Road Map*. World Bank Publications.
 
 Seddighi, Hamed, Hossein Baharmand, Ali Morovati Sharifabadi, Ibrahim Salmani, dan Saeideh Seddighi. 2021. “The Efficiency of COVID-19 Testing Centers in Iran: A Data Envelopment Analysis Approach Hamed Seddighi, Hossein Baharmand, Ali Morovati Sharifabadi, Ibrahim Salmani, Saeideh Seddighi”. *Disaster Medicine and Public Health Preparedness*, Juli, 1–13.
+
+Shrime, Mark G., Swagoto Mukhopadhyay, dan Blake C. Alkire. 2018. “Health-System-Adapted Data Envelopment Analysis for Decision-Making in Universal Health Coverage”. *Bulletin of the World Health Organization*, 96 (6): 393–401. <https://doi.org/10.2471/BLT.17.191817>.
 
 Soewondo, Prastuti, Mardiati Nadjib, Kurnia Sari, Yunita, dan Novia Afdhila. 2011. “SHA-Based Health Accounts in the Asia-Pacific Region: Indonesia 2005–2009”. Seoul, Republic of Korea: OECD- Korea Policy Center.
 

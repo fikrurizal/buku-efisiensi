@@ -1,9 +1,12 @@
 # *Data Envelopment Analysis* {#sec-dea}
 
 ```{r}
+# Chunk B5.01
 #| label: setup
 #| include: false
 source("R/setup.R")
+source("R/chunk_helpers.R")
+book_begin_chapter("Bab 5", c("tidyverse", "labelled", "Benchmarking", "frontier"))
 ```
 
 Meskipun analisis rasio (AR) masih merupakan teknik pengukuran efisiensi yang paling banyak digunakan di negara-negara berkembang, penggunaan analisis *frontier* juga semakin mendapat perhatian. Bab ini akan membahas mengenai aplikasi salah satu jenis analisis *frontier*, yaitu *data envelopment analysis* atau DEA untuk mengetahui tingkat efisiensi rumah sakit serta faktor-faktor yang memengaruhinya. Bab ini akan memberikan gambaran praktis dengan contoh-contoh *script* pada R yang bisa langsung dipraktikkan serta interpretasi sederhana dari hasil analisis.
@@ -17,6 +20,7 @@ Sebelum melakukan analisis DEA menggunakan data rumah sakit, kita akan belajar u
 Agar dapat digunakan untuk melakukan analisis DEA, terlebih dahulu kita harus mengaktifkan *packages* yang bernama “Benchmarking” dengan cara menjalankan perintah berikut ini.
 
 ```{r}
+# Chunk B5.02
 # Mengaktifkan packages Benchmarking
 library(Benchmarking)
 ```
@@ -26,6 +30,7 @@ library(Benchmarking)
 Setelah mengaktifkan *packages* “Benchmarking”, selanjutnya kita akan membuat data yang berisi sepasang variabel *input* (x) dan variabel *output* (y). Caranya, yaitu dengan membuat masing-masing suatu matriks 6 × 1 (6 baris dan 1 kolom) seperti pada *script* berikut. Perhatikan bahwa pada tahap ini, fungsi “matrix()” bawaan digunakan untuk membuat matriks secara manual.
 
 ```{r}
+# Chunk B5.03
 # Variabel input
 x <- matrix(c(20, 40, 40, 60, 70, 50), ncol=1)
 # Variabel output
@@ -37,6 +42,7 @@ y <- matrix(c(20, 30, 50, 40, 60, 20), ncol=1)
 Tahap selanjutnya, yaitu membuat suatu grafik atau plot DEA berdasarkan matriks yang sudah kita *input* sebelumnya. Dengan menjalankan perintah yang ada di bawah ini secara berurutan, aplikasi R akan membuat suatu grafik DEA seperti pada @fig-5-1.
 
 ```{r}
+# Chunk B5.04
 #| label: fig-5-1
 #| fig-cap: "Grafik DEA yang dihasilkan dari perintah R"
 # Membuat label huruf sebanyak baris pada matrix X
@@ -57,6 +63,7 @@ text(x,y, txt, adj=c(-.7,-.2),cex=1.25)
 Dengan melihat grafik DEA maka secara visual kita dapat mengidentifikasi unit mana yang efisien dan tidak efisien. Ketika asumsi VRS digunakan maka unit A, C, dan E tepat berada pada garis *frontier* sehingga bisa dikatakan relatif efisien jika dibandingkan dengan unit lainnya. Sementara itu, jika asumsi CRS (garis putus-putus) digunakan maka hanya unit C yang dikatakan efisien. Namun, informasi tersebut belum lengkap karena kita belum bisa memberikan nilai efisiensi berupa angka kepada masing-masing unit. Oleh karena itu, langkah selanjutnya, yaitu menghitung nilai efisiensi dari masing-masing unit dengan menjalankan perintah berikut ini.
 
 ```{r}
+# Chunk B5.05
 # Menghitung nilai eisiensi, Input Oriented dengan asumsi VRS
 e_vrs <- dea(x,y, RTS="vrs", ORIENTATION="in")
 # Menampilkan nilai efisiensi
@@ -70,6 +77,7 @@ eff(e_crs)
 Setelah nilai efisiensi (baik dengan asumsi CRS maupun VRS), langkah selanjutnya, yaitu menggabungkan matriks x dan y dengan nilai efisiensinya sehingga menjadi suatu tabel. Dalam hal ini, fungsi yang digunakan adalah “bind_cols()” dari paket “dplyr” yang artinya menggabungkan berbagai kolom menjadi satu tabel. Adapun kolom E_CRS dan E_VRS masing-masing menunjukkan hasil estimasi efisiensi dengan DEA menggunakan asumsi *Constant Return to Scale* (CRS) dan *Variable Return to Scale* (VRS), sedangkan fungsi “c()” digunakan untuk mengubah suatu “array” atau deretan angka menjadi suatu kolom.
 
 ```{r}
+# Chunk B5.06
 # Meng-compile hasil perhitungan skor efisiensi
 dea_ff <- bind_cols(
   Unit=txt,
@@ -83,6 +91,7 @@ dea_ff <- bind_cols(
 Untuk menampilkan tabel “dea_ff” yang baru saja dibuat, kita bisa menjalankan perintah “view” berikut ini sehingga pada *R Studio* akan terlihat tampilan seperti pada @fig-5-2.
 
 ```{r}
+# Chunk B5.07
 #| eval: false
 # Menampilkan tabel kompilasi
 view(dea_ff)
@@ -93,6 +102,7 @@ view(dea_ff)
 Alternatif lain untuk melihat data “dea_ff”, yaitu menggunakan fungsi “head()” yang merupakan bawaan dari R. Fungsi ini bertujuan untuk menampilkan beberapa baris dari suatu data. Pada perintah di bawah ini, akan ditampilkan lima baris pertama dari data “dea_ff”.
 
 ```{r}
+# Chunk B5.08
 # Menampilkan sekilas tabel kompilasi
 dea_ff %>% head(5)
 ```
@@ -112,6 +122,7 @@ Setelah berlatih melakukan analisis DEA dengan data contoh yang sederhana, pemba
 Seperti yang kita lakukan pada saat membuat analisis rasio di bab sebelumnya, kita juga akan membuka/mengimpor *dataset hospital* ke dalam *environment* kerja kita dengan perintah/*script* di bawah ini.
 
 ```{r}
+# Chunk B5.09
 # Mengaktifkan package
 library(tidyverse)
 # Mengimpor data dari format csv
@@ -123,6 +134,7 @@ hospital <- read_csv(
 Selanjutnya, pembaca dapat melakukan pelabelan terhadap variabel-variabel dan nilai yang ada pada data tersebut dengan mengikuti langkah yang telah dijelaskan pada Bab [III](#sec-pengantar-r) bagian D.
 
 ```{r}
+# Chunk B5.10
 #| code-fold: true
 #| code-summary: "Kode pelabelan data (lihat Bab III)"
 hospital <- hospital %>%
@@ -148,6 +160,7 @@ hospital <- hospital %>%
 Sama seperti yang sudah dilakukan saat melakukan analisis DEA dengan data contoh, kita juga memerlukan *packages* “Benchmarking” untuk melakukan analisis DEA pada data rumah sakit.
 
 ```{r}
+# Chunk B5.11
 # Mengaktifkan packages untuk analisis DEA dan SFA
 library(Benchmarking)
 library(frontier)
@@ -164,6 +177,7 @@ Setelah berhasil membuka *dataset*, langkah selanjutnya adalah memilih variabel 
 Setelah perintah berikut ini dijalankan, kita akan melihat objek berupa x dan y di panel *Environment* (kanan atas).
 
 ```{r}
+# Chunk B5.12
 # Membuat matriks variabel input
 x <- hospital %>%
   select(gp_FTE,
@@ -181,6 +195,7 @@ y <- hospital %>%
 Setelah variabel *input* dan *output* ditentukan, langkah selanjutnya adalah menghitung nilai efisiensi dengan perintah **“dea.boot”.** Perintah ini melakukan analisis DEA dengan metode *bootstrap*. Pada langkah ini kita memakai *bootstrap* dengan repetisi sejumlah 100 kali (NREP = 100), menggunakan asumsi VRS (RTS = “vrs”), dan orientasi *input* (ORIENTATION = “in”). Perintah ini akan menghasilkan sebuah objek berupa *list* dengan nama “dea_input”.
 
 ```{r}
+# Chunk B5.13
 # Menghitung efisiensi berorientasi input
 set.seed(2021) # edisi daring: agar hasil bootstrap dapat direplikasi
 dea_input <- dea.boot(x,y,NREP=100, RTS = "vrs",
@@ -190,6 +205,7 @@ dea_input <- dea.boot(x,y,NREP=100, RTS = "vrs",
 Objek tersebut menyimpan beberapa nilai, salah satunya “eff” yang merupakan nilai efisiensi tanpa *bootstrap*, dan “eff.bc” yang merupakan nilai efisiensi dengan *bootstrap*. Kita dapat melihat ringkasan dari nilai efisiensi tersebut menggunakan perintah “summary” seperti berikut.
 
 ```{r}
+# Chunk B5.14
 # Ringkasan nilai efisiensi (tanpa bootrstrap)
 summary(dea_input$eff)
 # Ringkasan nilai efisiensi (dengan bootstrap)
@@ -199,6 +215,7 @@ summary(dea_input$eff.bc)
 Selanjutnya, analisis DEA dilakukan pada variabel yang sama, tetapi dengan orientasi *output.*
 
 ```{r}
+# Chunk B5.15
 # Menghitung efisiensi berorientasi output
 dea_output <- dea.boot(x,y,NREP=100, RTS = "vrs",
   ORIENTATION = "out")
@@ -213,6 +230,7 @@ summary(dea_output$eff.bc)
 Langkah selanjutnya, yaitu menggabungkan skor efisiensi (beserta 95% *confidence interval* ataupun *standard error*) menjadi satu dengan *dataset* rumah sakit. Langkah tersebut dapat dijalankan menggunakan fungsi “mutate()” dari paket “dplyr” yang berguna untuk membuat variabel atau kolom baru. Hal yang perlu diperhatikan di sini, yaitu bagaimana mengidentifikasi nilai-nilai variabel efisiensi dari objek “dea_input” dan “dea_output” yang berbentuk *list*. Sebagai contoh, untuk mendapatkan nilai batas bawah dari *confidence interval* dari nilai efisiensi berorientasi *input*, yang diambil adalah “dea_input\$conf.int**[,1]**” karena komponen “conf.inf” merupakan suatu matriks dengan dua kolom, yang mana kolom 1 menandakan batas bawah dan kolom 2 menandakan batas atas.
 
 ```{r}
+# Chunk B5.16
 # Memasukkan hasil perhitungan skor efisiensi ke data Rumah Sakit
 hospital_dea <- hospital %>%
   mutate(EI=c(dea_input$eff),
@@ -246,6 +264,7 @@ Catatan: $\hat{\Phi}$ adalah skor efisiensi dari analisis DEA dengan *bootstrap*
 Sebelum melakukan analisis DEA tahap kedua, terdapat beberapa *packages* yang harus diaktifkan, yaitu “AER” dan “Truncreg”.
 
 ```{r}
+# Chunk B5.17
 ## Mengaktifkan package untuk analisis Tobit
 library(AER)
 library(truncreg)
@@ -256,6 +275,7 @@ library(truncreg)
 Model regresi terpotong dapat dijalankan dengan perintah berikut.
 
 ```{r}
+# Chunk B5.18
 # Estimasi truncated regression
 eTrunc <- truncreg(EI_bc ~ publichospital + non_JavaBali,
   data=hospital_dea, point=1, direction = "right")
@@ -266,6 +286,7 @@ Perhatikan bahwa fungsi Truncreg membutuhkan spesifikasi berupa formula, sumber 
 Sementara itu, untuk menggunakan model Tobit, kita bisa menggunakan perintah berikut.
 
 ```{r}
+# Chunk B5.19
 # Estimasi tobit
 eTob <- tobit(EI_bc ~ publichospital + non_JavaBali, left=-Inf, right=1, data=hospital_dea)
 ```
@@ -277,6 +298,7 @@ Perhatikan struktur perintah dari fungsi Tobit yang sedikit berbeda jika dibandi
 Untuk melihat hasil estimasi dari model Tobit dan regresi terpotong, kita bisa menjalankan perintah “summary(eTob)” dan “summary(eTrunc)”. Hasil dari perintah tersebut dapat dilihat pada kode berikut.
 
 ```{r}
+# Chunk B5.20
 summary(eTrunc)
 ```
 
@@ -287,6 +309,7 @@ Kemudian, kita dapat melihat bagian “Coefficients” yang berisi nilai koefisi
 Sementara itu, pada bagian paling bawah terdapat keterangan mengenai model yang diestimasi secara keseluruhan. *Gaussian distribution* berarti model mengasumsikan distribusi Gaussian, “Number of iteration” menjelaskan tentang jumlah iterasi yang dilakukan sampai mendapatkan model final (dalam hal ini 3), “log-likelihood” menunjukkan nilai *log-likelihood* dari model final, sementara “wald-statistic” merupakan uji hipotesis apakah koefisien dari model yang diestimasi berbeda dari nol. Nilai *p* dari *wald-statistic* yang menunjukkan kurang dari 0,05 dapat diartikan bahwa koefisien pada model berbeda dari nol dan secara statistik bermakna (pada rentang kepercayaan 95%). Informasi-informasi ini penting untuk membandingkan antarmodel (misalnya dengan model yang berbeda variabel independennya).
 
 ```{r}
+# Chunk B5.21
 summary(eTob)
 ```
 
@@ -297,6 +320,7 @@ Struktur ringkasan model regresi terpotong hampir sama dengan model Tobit. Hanya
 Untuk membuat tabel koefisien yang rapi dan siap pakai, fungsi “modelsummary()” dari paket “modelsummary” dapat digunakan.
 
 ```{r}
+# Chunk B5.22
 # Mengaktifkan package
 library(modelsummary)
 # Memberi label koefisien

@@ -21,9 +21,19 @@
   margin: 0;
 }
 
-/* Wide literature tables (Bab II) scroll instead of squeezing */
-.table-responsive,
-div.cell-output-display,
-table {
+/* Wide literature tables (Bab II) fit beside Quarto's right-side table of contents. */
+#tbl-2-1,
+#tbl-2-2 {
+  display: block;
+  max-width: 100%;
   overflow-x: auto;
+  font-size: 0.68rem;
+  line-height: 1.25;
+}
+
+@media (max-width: 1200px) {
+  #tbl-2-1,
+  #tbl-2-2 {
+    font-size: 0.62rem;
+  }
 }

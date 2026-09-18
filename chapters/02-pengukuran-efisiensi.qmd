@@ -83,6 +83,24 @@ Garis *frontier* DEA berbeda tergantung pada asumsi terkait skala ekonomi (*scal
 
 ![Garis *frontier* DEA dengan 1 *input* dan 1 *output* dengan asumsi CRS dan VRS](../images/fig-2-3.png){#fig-2-3}
 
+::: {.callout-note title="Simulasi R untuk Gambar 2.3"}
+Chunk B2.01 dapat dijalankan tanpa bab lain dan menghasilkan ilustrasi sederhana CRS dan VRS. `Benchmarking` diperlukan sekali untuk membuat frontier.
+
+```{r}
+# Chunk B2.01 — data dan grafik DEA CRS/VRS sederhana.
+source("R/chunk_helpers.R")
+book_begin_chapter("Bab 2", "Benchmarking")
+x <- matrix(c(20, 40, 40, 60, 70, 50), ncol = 1)
+y <- matrix(c(20, 30, 50, 40, 60, 20), ncol = 1)
+Benchmarking::dea.plot.frontier(x, y, RTS = "vrs",
+  main = "Frontier DEA: CRS dan VRS", cex = 1.1)
+Benchmarking::dea.plot(x, y, RTS = "crs", add = TRUE, lty = "dashed")
+text(x, y, LETTERS[seq_len(nrow(x))], pos = 3)
+```
+
+**Hasil yang diharapkan:** garis VRS mengikuti titik praktik terbaik, sedangkan garis CRS memakai asumsi proporsi input–output yang tetap. **Interpretasi:** unit dapat tampak efisien pada VRS tetapi tidak pada CRS karena skala operasinya belum tentu optimal.
+:::
+
 Sementara itu, VRS dapat lebih fleksibel, artinya penambahan *output* tidak selalu proporsional dengan penambahan *input*, dan sering kali sesuai dengan apa yang terjadi karena suatu fasilitas kesehatan berada pada batasan finansial, peraturan, juga keterbatasan-keterbatasan lain yang mengakibatkan mereka beroperasi secara sub-optimal. Akan tetapi, asumsi VRS dapat menyebabkan lebih sedikit fasilitas kesehatan yang dinilai inefisien, khususnya ketika ada variasi ukuran fasilitas kesehatan yang cukup besar.
 
 ### *Stochastic Frontier Analysis* (SFA)
@@ -96,6 +114,29 @@ Adapun *Q* adalah *output* yang diproduksi menggunakan *input* berupa tenaga ker
 Secara diagramatik, persamaan tersebut dapat dijelaskan pada @fig-2-4 berikut.
 
 ![Ilustrasi garis *frontier* pada model SFA dengan 1 *input* dan 1 *output*](../images/fig-2-4.png){#fig-2-4}
+
+::: {.callout-note title="Simulasi R untuk Gambar 2.4"}
+Chunk B2.02 membuat data satu input–satu output dan menggambar garis produksi beserta gangguan acak. Ia mandiri dan tidak memakai data rumah sakit.
+
+```{r}
+# Chunk B2.02 — ilustrasi sederhana frontier SFA.
+set.seed(204)
+input <- seq(10, 100, length.out = 30)
+frontier <- 8 + 1.2 * input
+noise <- rnorm(length(input), 0, 9)
+inefficiency <- rexp(length(input), rate = 1 / 12)
+output <- frontier + noise - inefficiency
+plot(input, output, pch = 19, col = "#0072B2",
+     xlab = "Input", ylab = "Output",
+     main = "Ilustrasi stochastic frontier")
+abline(a = 8, b = 1.2, col = "#D55E00", lwd = 2)
+legend("topleft", legend = c("Observasi", "Frontier"),
+       pch = c(19, NA), lty = c(NA, 1), col = c("#0072B2", "#D55E00"),
+       bty = "n")
+```
+
+**Hasil yang diharapkan:** titik menyebar di sekitar dan umumnya di bawah garis frontier. **Interpretasi:** selisih titik dan garis memuat dua hal: gangguan acak dua arah serta komponen inefisiensi satu arah. Estimasi SFA nyata diperlukan untuk memisahkan keduanya secara statistik.
+:::
 
 Pada model SFA, beberapa bentuk fungsi produksi (*functional form*) dapat digunakan, di antaranya yang paling sering adalah fungsi produksi Cobb-Douglas, fungsi *translog*, fungsi jarak, dan fungsi jarak *translog*.
 
