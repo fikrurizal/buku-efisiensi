@@ -1,0 +1,18 @@
+# Quarto
+/.quarto/
+/_book/
+**/*.quarto_ipynb
+
+# Private working copies of the original manuscript (not published)
+/_sources/
+
+# R / renv
+.Rproj.user/
+.Rhistory
+.RData
+renv/library/
+renv/staging/
+renv/local/
+
+# knitr cache
+*_cache/

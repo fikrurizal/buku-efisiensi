@@ -1,0 +1,54 @@
+project:
+  type: book
+  output-dir: _book
+  execute-dir: project
+  resources:
+    - data/hospital.csv
+
+lang: id
+
+book:
+  title: "Analisis Efisiensi Fasilitas Kesehatan"
+  subtitle: "Aplikasi Menggunakan Software R"
+  author:
+    - Firdaus Hafidz
+    - Muhammad Fikru Rizal
+  date: last-modified
+  date-format: "D MMMM YYYY"
+  repo-url: https://github.com/fikrurizal/buku-efisiensi
+  repo-actions: [edit, issue]
+  search: true
+  chapters:
+    - index.qmd
+    - part: "Teori dan Aplikasi"
+      chapters:
+        - chapters/01-dasar-efisiensi.qmd
+        - chapters/02-tinjauan-pustaka.qmd
+        - chapters/03-pengantar-r.qmd
+        - chapters/04-analisis-rasio.qmd
+        - chapters/05-frontier-puskesmas.qmd
+        - chapters/06-frontier-rumah-sakit.qmd
+        - chapters/07-isu-pengukuran.qmd
+    - part: "Praktikum R"
+      chapters:
+        - praktikum/p1-persiapan-data.qmd
+        - praktikum/p2-analisis-rasio.qmd
+        - praktikum/p3-dea.qmd
+        - praktikum/p4-sfa.qmd
+
+execute:
+  freeze: auto
+  warning: false
+
+format:
+  html:
+    theme:
+      light: cosmo
+      dark: darkly
+    toc-depth: 3
+    number-depth: 2
+    code-link: true
+    code-copy: true
+    code-tools: false
+    fig-cap-location: bottom
+    tbl-cap-location: top

@@ -1,0 +1,43 @@
+# Prakata {.unnumbered}
+
+::: {.callout-note}
+## Versi pratinjau
+
+Ini adalah versi awal (*work in progress*) buku daring. Teks Bab 1–7
+dikonversi secara otomatis dari naskah Word, sehingga beberapa persamaan dan
+tabel masih berupa gambar dan format kutipan belum seragam. Bagian
+**Praktikum R** berisi kode yang dijalankan ulang setiap kali buku dibangun.
+:::
+
+Penilaian efisiensi menjadi perhatian penting dalam layanan kesehatan.
+Keterbatasan sumber daya membuat evaluasi efisiensi fasilitas kesehatan
+relevan bagi kebijakan, terutama di era Jaminan Kesehatan Nasional ketika
+fasilitas kesehatan dibayar secara prospektif dan pemerintah perlu memastikan
+dana yang dikucurkan dimanfaatkan secara maksimal.
+
+Buku ini menjembatani teori dan aplikasi. Bagian pertama menjelaskan konsep
+produksi dan efisiensi, meninjau studi pengukuran efisiensi di negara
+berpendapatan rendah dan menengah, lalu menerapkan analisis rasio, *Data
+Envelopment Analysis* (DEA), dan *Stochastic Frontier Analysis* (SFA) pada
+Puskesmas dan rumah sakit di Indonesia. Bagian kedua berisi praktikum R yang
+dapat diikuti langkah demi langkah menggunakan dataset latihan.
+
+## Untuk siapa buku ini? {.unnumbered}
+
+Buku ini ditujukan bagi mahasiswa, peneliti, dan praktisi manajemen serta
+kebijakan kesehatan yang ingin mengukur kinerja fasilitas kesehatan secara
+kuantitatif. Pembaca tidak perlu berpengalaman menggunakan R; @sec-pengantar-r
+dan @sec-p-persiapan memandu dari instalasi hingga analisis pertama.
+
+## Cara menggunakan buku ini {.unnumbered}
+
+- **Teori dan Aplikasi** (Bab 1–7): konsep, metode, dan hasil studi empiris.
+- **Praktikum R**: kode yang dapat disalin dan dijalankan. Unduh dataset
+  latihan [`hospital.csv`](data/hospital.csv) terlebih dahulu.
+
+## Penulis {.unnumbered}
+
+**Firdaus Hafidz** dan **Muhammad Fikru Rizal**, Universitas Gadjah Mada.
+
+Jika menemukan kesalahan, silakan laporkan melalui tautan *Report an issue*
+di setiap halaman.
