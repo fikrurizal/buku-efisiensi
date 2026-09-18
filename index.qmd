@@ -1,43 +1,28 @@
 # Prakata {.unnumbered}
 
 ::: {.callout-note}
-## Versi pratinjau
+## Tentang edisi daring
 
-Ini adalah versi awal (*work in progress*) buku daring. Teks Bab 1–7
-dikonversi secara otomatis dari naskah Word, sehingga beberapa persamaan dan
-tabel masih berupa gambar dan format kutipan belum seragam. Bagian
-**Praktikum R** berisi kode yang dijalankan ulang setiap kali buku dibangun.
+Edisi daring ini disusun dari naskah final cetakan UGM Press (2021). Kode R pada
+Bab III–VI dijalankan ulang setiap kali buku dibangun, sehingga grafik dan tabel
+merupakan keluaran langsung dari kode yang ditampilkan. Beberapa perbaikan kecil
+pada kode dibandingkan edisi cetak ditandai dengan kotak **Catatan edisi daring**.
+
+Dataset latihan dapat diunduh di sini: [`hospital.csv`](data/hospital.csv).
 :::
 
-Penilaian efisiensi menjadi perhatian penting dalam layanan kesehatan.
-Keterbatasan sumber daya membuat evaluasi efisiensi fasilitas kesehatan
-relevan bagi kebijakan, terutama di era Jaminan Kesehatan Nasional ketika
-fasilitas kesehatan dibayar secara prospektif dan pemerintah perlu memastikan
-dana yang dikucurkan dimanfaatkan secara maksimal.
+Puji syukur penulis panjatkan ke hadirat Tuhan Yang Maha Esa atas limpahan karunia-Nya sehingga buku *Analisis Efisiensi Fasilitas Kesehatan: Aplikasi Menggunakan Software R* ini dapat terselesaikan. Buku ini merupakan pengembangan dari disertasi penulis (Firdaus Hafidz) di University of Leeds, Inggris, yang berjudul *Assessing the Efficiency of Health Facilities in Indonesia*. Penulis berterima kasih kepada seluruh pihak yang mendukung dalam proses penulisan buku ini, yaitu Tim Ensor dan Sandy Tubeuf sebagai pembimbing selama menempuh Ph.D.; keluarga (Maudi, Azka, Syafiq, dan Zhafran) yang terus memberikan semangat; Lembaga Pengelola Dana Pendidikan (LPDP) dan GIZ untuk pendanaan penelitian; Kementerian Kesehatan dan Badan Pusat Statistik (BPS) untuk penyediaan data; Universitas Gadjah Mada, khususnya Departemen Kebijakan dan Manajemen Kesehatan yang telah memberikan dukungan teknis dan pembiayaan dalam penulisan buku ini; Tim Litera Mediatama yang memberikan motivasi dan dukungannya dalam proses penulisan.
 
-Buku ini menjembatani teori dan aplikasi. Bagian pertama menjelaskan konsep
-produksi dan efisiensi, meninjau studi pengukuran efisiensi di negara
-berpendapatan rendah dan menengah, lalu menerapkan analisis rasio, *Data
-Envelopment Analysis* (DEA), dan *Stochastic Frontier Analysis* (SFA) pada
-Puskesmas dan rumah sakit di Indonesia. Bagian kedua berisi praktikum R yang
-dapat diikuti langkah demi langkah menggunakan dataset latihan.
+Buku ini disusun untuk memenuhi kebutuhan akan panduan praktis bagi kalangan ilmiah (mahasiswa, peneliti, dosen, konsultan) maupun pengambil kebijakan (pemerintah, pengelola fasilitas kesehatan) untuk mengkaji efisiensi sistem kesehatan di Indonesia, terutama dalam konteks fasilitas pelayanan kesehatan. Hal tersebut penting untuk dibahas karena beban biaya pelayanan kesehatan di dunia, termasuk Indonesia, terus mengalami peningkatan. Dengan keterbatasan anggaran, upaya untuk memastikan proses yang efisien menjadi hal yang tak terhindarkan lagi. Mengingat sebagian besar biaya kesehatan dihabiskan untuk mendapatkan pelayanan kesehatan di fasilitas kesehatan, isu terkait efisiensi fasilitas kesehatan menjadi hal yang sangat penting untuk dibahas.
 
-## Untuk siapa buku ini? {.unnumbered}
+Secara umum, buku ini akan membahas konsep efisiensi pada sektor pelayanan kesehatan, bagaimana cara mengukurnya, dan bagaimana mencari tahu alasan-alasan di balik efisien atau tidaknya suatu fasilitas pelayanan kesehatan. Pada Bab I pembaca akan dikenalkan terlebih dahulu secara ringkas mengenai dasar-dasar efisiensi. Hal tersebut meliputi penjelasan konsep produksi dan efisiensi, serta pengenalan jenis dan tahapan pengukuran efisiensi. Selanjutnya, gambaran tentang bagaimana pengukuran efisiensi yang telah dilakukan di berbagai negara berkembang akan dijelaskan pada Bab II. Pada bab ini, penulis berusaha merangkum beberapa aspek pengukuran efisiensi yang meliputi *setting*, teknik, dan variabel-variabel yang sudah digunakan pada penelitian-penelitian yang ada.
 
-Buku ini ditujukan bagi mahasiswa, peneliti, dan praktisi manajemen serta
-kebijakan kesehatan yang ingin mengukur kinerja fasilitas kesehatan secara
-kuantitatif. Pembaca tidak perlu berpengalaman menggunakan R; @sec-pengantar-r
-dan @sec-p-persiapan memandu dari instalasi hingga analisis pertama.
+Pembaca akan diajak berkenalan dengan *software* R pada Bab III. *Software* R adalah sebuah perangkat lunak pemrograman, analisis data, dan statistik yang tengah populer saat ini karena sifatnya yang gratis, terbuka, dan mudah dipelajari serta digunakan. Bab III dimaksudkan sebagai pengantar agar pembaca dapat melakukan instalasi, mengenali tampilan antarmuka, dan fungsi-fungsi dasar yang akan diterapkan pada praktik-praktik analisis data pada bab-bab selanjutnya.
 
-## Cara menggunakan buku ini {.unnumbered}
+Setelah dijelaskan pada Bab I, kita akan membahas lebih dalam mengenai teknik-teknik yang biasa digunakan untuk menilai efisiensi fasilitas kesehatan pada Bab IV dan Bab V. Bab IV secara khusus membahas tentang analisis rasio (AR), sedangkan Bab V dan Bab VI membahas analisis *frontier* (AF). Kedua bab tersebut disajikan dengan contoh *dataset* dan bagaimana cara mengolahnya sehingga pembaca dapat langsung mencoba melakukan analisis sendiri. Pembaca dapat mengunduh *R markdown* dan data yang diperlukan untuk analisis melalui tautan <http://ugm.id/hafidzrizalefisiensi> atau langsung dari edisi daring ini ([`hospital.csv`](data/hospital.csv)).
 
-- **Teori dan Aplikasi** (Bab 1–7): konsep, metode, dan hasil studi empiris.
-- **Praktikum R**: kode yang dapat disalin dan dijalankan. Unduh dataset
-  latihan [`hospital.csv`](data/hospital.csv) terlebih dahulu.
+Terakhir, pada Bab VII, beberapa isu terkait pengukuran efisiensi akan dibahas. Hal ini meliputi dari mana sumber data bisa didapatkan, bagaimana menguji validitas hasil analisis, permasalahan etika dalam studi efisiensi, hingga bagaimana dampak dari hasil analisis yang kita lakukan terhadap kebijakan pemerintah. Pada bab ini juga akan dibahas isu khusus mengenai penghitungan indeks *casemix* sebagai proksi dari keparahan penyakit yang ditangani di fasilitas kesehatan.
 
-## Penulis {.unnumbered}
+Penulis tidak memungkiri bahwa buku ini memiliki beberapa keterbatasan. *Pertama*, data yang dipakai untuk latihan melakukan analisis sudah disederhanakan. Hal ini dimaksudkan agar memudahkan pembaca dalam memahami dan mengikuti petunjuk analisis yang disediakan. *Kedua*, penulis hanya memberikan contoh analisis dalam konteks rumah sakit sehingga pembaca diberikan kesempatan untuk menerapkan dan mengembangkan kemampuannya sendiri dalam melakukan analisis pada konteks lain, misalnya puskesmas ataupun fasilitas kesehatan yang lain.
 
-**Firdaus Hafidz** dan **Muhammad Fikru Rizal**, Universitas Gadjah Mada.
-
-Jika menemukan kesalahan, silakan laporkan melalui tautan *Report an issue*
-di setiap halaman.
+Terakhir, penulis berharap dari buku ini akan muncul berbagai diskursus ilmiah, baik berupa skripsi, tesis, disertasi, maupun makalah-makalah ilmiah; serta diskusi kebijakan, baik di tingkat pusat, daerah, maupun tingkat fasilitas kesehatan. Dengan begitu, kebermanfaatan ilmu yang diperoleh dari buku ini dapat terus mengalir.

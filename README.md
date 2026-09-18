@@ -2,19 +2,25 @@
 
 Firdaus Hafidz dan Muhammad Fikru Rizal
 
-Buku daring dibangun dengan [Quarto](https://quarto.org) dan diterbitkan melalui
-GitHub Pages.
+Edisi daring dari buku terbitan UGM Press (2021), dibangun dengan
+[Quarto](https://quarto.org) dan diterbitkan melalui GitHub Pages:
+<https://fikrurizal.github.io/buku-efisiensi/>
 
 ## Struktur
 
-| Folder | Isi |
+| Berkas/folder | Isi |
 |---|---|
-| `chapters/` | Bab 1–7 (teori dan aplikasi), dikonversi dari naskah Word |
-| `praktikum/` | Praktikum R yang dapat dijalankan |
-| `R/setup.R` | Fungsi bersama untuk bab praktikum (`load_hospital()`) |
+| `index.qmd`, `kata-pengantar.qmd`, `singkatan.qmd` | Bagian awal buku |
+| `chapters/` | Bab I–VII; kode R pada Bab III–VI dijalankan saat buku dibangun |
+| `daftar-pustaka.qmd`, `tentang-penulis.qmd` | Bagian akhir buku |
+| `R/setup.R` | Opsi tampilan untuk bab berkode (dimuat oleh chunk tersembunyi) |
 | `data/hospital.csv` | Dataset latihan (198 rumah sakit) |
-| `images/draf/` | Gambar, persamaan, dan tabel dari naskah Word |
+| `images/` | Gambar statis dari edisi cetak (diagram, tangkapan layar RStudio) |
 | `_freeze/` | Hasil eksekusi kode R yang dibekukan (di-*commit*) |
+
+Naskah dikonversi dari PDF final edisi cetak dengan skrip di `_sources/`
+(folder ini tidak ikut di-*commit*). Bab-bab di `chapters/` kini menjadi sumber
+utama; suntinglah langsung berkas `.qmd`.
 
 ## Membangun buku secara lokal
 

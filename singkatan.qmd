@@ -1,0 +1,23 @@
+# Daftar Singkatan {.unnumbered}
+
+| Singkatan | Kepanjangan |
+|:--|:--|
+| AR | Analisis Rasio |
+| BOR | *Bed Occupancy Rate* |
+| BTR | *Bed Turnover Rate* |
+| CMI | *Casemix Index* |
+| CRS | *Constant Return to Scale* |
+| DEA | *Data Envelopment Analysis* |
+| DRG | *Diagnosis-Related Group* |
+| EE | *Econometric Estimation* |
+| FTE | *Full-Time Equivalent* |
+| HFCS | *Health Facility Costing Study* |
+| IBK | Indeks Bauran Kasus |
+| JKN | Jaminan Kesehatan Nasional |
+| OECD | *Organization for Economic Cooperation and Development* |
+| OLS | *Ordinary Least Square* |
+| ROC | *Receiver Operating Characteristic* |
+| SFA | *Stochastic Frontier Analysis* |
+| USD | *United States dollar* |
+| VRS | *Variable Return to Scale* |
+| WHO | *World Health Organization* |

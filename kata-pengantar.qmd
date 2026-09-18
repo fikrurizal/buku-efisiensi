@@ -1,0 +1,13 @@
+# Kata Pengantar {.unnumbered}
+
+Sistem kesehatan harus bisa berjalan secara efisien agar semua rupiah yang dikeluarkan dapat menghasilkan manfaat sebesar-besarnya. Apalagi dengan diterapkannya pola pembayaran prospektif di era Jaminan Kesehatan Nasional (JKN), fasilitas kesehatan mau tidak mau harus bisa beroperasi secara efisien. Namun, secara realitas, inefisiensi fasilitas kesehatan masih turut berkontribusi sebagai penyumbang pengeluaran biaya nasional yang relatif besar.
+
+Di sisi lain, pengeluaran biaya di sektor kesehatan kian meningkat. Statistik menunjukkan antara tahun 2002–2014, total biaya kesehatan per kapita di Indonesia mengalami peningkatan dari 20 USD menuju 100 USD. Angka ini lebih tinggi jika dibandingkan dengan negara-negara berkembang lainnya.
+
+Beranjak dari fenomena tersebut, buku *Analisis Efisiensi Fasilitas Kesehatan: Aplikasi Menggunakan Software R* ini dihadirkan sebagai salah satu upaya untuk menganalisis efisiensi fasilitas kesehatan menggunakan *software* R yang mudah diakses khalayak luas. Ditulis dengan menghadirkan bahasan yang komprehensif, dengan harapan bisa memberikan *insight* dan pemahaman praktis pada para akademisi, praktisi, maupun para pihak pengambil kebijakan di bidang kesehatan.
+
+Semakin berkembangnya ilmu pengetahuan, diharapkan sejalan pula dengan berkembangnya temuan-temuan baru yang bermanfaat bagi masyarakat. Semoga ke depannya semakin banyak studi, kajian literatur, maupun penelitian praktis yang dibukukan semacam ini agar dapat diakses lebih banyak kalangan. Dengan demikian, lebih banyak pula yang bisa mengambil manfaatnya.
+
+**dr. M. Lutfan Lazuardi, M.Kes., Ph.D.**\
+Ketua Departemen Kebijakan dan Manajemen Kesehatan\
+Universitas Gadjah Mada

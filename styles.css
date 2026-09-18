@@ -1,0 +1,29 @@
+/* Daftar Pustaka: hanging indent like the print edition */
+.hanging-indent p {
+  padding-left: 2em;
+  text-indent: -2em;
+}
+
+/* Tentang Penulis: photo beside the bio */
+.author-bio {
+  display: flow-root;
+  margin-bottom: 1.5rem;
+}
+.author-bio img.author-photo,
+.author-bio .author-photo img {
+  float: left;
+  width: 110px;
+  margin: 0.25rem 1rem 0.5rem 0;
+  border-radius: 4px;
+}
+.author-bio figure,
+.author-bio p:has(> img) {
+  margin: 0;
+}
+
+/* Wide literature tables (Bab II) scroll instead of squeezing */
+.table-responsive,
+div.cell-output-display,
+table {
+  overflow-x: auto;
+}

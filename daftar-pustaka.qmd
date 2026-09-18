@@ -1,0 +1,105 @@
+# Daftar Pustaka {.unnumbered}
+
+::: {.hanging-indent}
+
+Aigner, Dennis, C.A. Knox Lovell, dan Peter Schmidt. 1977. “Formulation and Estimation of Stochastic Frontier Production Function Models.” *Journal of Econometrics* 6 (1): 21–37.
+
+Archibald, G.C. dan Richard G. Lipsey. 1982. *An Introduction to A Mathematical Treatment of Economics*. 3^rd^ Ed. London: Weidenfeld and Nicolson.
+
+Asmild, Mette, Bruce Hollingsworth, dan Stephen Birch. 2013. “The Scale of Hospital Production in Different Settings: One Size Does Not Fit All”. *Journal of Productivity Analysis*, 40 (2): 197–206.
+
+Aydin, Nezir, dan Gökhan Yurdakul. 2020. “Assessing Countries’ Performances against COVID-19 via WSIDEA and Machine Learning Algorithms”. *Applied Soft Computing*, 97 (Desember): 106792.
+
+Barnum, Howard, dan Joseph Kutzin. 1993. *Public Hospitals in Developing Countries: Resource Use, Cost, Financing*.
+
+Bitran, Jacob D. 1992. “Milestones in Leukemia Research and Therapy”. *JAMA: The Journal of the American Medical Association*. <https://doi.org/10.1001/jama.1992.03490070103054>.
+
+Bitran, R. 1992. “Technical and Economic Efficiency in the Production of Health Services: Phase I, Review of Concepts, Literature and Preliminary Field Work Design”. *USAID Health Financing and Sustainability Project, Major Applied Research Project*, No. 2.
+
+Bitran, Ricardo. 1992. “Technical and Economic Efficiency in the Production of Health Services. Phase 1: Review of Concepts and Literature and Preliminary Field Work Design”. *HFS Major Applied Research Paper*.
+
+Bogetoft, Peter, dan Lars Otto. 2010. *Benchmarking with DEA, SFA, and R*. Vol. 157. Springer Science & Business Media.
+
+Breitenbach, Marthinus C., Victor Ngobeni, dan Goodness C. Aye. 2021. “Global Healthcare Resource Efficiency in the Management of COVID-19 Death and Infection Prevalence Rates”. *Frontiers in Public Health*, 9 (April): 638481.
+
+Cashin, Cheryl E., Michael Borowitz, dan Olga Zuess. 2002. “The Gender Gap in Primary Health Care Resource Utilization in Central Asia”. *Health Policy and Planning*, 17 (3): 264–272.
+
+Chalidyanto, Djazuly. 2013. “Faktor yang Berhubungan dengan Efisiensi Rumah Sakit Umum Pemerintah di Indonesia”. Jakarta, Indonesia: Universitas Indonesia.
+
+Charnes, A., W.W. Cooper, dan E. Rhodes. 1978. “Measuring the Efficiency of Decision Making Units”. *European Journal of Operational Research*, 2 (6): 429–444.
+
+—————. 1981. “Evaluating Program and Managerial Efficiency: An Application of Data Envelopment Analysis to Program Follow Through”. *Management Science*, 27 (6): 668–97.
+
+Chisholm, Dan, dan David B. Evans. 2010. “Improving Health System Efficiency as A Means of Moving towards Universal Coverage”. Geneva, Switzerland: World Health Organization.
+
+Coelli, Timothy J., D.S. Prasada Rao, Christopher J. O’Donnell, dan George E. Battese. 2005. *An Introduction to Efficiency and Productivity Analysis*. *Second Edition*. New York: *The Written Permission of The Publisher.*
+
+Conteh, Lesong, dan Damian Walker. 2004. “Cost and Unit Cost Calculations Using Step-down Accounting”. *Health Policy and Planning*, 19 (2): 127–35.
+
+Ensor, Tim, dan Stephanus Indradjaya. 2012. “The Costs of Delivering Health Services in Indonesia: Report on A Prospective Survey 2010–2011”. Jakarta: Kementerian Kesehatan.
+
+Everitt, Brian, dan Torsten Hothorn. 2011. “An Introduction to Applied Multivariate Analysis with R”. <https://doi.org/10.1007/978-1-4419-9650-3>.
+
+Glied, Sherry, dan Peter Smith. 2011. *The Oxford Handbook of Health Economics*. Oxford: Oxford University Press.
+
+Goolsbee, Austan, Steven Levitt, dan Chad Syverson. 2013. *Microeconomics*. *International*. New York: Worth Publishers.
+
+Hafidz, F., T. Ensor, dan S. Tubeuf. 2018. “Assessing Hospital Performance in Indonesia: An Application of Frontier Analysis Techniques”. <https://dial.uclouvain.be/pr/boreal/object/boreal%3A219649/datastream/PDF_01/view>.
+
+Hafidz, Firdaus, Tim Ensor, dan Sandy Tubeuf. 2018a. “Assessing Health Facility Performance in Indonesia Using the Pabón-Lasso Model and Unit Cost Analysis of Health Services”. *Int. J. Health Plann. Mgmt.* Februari. <https://doi.org/10.1002/hpm.2497>.
+
+—————. 2018b. “Efficiency Measurement in Health Facilities: A Systematic Review in Low- and Middle-Income Countries”. *Applied Health Economics and Health Policy*. April. <https://doi.org/10.1007/s40258-018-0385-7>.
+
+Hajialiafzali, Hossein, J.R. Moss, dan M.A. Mahmood. 2007. “Efficiency Measurement for Hospitals Owned by the Iranian Social Security Organisation”. *Journal of Medical Systems*, 31 (3): 166–172.
+
+Hussey, Peter S., Han de Vries, John Romley, Margaret C. Wang, Susan S. Chen, Paul G. Shekelle, dan Elizabeth A. McGlynn. 2009. “A Systematic Review of Health Care Efficiency Measures”. *Health Services Research*, 44 (3): 784–805.
+
+Jacobs, Rowena, Peter C. Smith, dan Andrew Street. 2006. *Measuring Efficiency in Health Care: Analytic Techniques and Health Policy*. Vol. 10. New York: Cambridge University Press.
+
+Jolliffe, David A., Christos Stefanidis, Zhican Wang, Nazanin Z. Kermani, Vassil Dimitrov, John H. White, John E. McDonough, *et al*. 2020. “Vitamin D Metabolism is Dysregulated in Asthma and Chronic Obstructive Pulmonary Disease”. *American Journal of Respiratory and Critical Care Medicine*. Maret. <https://doi.org/10.1164/rccm.201909-1867OC>.
+
+Kirigia, Joses M., Ali Emrouznejad, Basilio Cassoma, Eyob Zere Asbu, dan Saidou Barry. 2008. “A Performance Assessment Method for Hospitals: The Case of Municipal Hospitals in Angola”. *Journal of Medical Systems*, 32 (6): 509–519.
+
+Lasso, Hipolito Pabón. 1986. “Evaluating Hospital Performance through Simultaneous Application of Several Indicators”. *Bulletin of the Pan American Health Organization*, 20 (4): 341–357.
+
+Lindelow, Magnus, dan Adam Wagstaff. 2003. “Health Facility Surveys: An Introduction”. *Policy Research Working Papers*. <https://doi.org/10.1596/1813-9450-2953>.
+
+Mahendradhata, Yodi, Laksono Trisnantoro, Shita Listyadewi, Prastuti Soewondo, Tiara Marthias, Pandu Harimurti, dan John Prawira. 2017. *The Republic of Indonesia Health System Review*. Vol. 7, No. 1. India: World Health Organization.
+
+Maity, Shrabanti, Nandini Ghosh, dan Ummey Rummana Barlaskar. 2020. “Interstate Disparities in the Performances in Combatting COVID-19 in India: Efficiency Estimates across States”. *BMC Public Health*, 20 (1): 1925.
+
+Marschall, P. dan S. Flessa. 2011. “Efficiency of Primary Care in Rural Burkina Faso. A Two-Stage DEA Analysis”. *Health Economics Review*, 1 (1): 1–15.
+
+Mas-Colell, Andreu, Michael D. Whinston, dan Jerry R. Green. 1995. *Microeconomic Theory*. New York: Oxford University Press.
+
+Md. Hamzah, Nurhafiza, Ming-Miin Yu, dan Kok Fong See. 2021. “Assessing the Efficiency of Malaysia Health System in COVID-19 Prevention and Treatment Response”. *Health Care Management Science*, 24 (2): 273–285.
+
+Milsum, John H., Efraim Turban, dan Ilan Vertinsky. 1973. “Hospital Admission Systems: Their Evaluation and Management”. *Management Science*, 19 (6): 646.
+
+Morris, Stephen, Nancy Devlin, dan David Parkin. 2007. *Economic Analysis in Health Care*. John Wiley & Sons.
+
+Nicholson, W. dan C. Snyder. 2007. *Theory and Application of Intermediate Microeconomics*. 10^th^ Ed. Mason, OH: Thomson/South-Western.
+
+OECD/WHO. 2014. *Health at A Glance: Asia/Pacific 2014 - Measuring Progress towards Universal Health Coverage*. OECD Publishing.
+
+Ordu, Muhammed, Hediye Kirli Akin, dan Eren Demir. 2021. “Healthcare Systems and Covid 19: Lessons to Be Learnt from Efficient Countries”. *The International Journal of Health Planning and Management*. Mei. <https://doi.org/10.1002/hpm.3187>.
+
+Palmer, Stephen, dan David J. Torgerson. 1999. “Definitions of Efficiency”. *BMJ, British Medical Journal*, 318 (7191): 1136–1136.
+
+Perloff, Jeffrey M. 2014. *Microeconomics*. 7^th^ Ed. Upper Saddle River: Prentice Hall.
+
+Pindyck, Robert S., dan Daniel L. Rubinfeld. 2008. *Microeconomics*. 7^th^ Ed. Upper Saddle River: Pearson Prentice Hall.
+
+Rokx, Claudia. 2009. *Health Financing in Indonesia: A Reform Road Map*. World Bank Publications.
+
+Seddighi, Hamed, Hossein Baharmand, Ali Morovati Sharifabadi, Ibrahim Salmani, dan Saeideh Seddighi. 2021. “The Efficiency of COVID-19 Testing Centers in Iran: A Data Envelopment Analysis Approach Hamed Seddighi, Hossein Baharmand, Ali Morovati Sharifabadi, Ibrahim Salmani, Saeideh Seddighi”. *Disaster Medicine and Public Health Preparedness*, Juli, 1–13.
+
+Soewondo, Prastuti, Mardiati Nadjib, Kurnia Sari, Yunita, dan Novia Afdhila. 2011. “SHA-Based Health Accounts in the Asia-Pacific Region: Indonesia 2005–2009”. Seoul, Republic of Korea: OECD- Korea Policy Center.
+
+Su, Emily Chia-Yu, Cheng-Hsing Hsiao, Yi-Tui Chen, dan Shih-Heng Yu. 2021. “An Examination of COVID-19 Mitigation Efficiency among 23 Countries”. *Healthcare (Basel, Switzerland)*, 9 (6). <https://doi.org/10.3390/healthcare9060755>.
+
+The World Bank. 2018. “Health Expenditure Per Capita (Current US$)”. *Data. World Bank*. <https://data.worldbank.org/indicator/SH.XPD>. PCAP.
+
+Weaver, Marcia, dan Anil Deolalikar. 2004. “Economies of Scale and Scope in Vietnamese Hospitals”. *Social Science & Medicine*, 59 (1): 199–208.
+
+:::

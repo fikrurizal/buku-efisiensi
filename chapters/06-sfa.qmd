@@ -1,0 +1,389 @@
+# *Stochastic Frontier Analysis* {#sec-sfa}
+
+```{r}
+#| label: setup
+#| include: false
+source("R/setup.R")
+```
+
+Teknik analisis *frontier* yang lain ialah *stochastic frontier analysis* atau sering disingkat SFA. Teknik ini dianggap lebih rumit dibandingkan dengan DEA, tetapi memiliki landasan yang lebih masuk akal. Hal tersebut disebabkan oleh nilai produksi yang dihasilkan oleh suatu unit usaha dapat dipengaruhi oleh suatu kejadian acak yang berada di luar kendali unit tersebut.
+
+Seperti yang sudah dibahas pada Bab [II](#sec-pengukuran), SFA adalah suatu metode pengukuran efisiensi dengan pendekatan parametrik. Artinya, nilai *output* dari masing-masing rumah sakit dapat dijelaskan berdasarkan nilai *input*, faktor-faktor lain yang memengaruhinya, dan suatu nilai acak. Bab ini akan membahas aplikasi SFA menggunakan R.
+
+## Membuat Grafik SFA dengan Data Contoh
+
+Sebelum masuk pada analisis data rumah sakit, kita akan mempelajari alur analisis SFA menggunakan data contoh sebagaimana yang dipakai oleh Bogetoft dan Otto (2010).
+
+### Tahap 1. Menginstal dan Mengaktifkan *Packages* yang Diperlukan
+
+Tahap pertama yang perlu dilakukan, yaitu mengaktifkan *packages* “Benchmarking” dan “frontier” yang sudah diinstal sebelumnya dengan menjalankan skrip berikut.
+
+```{r}
+# Mengaktifkan packages
+library(Benchmarking)
+library(frontier)
+```
+
+### Tahap 2. Membuka Data
+
+Pada bagian ini, kita akan menggunakan data “charnes1981” yang merupakan *dataset* pada penelitian mengenai program bantuan perbaikan nilai yang diberikan oleh pemerintah AS terhadap 70 sekolah (Bogetoft dan Otto, 2010; Charnes, Cooper, dan Rhodes, 1981). *Dataset* ini terdiri atas variabel hasil dari tiga jenis tes, yaitu skor membaca (y1), skor matematika (y2), dan skor kepercayaan diri (y3), yang dianggap sebagai *output* dalam model. Adapun lima variabel yang berbeda dianggap sebagai *input*, yaitu tingkat pendidikan ibu (x1), pekerjaan tertinggi anggota keluarga (x2), kunjungan orang tua ke sekolah (x3), waktu yang dihabiskan bersama anak-anak dalam topik terkait sekolah (x4), dan jumlah guru di lokasi (x5). Untuk melihat keterangan *dataset* secara lebih lengkap, kita bisa menggunakan perintah “help(charnes1981)”.
+
+```{r}
+# Membuka data charnes1981
+data("charnes1981")
+c81 <- as.data.frame(charnes1981)
+```
+
+### Tahap 3. Menentukan Variabel *Input* (x) dan *Output* (y)
+
+Pada tahap ini, kita akan mendefinisikan satu variabel *input* dan satu variabel *output*, yaitu x1 dan y1. Variabel y1 merupakan *output* yang berupa skor membaca, sedangkan variabel x1 merupakan *input* yang berupa tingkat pendidikan ibu. Perintah yang bisa dijalankan pada tahap ini, yaitu:
+
+```{r}
+x <- c81$x1
+y <- c81$y1
+```
+
+### Tahap 4. Estimasi dengan OLS, COLS, dan SFA
+
+Dari variabel *input* dan *output* yang sudah didefinisikan sebelumnya, kita akan mencoba melihat hubungan keduanya menggunakan beberapa pendekatan. *Pertama*, kita akan mengestimasi regresi linear sederhana atau *Ordinary Least Square* (OLS). Cara ini bertujuan untuk mendapatkan suatu garis lurus (linear) yang dapat memprediksi nilai *output* berdasarkan nilai *input* tertentu dengan meminimalkan jumlah kuadrat dari nilai *output* prediksi dan nilai sebenarnya.
+
+Pendekatan yang *kedua*, yaitu *Corrected Ordinary Least Square* (COLS) yang pada intinya merupakan garis lurus dengan kemiringan sama (sejajar) dengan OLS, tetapi intersep (nilai y saat x = 0) dikoreksi sehingga garis tersebut menyentuh unit yang memiliki nilai y tertinggi. *Ketiga*, kita juga akan mengestimasi hubungan x dan y dengan metode *Stochastic Frontier Analysis* (SFA). Dalam hal ini, karena kita mengacu pada suatu fungsi produksi dengan satu *output* dan satu *input* maka variabel x dan y ditransformasi menjadi bentuk log.
+
+Dapat diperhatikan pada kotak skrip di bawah ini bahwa bentuk umum dari estimasi OLS dalam bahasa R adalah “lm ( y ~ x)”. Untuk estimasi SFA, perintah yang kita gunakan berasal dari *package* “frontier” yang memiliki bentuk umum “sfa ( y ~ x)”.
+
+```{r}
+# Estimasi dengan OLS
+ols <- lm(log(y) ~ log(x))
+# Estimasi nilai intersep untuk garis COLS
+coef(ols)[1] + max(residuals(ols))
+# Estimasi Stochastic Frontier Analysis
+msfa <- sfa(log(y) ~ log(x))
+```
+
+### Tahap 5. Membuat Grafik
+
+Setelah model OLS, COLS, dan SFA selesai diestimasi, kita akan mencoba melihat bagaimana tampilan garis efisiensi tersebut. Terdapat tiga gambar, yakni garis regresi linear (@fig-6-1), gambar garis regresi linear dan garis regresi terkoreksi (@fig-6-2), dan regresi linear, garis regresi terkoreksi, dan garis SFA (@fig-6-3). Ketiga gambar tersebut dibuat menggunakan paket “ggplot2” dengan penjelasan sebagai berikut.
+
+*Pertama*, objek bernama “plot_ols” (lihat @fig-6-1) yang terdiri atas dua jenis diagram, yaitu diagram titik yang dibuat menggunakan fungsi “geom_point()” dan garis linear yang dibuat menggunakan fungsi “geom_ abline()”. Pada dasarnya, grafik yang dihasilkan berupa nilai kasar (*raw*) dari data yang ada digambarkan dengan diagram titik (*scatter plot*), kemudian di atasnya ditampilkan juga sebuah garis lurus yang menggambarkan hasil estimasi atau prediksi dari model OLS.
+
+Seperti yang sudah dijelaskan pada bagian sebelumnya, parameter yang harus dimasukkan pada fungsi “geom_point()” adalah data dan variabel x dan y apa yang akan digunakan. Dalam hal ini, variabel x-nya adalah bentuk logaritma dari matriks “x” dan variabel y-nya adalah bentuk logaritma dari matriks “y”. Selanjutnya, pada fungsi “geom_abline()”, ada dua parameter yang perlu diisi, yaitu *intercept* dan *slope.* Dalam hal ini, perlu diingat lagi persamaan garis lurus, yaitu “y = a + bx”, di mana a adalah *intercept* (nilai y ketika x = 0), dan b adalah *slope* atau kemiringan garis lurus tersebut. Adapun nilai dari keduanya didapatkan dari hasil pemodelan OLS (menggunakan fungsi bawaan “coef()”) yang sudah dilakukan pada Tahap 4. Perhatikan bahwa daftar koefisien berupa matriks dua kolom dengan kolom pertama (“coef(ols)[1]”) menyimpan nilai *intercept* dan kolom kedua (“coef(ols) [2]”) menyimpan nilai *slope*.
+
+```{r}
+#| label: fig-6-1
+#| fig-cap: "Garis regresi linear (OLS) antara log(x) terhadap log(y)"
+# 1. Membuat garis OLS
+plot_ols <- ggplot() +
+  geom_point(mapping = aes(x=log(x), y=log(y))) +
+  geom_abline(intercept=coef(ols)[1], slope=coef(ols)[2])
+plot_ols
+```
+
+
+*Kedua*, garis COLS akan ditambahkan pada diagram yang sudah dibuat sebelumnya (objek “plot_ols”). Karena “ggplot” menggunakan pendekatan lapisan-lapisan grafis maka untuk menambahkan garis baru ini yang perlu dilakukan adalah menambah lapisan baru dengan fungsi “plot_ols + geom_abline()” lagi. Perlu diperhatikan bahwa *intercept* pada garis COLS merupakan *intercept* yang sama dengan garis OLS, namun ditambahkan dengan nilai tertinggi dari residual pada model OLS (“max(residuals(ols))”). Perintah berikut ini akan membuat sebuah objek dengan nama “plot_ols_ cols” dengan garis COLS berwarna merah (@fig-6-2).
+
+```{r}
+#| label: fig-6-2
+#| fig-cap: "Garis regresi linear (OLS) dan garis regresi terkoreksi (COLS) antara log(x) terhadap log(y)"
+# 2. Menambahkan garis COLS
+plot_ols_cols <- plot_ols +
+  geom_abline(intercept=coef(ols)[1]+max(residuals(ols)),
+  slope=coef(ols)[2], color="red")
+plot_ols_cols
+```
+
+
+*Ketiga*, garis SFA akan ditambahkan pada diagram yang sudah dibuat sebelumnya (objek “plot_ols_cols”) dengan perintah “+ geom_abline()”. Sama seperti sebelumnya, parameter yang perlu diisi adalah *intercept* dan *slope*. Keduanya didapatkan dari objek “coef(msa)” yang merupakan matriks hasil estimasi SFA yang sudah dilakukan sebelumnya. Diagram yang dihasilkan pada langkah ini diberi nama “plot_ols_cols_sfa” (lihat @fig-6-3).
+
+```{r}
+#| label: fig-6-3
+#| fig-cap: "Garis regresi linear, garis regresi terkoreksi, dan garis SFA antara log(x) terhadap log(y)"
+# 3. Menambahkan garis SFA
+plot_ols_cols_sfa <- plot_ols_cols +
+  geom_abline(intercept=coef(msfa)[1], slope=coef(msfa)[2],
+  color="blue")
+plot_ols_cols_sfa
+```
+
+
+Pada @fig-6-3 terlihat tiga garis, yaitu garis OLS (garis hitam tegas), garis COLS (garis hitam titik-titik), dan garis SFA (garis merah putus-putus). Unit yang berada di bawah garis tersebut dapat diinterpretasikan sebagai unit yang tidak efisien, sementara yang ada tepat atau di atas garis dianggap efisien sempurna. Dapat dilihat secara sekilas bahwa hanya ada dua unit yang efisien sempurna jika teknik COLS digunakan. Jumlah unit yang efisien menjadi lebih banyak jika menggunakan teknik OLS, tetapi lebih banyak lagi jika menggunakan garis SFA. Gambaran tersebut sesuai dengan teori yang menyatakan bahwa selisih antara garis prediksi (OLS) dengan nilai aktual dari suatu unit dapat disebabkan oleh suatu kejadian acak.
+
+## Menentukan Nilai Efisiensi
+
+Setelah kita memahami bagaimana membuat garis SFA pada konteks produksi dengan satu *output* dan satu *input*, kita akan mempelajari bagaimana cara mengestimasi nilai efisiensi dengan teknik SFA. *Dataset* yang akan kita gunakan adalah data produksi susu di Denmark. Variabel yang ada pada *dataset* ini, yaitu: “farmNo” (nomor urut peternakan); “milk” (susu yang dihasilkan, kg); “energy” (tagihan energi); “vet” (tagihan dokter hewan); dan “cows” (jumlah sapi).
+
+### Tahap 1. Membuka *Dataset*
+
+Tahap pertama, yaitu dengan membuka *dataset*. Kita memberi nama *dataset* ini “milkData”. Untuk melihat ringkasan data per variabel, kita bisa menggunakan perintah “summary(milkData)”.
+
+```{r}
+# Menggunakan dataMilk Production
+data("milkProd")
+milkData <- as.data.frame(milkProd)
+# Statistik deskriptif
+tbl_summary(milkData) %>% as_flex_table()
+```
+
+^1^Median (IQR)
+
+### Tahap 2. Menghitung Nilai Efisiensi
+
+Untuk menghitung nilai efisiensi yang melibatkan lebih dari satu *input*, kita harus mendefinisikan fungsi produksi terlebih dahulu. Dalam hal ini, kita mengasumsikan bahwa jumlah produksi susu dipengaruhi oleh variabel “vet” (pengeluaran untuk kesehatan ternak), “energy” (pengeluaran energi), dan “cows” (jumlah sapi). Secara formal, model tersebut dapat dituliskan sebagai berikut.
+
+$$\log(\text{milk}) = \beta_0 + \beta_1\log(\text{vet}) + \beta_2\log(\text{energy}) + \beta_3\log(\text{cows}) + v - u$$
+
+Keterangan: *v* adalah nilai inefisiensi, sedangkan *u* adalah kesalahan acak.
+
+Sebelum melakukan estimasi, yang perlu dilakukan, yaitu membuat matriks *output* (y) dan *input* (x) dari *dataset* “milkData”. Seperti yang sudah dijelaskan pada bagian sebelumnya, fungsi “select()” dan “as.matrix()” akan digunakan seperti pada perintah berikut.
+
+```{r}
+# Menentukan Matrix variabel input (x) dan output (y) untuk spesifikasi fungsi produksi
+y <- milkData %>% select(milk) %>% as.matrix()
+x <- milkData %>% select(vet, energy, cows) %>% as.matrix()
+# Menghitung nilai efisiensi menggunakan package frontier
+milkProd <- frontier::sfa(log(y) ~ log(x))
+# Menyimpan nilai efisiensi teknis dari hasil analisis SFA dg production function
+teProd <- milkProd %>% efficiencies()
+```
+
+Berbeda dengan contoh yang diberikan pada bagian A, estimasi nilai efisiensi dilakukan menggunakan fungsi “sfa()” dari paket “frontier”, bukan dari paket “benchmarking”. Hal ini dilakukan karena variabel *input* dan/atau *output* yang digunakan lebih dari satu. Karena namanya sama, pada tahap ini fungsi yang digunakan harus diperjelas dengan menyebutkan nama paketnya sehingga menjadi “frontier::sfa()”. Secara umum, spesifikasi atau parameter dasar dari fungsi ini sama dengan yang ada pada paket “benchmarking”, yaitu “sfa(y ~ x)”. Perintah tersebut akan menghasilkan objek hasil analisis SFA dengan nama “milkProd”. Selanjutnya, nilai efisiensi berdasarkan fungsi produksi disimpan sebagai sebuah vektor dengan nama “teProd” menggunakan fungsi“efficiencies()”.
+
+Alternatif bentuk fungsional yang lain, yaitu dengan memodelkan hubungan variabel *input* dan *output* dengan fungsi jarak (*distance function*). Secara matematis, hal tersebut dapat dituliskan sebagai berikut.
+
+$$\log\left(\frac{1}{\text{cows}}\right) = \alpha_0 + \alpha_1\log\left(\frac{\text{energy}}{\text{cows}}\right) + \alpha_2\log\left(\frac{\text{vet}}{\text{cows}}\right) + \alpha_3\log(\text{milk}) + v - u$$
+
+Pada implementasinya, matriks baru yang mewakili variabel-variabel *input* (x) dan *output* (y) perlu didefinisikan terlebih dahulu. Hal ini dapat dilakukan menggunakan fungsi “transmute()” dari paket “dplyr” seperti yang ada pada perintah berikut. Fungsi “transmute()” tersebut mirip dengan fungsi “mutate()” yang sudah digunakan sebelumnya, tetapi fungsi ini akan menghasilkan variabel baru dan menghapus variabel-variabel lama yang ada pada *dataset*.
+
+```{r}
+# Menentukan variabel input (x) dan output (y) untuk spesifikasi fungsi jarak
+Y <- milkData %>% transmute(inv_cows=1/cows) %>%
+  as.matrix()
+X <- milkData %>% transmute(vet_cows=vet/cows,
+  energy_cows=energy/cows,
+  milk=milk) %>% as.matrix()
+```
+
+Selanjutnya, fungsi “frontier::sfa()” kembali digunakan, namun dengan variabel *input* dan *output* yang berbeda. Perintah di bawah ini akan menghasilkan objek hasil analisis SFA dengan nama “milkDist”. Selanjutnya, nilai efisiensi berdasarkan fungsi produksi disimpan sebagai sebuah vektor dengan nama “teDist” menggunakan fungsi “efficiencies()”.
+
+::: {.callout-note}
+## Catatan edisi daring
+
+Pada edisi cetak, matriks untuk fungsi jarak diberi nama `y` dan `x` (huruf kecil), sedangkan estimasi di bawah memakai `Y` dan `X` (huruf besar). Karena R membedakan huruf besar-kecil, nama matriks di atas diseragamkan menjadi `Y` dan `X`.
+:::
+
+```{r}
+# Menghitung nilai efisiensi
+milkDist <- frontier::sfa(log(Y) ~ log(X))
+# Menyimpan nilai efisiensi teknis dari hasil analisis SFA dengan production function
+teDist <- milkDist %>% efficiencies()
+```
+
+### Tahap 3. Membandingkan Hasil SFA dari Dua Spesifikasi yang Berbeda
+
+Setelah melakukan estimasi nilai efisiensi menggunakan dua alternatif bentuk fungsional (fungsi produksi dan fungsi jarak), kita akan membandingkan hasil keduanya dengan melihat secara visual. Caranya, nilai efisiensi dari fungsi produksi dan fungsi jarak diplotkan dalam suatu *scatter-plot* serta dibandingkan dengan suatu garis yang memiliki kemiringan atau *slope* 1 dan *intercept* 0 (artinya kedua nilai sama persis). Adapun skrip yang bisa dijalankan, yaitu sebagai berikut. Sekali lagi, grafik ini dibuat menggunakan fungsi “geom_point()” untuk membuat *scatter-plot* dan fungsi “geom_abline()” untuk membuat garis lurus seperti yang sudah pernah dibahas pada bagian-bagian sebelumnya. Sebagai tambahan, yaitu pengguna bisa menambahkan pilihan tema dari grafik yang dihasilkan. Pada perintah ini, tema yang dipilih adalah “theme_classic()”. Pilihan lain yang bisa digunakan dapat dilihat pada laman https://ggplot2.tidyverse.org/reference/ggtheme.html.
+
+```{r}
+#| label: fig-6-4
+#| fig-cap: "*Scatter-plot* antara skor efisiensi dari perhitungan SFA dengan fungsi jarak (teDist) dan fungsi produksi (teProd)"
+# Membuat grafik korelasi antara nilai efisiensi dari Distance Function dan Production Function
+ggplot() +
+  geom_point(mapping = aes(x=teDist, y=teProd)) +
+  geom_abline(intercept=0, slope=1) +
+  theme_classic()
+```
+
+Grafik korelasi antara skor efisiensi yang diestimasi menggunakan fungsi produksi (sumbu vertikal) dan fungsi jarak (sumbu horizontal) dapat dilihat pada @fig-6-4. Terlihat bahwa tingkat korelasinya sangat tinggi (mendekati garis diagonal). Hal ini kemungkinan disebabkan oleh objek yang diukur sama, yaitu peternakan di Denmark dengan teknologi produksi yang sama, hanya cara estimasinya saja yang berbeda (Bogetoft dan Otto, 2010).
+
+
+## Aplikasi pada Data Rumah Sakit di Indonesia
+
+Setelah melakukan estimasi nilai efisiensi dengan teknik SFA pada data contoh, selanjutnya akan dilakukan aplikasi pada data rumah sakit.
+
+### Tahap 1. Membuka *Dataset*
+
+Seperti yang sudah dilakukan pada bagian-bagian sebelumnya, analisis ini dimulai dengan membuka/mengimpor *dataset hospital* ke dalam *Environment* dengan perintah/*script* di bawah ini. Selanjutnya, pembaca dapat melakukan pelabelan terhadap variabel-variabel dan nilai yang ada pada data tersebut dengan mengikuti langkah yang telah dijelaskan pada Bab [III](#sec-pengantar-r) bagian D.
+
+```{r}
+# Mengaktifkan package
+library(tidyverse)
+# Membuka data dengan format csv
+hospital<- read_csv("hospital.csv")
+```
+
+```{r}
+#| code-fold: true
+#| code-summary: "Kode pelabelan data (lihat Bab III)"
+hospital <- hospital %>%
+  set_variable_labels(
+    id_rs = "ID Rumah Sakit", gp_FTE = "Jumlah Dokter Umum",
+    spec_FTE = "Jumlah Dokter Spesialis", nurse_total = "Jumlah Perawat",
+    other_prof = "Jumlah Karyawan Lain", beds = "Jumlah Bed",
+    outpatients = "Jumlah Kunjungan Rajal", bed_days = "Total Bed Days",
+    admissions1 = "Jumlah Admisi", bed_occ = "Bed Occupancy",
+    throughput = "Throughput", alos = "Average Length of Stay",
+    totalcost_op = "Total Biaya Rajal", total_cost_bd = "Total Biaya Bed Days",
+    totalcost_ip = "Total Biaya Ranap", publichospital = "Kepemilikan",
+    poorins = "Proporsi Jamkesmas", classCD = "Kelas", non_JavaBali = "Lokasi") %>%
+  set_value_labels(
+    publichospital = c("Pemerintah" = 1, "Swasta" = 0),
+    classCD = c("Kelas C/D" = 1, "Kelas A/B" = 0),
+    non_JavaBali = c("Non Java-Bali" = 1, "Java-Bali" = 0)) %>%
+  to_factor()
+```
+
+### Tahap 2. Estimasi Nilai Efisiensi
+
+Selanjutnya, kita akan melakukan estimasi nilai efisiensi menggunakan persamaan yang paling sederhana, yaitu fungsi produksi Cobb-Douglas. Variabel yang digunakan berupa jumlah admisi rawat inap (admissions1) sebagai *output*. Sementara untuk *input*, yaitu variabel jumlah dokter umum penuh waktu (gp_FTE), jumlah dokter spesialis penuh waktu (spec_FTE), jumlah perawat (nurse_total), serta jumlah tempat tidur (beds). Secara formal, model tersebut dapat dituliskan sebagai berikut.
+
+$$
+\begin{aligned}
+\log(\text{admissions1}) ={}& \beta_0 + \beta_1\log(\text{gp\_FTE}) + \beta_2\log(\text{spec\_FTE})\\
+&+ \beta_3\log(\text{nurse\_total}) + \beta_4\log(\text{beds}) + (v_i - u_i)
+\end{aligned}
+$$
+
+Untuk aplikasi di konsol R, langkah pertama yang harus dilakukan, yaitu mendefinisikan matriks untuk variabel *input* (x1) dan *output* (y1) dengan skrip sebagai berikut.
+
+```{r}
+# Menentukan matrix variabel x dan y
+x <- hospital %>% select(gp_FTE, spec_FTE, nurse_total, beds) %>%
+  as.matrix()
+y <- hospital %>% select(admissions1) %>% as.matrix()
+```
+
+Selanjutnya, pada skrip di bawah ini, model SFA diestimasi terlebih dahulu menggunakan fungsi “frontier::sfa()” yang menghasilkan objek dengan nama “prod_inp”, dilanjutkan dengan ekstraksi nilai efisiensi dengan perintah “efficiencies” yang diberi nama “teProd”.
+
+```{r}
+# SFA dengan Production Function
+prod_inp <- frontier::sfa(log(y) ~ log(x))
+teProd <- efficiencies(prod_inp) %>%
+  as_tibble() %>%
+  rename(te_sfa=efficiency)
+# Hasil SFA dengan Production Function
+summary(teProd)
+```
+
+### Tahap 3. Menggabungkan Nilai Efisiensi ke *Dataset*
+
+Setelah estimasi nilai efisiensi didapatkan, langkah selanjutnya, yaitu menggabungkan variabel tersebut ke *dataset* utama dengan fungsi “bind_cols()” dari paket “dplyr” seperti di bawah ini, dilanjutkan dengan memberi label pada variabel yang baru saja dimasukkan menggunakan fungsi “var_label() <-” dari paket “labelled”.
+
+```{r}
+# Merge hasil efisiensi dengan data master
+hospital_sfa <- bind_cols(hospital, teProd)
+# Membuat label
+var_label(hospital_sfa$te_sfa) <- "Efisiensi Teknis (SFA)"
+```
+
+### Tahap 4. Analisis Variabel Kontekstual
+
+Untuk mengetahui faktor-faktor kontekstual apa yang berpengaruh terhadap skor efisiensi, pada tahap ini kita akan melakukan analisis bivariat dan multivariat. Analisis bivariat bertujuan untuk membandingkan (rerata) skor efisiensi berdasarkan suatu variabel kontekstual tertentu, misalnya berdasarkan kepemilikan rumah sakit. Sementara itu, analisis multivariat bertujuan untuk mengetahui hubungan antara lebih dari satu variabel kontekstual dengan estimasi skor efisiensi secara simultan.
+
+### Analisis Bivariat
+
+Pada tahap ini, kita dapat melihat perbedaan rerata skor efisiensi dengan menampilkan grafik *box-plot* menggunakan paket “ggplot2” seperti yang sudah dijelaskan pada bagian-bagian sebelumnya. Adapun contoh yang disajikan dalam hal ini, yaitu lokasi dan jenis rumah sakit.
+
+```{r}
+#| label: fig-6-5
+#| fig-cap: "Grafik *box-plot* antara skor efisiensi dari model SFA dengan lokasi rumah sakit"
+# Membuat box-plot Lokasi
+hospital_sfa %>%
+  ggplot() +
+  geom_boxplot(mapping = aes(x=non_JavaBali, y=te_sfa)) +
+  labs(x ="Lokasi", y ="Nilai Efisiensi Teknis")
+```
+
+```{r}
+#| label: fig-6-6
+#| fig-cap: "Grafik *box-plot* antara skor efisiensi dari model SFA berdasarkan kepemilikan rumah sakit"
+# Membuat box-plot Kepemilikan
+hospital_sfa %>%
+  ggplot() +
+  geom_boxplot(mapping = aes(x=publichospital, y=te_sfa)) +
+  labs(x ="Kepemilikan", y ="Nilai Efisiensi Teknis")
+```
+
+
+
+Berdasarkan @fig-6-5, secara visual dapat dilihat bahwa skor efisiensi rumah sakit yang ada di Pulau Jawa dan Bali lebih tinggi dibandingkan dengan yang lainnya. Sementara itu, berdasarkan @fig-6-6, secara sekilas terlihat bahwa skor efisiensi rumah sakit pemerintah lebih tinggi dibandingkan dengan swasta.
+
+Selanjutnya, dapat dilakukan analisis statistik menggunakan uji t tidak berpasangan dengan asumsi varians yang tidak sama. Analisis ini dilakukan menggunakan fungsi “tbl_summary()” dari paket “gtsummary”. Fungsi “add_p(all_continuous() ~ “t.test”)” digunakan untuk menambahkan nilai p pada uji statistik beda rerata. Hasilnya dapat dilihat bahwa perbedaan rerata skor efisiensi berdasarkan lokasi menunjukkan hasil yang secara statistik signifikan (p < 0,001). Sementara itu, untuk jenis kepemilikan, uji t tidak menunjukkan hasil yang secara statistik signifikan.
+
+```{r}
+# T-test tidak berpasangan berdasarkan lokasi
+hospital_sfa %>%
+  select(te_sfa, non_JavaBali) %>%
+  tbl_summary(
+  by = non_JavaBali,
+  statistic = all_continuous() ~ "{mean} ({sd})") %>%
+  add_p(all_continuous() ~ "t.test") %>%
+  as_flex_table()
+# T-test tidak berpasangan berdasarkan kepemilikan
+hospital_sfa %>%
+  select(te_sfa, publichospital) %>%
+  tbl_summary(by=publichospital,
+  statistic = all_continuous() ~ "{mean} ({sd})") %>%
+  add_p(all_continuous() ~ "t.test") %>%
+  as_flex_table()
+```
+
+### Analisis Multivariat
+
+Untuk memahami pengaruh faktor-faktor kontekstual secara menyeluruh, perlu dilakukan analisis multivariabel. Tidak seperti analisis DEA yang dilakukan secara dua tahap, hubungan variabel-variabel kontekstual dengan tingkat efisiensi dapat dianalisis dengan satu tahap saja. Dalam hal ini, kita akan menggunakan fungsi “sfa()” yang tersedia pada *package* “frontier” seperti yang dilakukan pada Tahap 2 dengan menambahkan parameter “|” dilanjutkan dengan daftar variabel kontekstual yang akan diuji (“non_JavaBali + classCD + publichospital”).
+
+```{r}
+# Membuka data dengan format csv
+hospital<- read_csv("hospital.csv")
+# Analisis SFA satu tahap dengan variabel kontekstual
+faktor_inp <- sfa(
+  log(admissions1) ~ log(gp_FTE) + log(spec_FTE) +
+    log(nurse_total) + log(beds) | non_JavaBali + classCD +
+    publichospital,
+  data = hospital)
+summary(faktor_inp)
+```
+
+Berdasarkan hasil di atas, terlihat bahwa faktor kontekstual tidak ada yang memiliki koefisien yang secara statistik signifikan.
+
+### Tambahan: Perbandingan Skor Efisiensi dari DEA dengan SFA
+
+*Scatter-plot* pada @fig-6-7 merupakan perbandingan hasil estimasi skor efisiensi dengan teknik DEA dan SFA. Terlihat bahwa sebagian besar rumah sakit memiliki skor efisiensi DEA dan SFA yang relatif sama. Akan tetapi, terdapat beberapa rumah sakit yang memiliki skor efisiensi DEA tinggi, namun memiliki skor efisiensi SFA yang rendah.
+
+::: {.callout-note}
+## Catatan edisi daring
+
+Edisi cetak tidak menampilkan kode untuk grafik ini. Kode berikut diambil dari *R Markdown* latihan
+penulis: skor DEA dihitung ulang dengan spesifikasi yang sama seperti pada Bab [V](#sec-dea),
+lalu digabungkan dengan skor SFA.
+:::
+
+```{r}
+#| label: fig-6-7
+#| fig-cap: "*Scatter-plot* antara skor efisiensi dari DEA dan SFA"
+library(Benchmarking)
+# Skor DEA berorientasi input dengan bootstrap (seperti Bab V)
+x_dea <- hospital_sfa %>% select(gp_FTE, nurse_total, other_prof, beds) %>% as.matrix()
+y_dea <- hospital_sfa %>% select(outpatients, admissions1) %>% as.matrix()
+set.seed(2021)
+dea_input <- dea.boot(x_dea, y_dea, NREP = 100, RTS = "vrs", ORIENTATION = "in")
+hospital_all <- hospital_sfa %>% mutate(EI_bc = dea_input$eff.bc)
+
+# Rerata nilai efisiensi dari SFA dan DEA
+mean_sfa <- mean(hospital_all$te_sfa)
+mean_dea <- mean(hospital_all$EI_bc)
+
+# Scatter plot hasil estimasi DEA vs SFA
+hospital_all %>% ggplot() +
+  geom_point(mapping = aes(y = te_sfa, x = EI_bc)) +
+  geom_hline(yintercept = mean_sfa) +
+  geom_vline(xintercept = mean_dea) +
+  labs(title = "Perbandingan DEA dan SFA", x = "DEA", y = "SFA")
+```
+
+Plot di atas juga dapat digunakan jika peneliti atau pengambil kebijakan ingin menentukan rumah sakit mana yang dapat dikategorisasikan efisien, baik diukur dengan DEA maupun SFA. Caranya, yaitu dengan membaginya menjadi empat kuadran berdasarkan skor rata-rata pada masing-masing sumbu. Dengan demikian, rumah sakit yang berada pada kuadran kanan atas dapat dinilai sebagai rumah sakit yang efisien.
+
+## Kesimpulan
+
+- SFA merupakan salah satu jenis teknik pengukuran efisiensi dengan metode analisis *frontier*.
+
+- Teknik SFA merupakan metode yang lebih kompleks dibandingkan DEA.
+
+- Terdapat beberapa *packages* yang diperlukan untuk melakukan analisis SFA pada program R, yaitu: *benchmarking* dan *frontie*r.

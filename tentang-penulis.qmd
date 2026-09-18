@@ -1,0 +1,17 @@
+# Tentang Penulis {.unnumbered}
+
+::: {.author-bio}
+![](images/penulis-hafidz.png){.author-photo fig-alt="Foto Firdaus Hafidz"}
+
+**Firdaus Hafidz.** Lahir di Tembagapura, 15 Mei 1984.
+
+Penulis merupakan staf pengajar dan peneliti di Departemen Kebijakan dan Manajemen Kesehatan, Fakultas Kedokteran, Kesehatan Masyarakat, dan Keperawatan, Universitas Gadjah Mada. Hafidz menyelesaikan pendidikan kedokteran di UGM pada tahun 2008, *Master of Public Health* di UGM tahun 2012, dan Ph.D. di University of Leeds tahun 2018 dengan topik disertasi pengukuran efisiensi fasilitas kesehatan di Indonesia. Fokus topik penelitiannya selama ini terkait pembiayaan dan jaminan kesehatan, di antaranya perhitungan biaya kesehatan, analisis efisiensi, dan evaluasi ekonomi pelayanan kesehatan.
+:::
+
+::: {.author-bio}
+![](images/penulis-rizal.png){.author-photo fig-alt="Foto Muhammad Fikru Rizal"}
+
+**Muhammad Fikru Rizal.** Lahir di Pati, 2 Januari 1993.
+
+Merupakan staf pengajar dan peneliti di Departemen Kebijakan dan Manajemen Kesehatan, Fakultas Kedokteran, Kesehatan Masyarakat, dan Keperawatan, Universitas Gadjah Mada. Fikru menyelesaikan pendidikan kedokteran di UGM pada tahun 2016, kemudian melanjutkan pendidikan master pada Program Studi Ekonomi Kesehatan di Erasmus University, Rotterdam, pada tahun 2018. Saat ini, topik yang menjadi fokus penelitiannya ialah ekonomi kesehatan, kesenjangan sosioekonomi dalam luaran dan pelayanan kesehatan, efisiensi sistem kesehatan, serta evaluasi ekonomi terhadap pelayanan kesehatan.
+:::

@@ -1,159 +1,341 @@
 # Analisis Rasio {#sec-rasio}
 
-## Pengantar
+```{r}
+#| label: setup
+#| include: false
+source("R/setup.R")
+```
+
+Seperti yang telah dibahas pada Bab [II](#sec-pengukuran), hampir sepertiga dari studi mengenai efisiensi fasilitas kesehatan di negara berkembang dilakukan dengan teknik analisis rasio (AR). Terutama pada kondisi ketika ada keterbatasan waktu, data, keahlian, atau anggaran, AR lebih disukai oleh pembuat kebijakan dan peneliti untuk melakukan penilaian efisiensi fasilitas kesehatan. Bitran (1992) mengategorikan dua jenis analisis rasio, yaitu efisiensi teknis (rasio *input* fisik ke *output*) dan efisiensi ekonomi (rasio *input* biaya ke *output*).
+
+Fasilitas kesehatan sering kali menggunakan rasio sederhana (misalnya tingkat hunian tempat tidur atau *bed occupancy rate* dan jumlah admisi per tempat tidur) untuk mengevaluasi efisiensi teknisnya. Lasso (1986) menyarankan untuk menggabungkan tingkat hunian tempat tidur, tingkat *turnover* tempat tidur, dan rata-rata lama rawat inap (*length of stay*) untuk memberikan gambaran yang lebih lengkap tentang kinerja fasilitas kesehatan.
+
+Selain itu, perbandingan indikator kinerja menggunakan pendekatan analisis rasio pada fasilitas kesehatan dapat sekaligus digunakan untuk membantu menilai efisiensi (Barnum dan Kutzin, 1993; Flessa, 1998; Adam *et al*., 2003; Conteh dan Walker, 2004). Akuntansi merupakan metode yang tepat untuk mengukur efisiensi ekonomi dan menjelaskan variasi pada rata-rata biaya suatu layanan pada periode waktu tertentu (St-Hilaire dan Crepeau, 2000). Informasi mengenai biaya berguna untuk perencanaan dan penganggaran, analisis efektivitas biaya, dan evaluasi kinerja penyediaan layanan kesehatan di Indonesia (Lindelow dan Wagstaff, 2003).
 
-Seperti yang dibahas di Bab 2 hampir sepertiga dari studi mengenai efisiensi faskes di negara berpenghasilan rendah dan menengah dilakukan dengan teknik analisis rasio (AR). Terutama pada kondisi ketika ada keterbatasan waktu, data, keahlian, atau anggaran, AR lebih disukai oleh pembuat kebijakan dan peneliti untuk melakukan penilaian efisiensi fasilitas kesehatan.
-
-Bitran (1992) mengkategorikan dua jenis analisis rasio efisiensi: teknis (rasio input fisik ke output) dan ekonomi (rasio input biaya ke output). Fasilitas sering menggunakan rasio sederhana (mis. Tingkat hunian tempat tidur ata *bed occupancy rate* dan jumlah admisi per tempat tidur) untuk mengevaluasi efisiensi teknis fasilitas kesehatan. Lasso (1986) menyarankan untuk menggabungkan tingkat hunian tempat tidur, tingkat turnover tempat tidur, dan rata-rata lama tinggal (*length of stay*) untuk memberikan gambaran yang lebih lengkap tentang kinerja fasilitas kesehatan.
-
-Selain itu, membandingkan indikator kinerja menggunakan analisis rasio pada fasilitas kesehatan dapat sekaligus membantu menilai efisiensi (Barnum & Kutzin, 1993; Flessa, 1998; Adam et al., 2003; Conteh & Walker, 2004). Akuntansi merupakan metode yang tepat untuk mengukur efisiensi ekonomi dan menjelaskan variasi pada rata-rata biaya suatu layanan pada periode waktu tertentu (St-Hilaire & Crepeau, 2000). Informasi mengenai biaya berguna untuk perencanaan dan penganggaran, analisis efektivitas biaya, dan evaluasi kinerja penyediaan layanan kesehatan di Indonesia (Lindelow & Wagstaff, 2003). Unit biaya yang relatif tinggi di fasilitas kesehatan dapat mengindikasikan adanya ketidakefisian, memberikan informasi yang berharga dalam proses pengambilan keputusan kebijakan di fasilitas kesehatan milik pemerintah, baik di tingkat daerah maupun pusat (Barnum & Kutzin, 1993; Witter et al., 2000). Seperti diilustrasikan pada Bab 2, variasi yang lebar pada kinerja fasilitas kesehatan serta heterogenitas di tingkat nasional menunjukkan bahwa ada hal yang bisa dipelakari dari fasilitas kesehatan yang berkinerja lebih baik. Kami menggabungkan kedua jenis analisis rasio untuk mengidentifikasi fasilitas kesehatan yang berkinerja tinggi serta melakukan eksplorasi faktor-faktor yang mendasari kinerja yang relative baik tersebut.
-
-Beberapa penelitian sudah dilakukan untuk mengetahui biaya penyediaan layanan kesehatan di Indonesia (Sulistyorini & Moediarso, 2012; Putra et al., 2013; Sari et al., 2013), akan tetapi, sampai saat ini hanya ada satu studi yang meneliti biaya pelayanan kesehatan primer di Indonesia yang digunakan untuk menilai efisiensi relative mereka (Berman, 1986). Kami menemukan satu penelitian di Indonesia yang menggunakan model Pabon-Lasso untuk menilai kinerja rumah sakit dan mengidentifikasi strategi untuk meningkatkan efisiensi (Iswanto, 2015). Namun, metode ini tidak pernah digunakan untuk menganalisis faktor kontekstual yang memengaruhi fasilitas kesehatan di Indonesia.
-
-## Metode
-
-### Data
-
-Studi ini menilai penyebab efisiensi di fasilitas kesehatan dengan menganalisis data dari empat sumber: 1) studi penetapan biaya fasilitas kesehatan (HFCS), 2) dataset *Indonesia Case-Based Groups* (INA-CBGs), 3) Statistik Sosial Ekonomi Nasional (SUSENAS), dan 4) statistik potensi desa (PODES). ami menggunakan pengidentifikasi rumah sakit untuk menggabungkan dataset HFCS dan INA-CBGs.
-
-Kami menggabungkan dataset SUSENAS menggunakan pengidentifikasi kabupaten/kota dari rumah sakit dan Puskesmas. Dataset PODES digabungkan menggunakan pengidentifikasi kabupaten/kota untuk rumah sakit dan pengidentifikasi kecamatan untuk Puskesmas. Dataset gabungan kami dari empat sumber ini terdiri dari 89 variabel untuk 200 rumah sakit dan 65 variabel untuk 234 Puskesmas. Namun, kami tidak menganalisis 139 Puskesmas tanpa layanan rawat inap karena parameter Model Pabon-Lasso hanya berlaku untuk layanan rawat inap. Tidak ada imputasi multipel untuk data yang tidak ada (*missing value*), selain dari indeks *casemix* yang digunakan untuk menyesuaikan biaya satuan rumah sakit.
-
-### Analisis dengan Model Pabon-Lasso
-
-Lasso (1986) mengembangkan teknik grafis untuk membagi fasilitas kesehatan menjadi empat sektor menggunakan kombinasi indikator efisiensi. Ada tiga indikator utama: (1) tingkat hunian tempat tidur rata-rata (average bed occupancy rate), yang ditunjukkan pada sumbu horizontal dan mengukur persentase waktu dari rata-rata tempat tidur dihuni ; (2) tingkat turnover tempat tidur rata-rata, yang direpresentasikan pada sumbu vertikal dan mengukur jumlah rata-rata pasien dipulangkan per tempat tidur pada tahun tersebut; dan (3) rata-rata lama menginap, yang direpresentasikan oleh gradien garis lurus dari titik asal (origin) ke titik pengamatan dan mengukur durasi rata-rata rawat inap (Lasso, 1986). Kami menerapkan model grafis Pabon-Lasso (1986) untuk menilai efisiensi fasilitas kesehatan dengan memplotkan dua indikator: jumlah admisi per tempat tidur dan tingkat hunian tempat tidur. Indikator-indikator ini membagi grafik menjadi empat sector yang mewakili berbagai tingkat efisiensi (Gambar 5.1): fasilitas kesehatan di Sektor 1 (kiri bawah) memiliki throughput (luaran antara) yang rendah (jumlah admisi per tempat tidur) dan durasi kekosongan tempat tidur yang Panjang; fasilitas kesehatan di sector 2 (kiri atas) memiliki jumlah pasien yang banyak namun memiliki waktu kekosongan tempat tidur yang panjang; fasilitas kesehatan di Sektor 3 (kanan atas) memiliki throughput tinggi dan tingkat hunian tinggi; sementara fasilitas kesehatan di Sektor 4 memiliki tempat tidur dengan throughput yang rendah namun pasien lebih lama tinggal. Kami tidak menunjukkan rata-rata lama rawat inap di gambar namun kami menggunakan model Pabon-Lasso untuk memeriksa variasi kontekstual antar faskes di berbagai setting (mis. ukuran tempat tidur, kepemilikan, dan lokasi).
-
-![](../images/draf/image21.png){width="98%" fig-align="center"}
-
- 
-
-Kami menilai bahwa penggunaan nilai rerata pada tiap axis sebagai cut-off untuk membagi grafik menjadi sektor-sektor adalah ukuran yang masuk akal dengan kecenderungan distribusi faskes pada kedua sisi yang cukup seimbang.
-
-### Metode Perhitungan Biaya
-
-Kami memperkirakan total biaya dan biaya unit rumah sakit dan Puskesmas. Satuan biaya mengacu pada biaya rata-rata untuk memberikan satu layanan. Pendekatan step-down dan bottom-up sama-sama valid untuk memperkirakan unit biaya (Mogyorosy & Smith, 2005). Pemilihan metode yang tepat sering bergantung pada tingkat agregasi data (Smith & Barnett, 2003). Pendekatan bottom-up membutuhkan data yang lebih rinci seperti data pada tingkat pasien, yang kemungkinan tidak bisa diperoleh untuk penelitian ini (Smith & Barnett, 2003). Oleh karena itu, kami menggunakan pendekatan step-down, teknik umum untuk menghitung biaya satuan secara akurat dan praktis (Conteh & Walker, 2004; Mogyorosy & Smith, 2005). Biaya overhead dialokasikan untuk pusat biaya antara dan pusat biaya akhir (mis. kunjungan rawat jalan dan rawat inap) untuk menghitung biaya per kunjungan rawat jalan, biaya per rawat inap, dan biaya per tempat tidur hari (Conteh & Walker, 2004; Mogyorosy & Smith, 2005).
-
-Langkah pertama yang dilakukan adalah dengan melakukan klasifikasi pusat biaya, dengan dua pusat biaya akhir dan beberapa pusat biaya menengah/antara. Pusat biaya akhir adalah unit rawat inap dan rawat jalan; pusat biaya pendukung adalah unit yang memberikan dukungan bagi pelayanan pasien, termasuk administrasi, dukungan non-klinis (mis. dapur, transportasi dan cucian) dan dukungan klinis (mis. radiologi, farmasi dan ruang operasi).
-
-Biaya langsung, termasuk penempatan staf, bahan dan modal, dialokasikan untuk setiap pusat biaya. Biaya kepegawaian mencerminkan gaji pokok dan insentif keuangan unntuk individu seperti asuransi dan tunjangan keluarga. Data terkait biaya untuk bahan, termasuk pasokan medis dan obat-obatan didapatkan dari database Monthly Index of Medical Specialities (MIMS) Indonesia. Studi ini memasukkan bangunan, kendaraan, peralatan dan furnitur sebagai biaya modal, tidak termasuk biaya tanah. Pendekatan ekonomi digunakan untuk memperkirakan biaya modal, yang mencakup penyusutan nilai dan biaya peluang (opportunity cost) untuk investasi (Shepard et al., 2000). Informasi tentang nilai bangunan per meter persegi yang didapatkan dari Dataset Studi Pembiayaan Fasilitas Kesehatan kemudian digunakan untuk memperkirakan nilai bangunan tahunan. Modal biaya dianualisasi dengan menggunakan tingkat diskonto 3%, seperti yang direkomendasikan oleh WHO (Edejer et al., 2003). Dikarenakan tidak adanya informasi terkait masa hidup peralatan dan aset modal di Indonesia, kami memperkirakannya menggunakan Pedoman aset rumah sakit dari *American Hospital Association*, yang memberikan informasi yang lengkap dan terperinci tentang setiap item (AHA, 2008). Masa hidup peralatan bervariasi dari 1 hingga 20 tahun, dengan rata-rata 8,7 tahun.
-
-Biaya langsung dari pusat biaya pendukung kemudian dialokasikan ke pusat biaya akhir. Tabel 5.1 merangkum kriteria terperinci yang digunakan untuk mengalokasikan biaya-biaya tersebut. Semua pusat biaya akhir dibagi dengan jumlah total pasien kunjungan rawat jalan atau rawat inap di fasilitas kesehatan untuk menghitung biaya satuan layanan. Nilai tukar 2011 digunakan untuk mengkonversi rupiah Indonesia (IDR) ke dalam dolar AS (USD) (1 USD = Rp8.733,44) (OANDA, 2015).
-
-![](../images/draf/image22.png){width="100%" fig-align="center"}
-
-### Analisis Karakteristik
-
-Tujuan dari studi empiris ini adalah untuk menganalisis hubungan antara faktor-faktor kontekstual dan efisiensi fasilitas kesehatan, rumah sakit dan Puskesmas yang dipandu oleh kerangka kerja analitis yang telah dibahas pada Bab 4. Untuk mencapai hal ini, analisis bivariat (mis. ANOVA, uji Chi-Square dan regresi linear sederhana) digunakan untuk menjelaskan perbedaan karakteristik fasilitas kesehatan dalam model Pabon-Lasso dan unit biaya. Selain itu, analisis tiga tahap dilakukan untuk mengidentifikasi fasilitas kesehatan yang berkinerja tinggi. Pertama, kombinasi analisis rasio diterapkan; di mana fasilitas kesehatan berkinerja tinggi memiliki unit biaya yang rendah (di bawah rata-rata) dan berlokasi di sektor pemanfaatan tinggi pada model Pabon-Lasso (Sektor 3). Dengan demikian, hasil utama dari analisis ini adalah variabel biner yang mengambil nilai 1 untuk fasilitas kesehatan berkinerja tinggi, dan 0 untuk fasilitas kesehatan berkinerja tinggi.
-
-Kedua, hubungan antara kinerja dan berbagai faktor kontekstual dikuantifikasi menggunakan regresi logistik. Faktor-faktor yang menunjukkan tingkat signifikansi yang dapat diterima (nilai P \<0,25) dalam analisis bivariat dimasukkan dalam analisis regresi logistik multivariat untuk menentukan kontribusi independen mereka terhadap faktor-faktor kinerja fasilitas kesehatan (Sperandei, 2014). Ketiga, dalam analisis multivariat ini, seleksi langkah-maju (forward-stepwise selection) dilakukan: Variabel dimasukkan satu per satu dalam model, menggunakan nilai P \<0,05 sebagai kriteria untuk dimasukkan. Ini menghasilkan model akhir tereduksi (reduced model). Pemeriksaan untuk multikolinieritas juga dilakukan. Faktor varians inflasi (variance inflation factor)\> 10 digunakan untuk menunjukkan multikolinieritas yang signifikan. Area di bawah kurva *Receiver Operating Characteristic* (ROC) digunakan untuk memperkirakan kemampuan model untuk membedakan antara faskes berkinerja tinggi dengnan faskes lainnya. Perhitungan biaya, penyusunan diagram Pabon-Lasso, serta analisis karakteristik dilakukan menggunakan STATA 14 (Stata-Corp, College Station, TX, USA).
-
-## Hasil
-
-### Karakteristik Fasilitas Kesehatan
-
-Tabel 5.2 dan 5.3 menyajikan karakteristik dan aktivitas fasilitas kesehatan yang diteliti. Rata-rata, rumah sakit menerima 81.873 kunjungan rawat jalan dan 8.984 rawat inap. Output ini diproduksi menggunakan rata-rata 42 dokter, 155 perawat, 153 staf pendukung, dan 159 tempat tidur per rumah sakit. Puskesmas, termasuk puskesmas satelit/pembantu, menghasilkan rata-rata 22.372 kunjungan rawat jalan dan 591 admisi/rawat inap. Puskesmas menghasilkan output ini menggunakan 3 dokter, 29 perawat dan bidan, 17 staf pendukung, dan rata-rata 10 tempat tidur. Kami juga menemukan banyak variasi dalam jumlah staf medis di rumah sakit dan Puskesmas. Contohnya, rasio perawat-dokter adalah 4: 1 di rumah sakit dan 10: 1 di Puskesmas.
-
-![](../images/draf/image23.png){width="80%" fig-align="center"}
-
-![](../images/draf/image24.png){width="79%" fig-align="center"}
-
-### Model Pabon-Lasso
-
-#### Rumah Sakit
-
-Gambar 5.2 menunjukkan empat model Pabon-Lasso untuk rumah sakit; garis vertikal dan horizontal mewakili nilai rata-rata dari tingkat hunian tempat tidur (bed occupancy rate) dan tingkat admisi per tempat tidur. Tiga puluh enam persen rumah sakit secara keseluruhan berada di sektor pemanfaatan tinggi pada model Pabon-Lasso (Sektor 3), ini menunjukkan rumah sakit mencapai efisiensi tinggi dengan sisa tempat tidur yang sedikit (minimum waste of beds). Tiga puluh sembilan persen berada di sektor pemanfaatan rendah (Sektor 1), di mana jumlah tempat tidur lebih tinggi relatif terhadap permintaan yang ada. Beberapa rumah sakit kecil (\<89 tempat tidur) di sektor 2 menunjukkan bahwa rata-rata pasien membutuhkan rawat inap jangka pendek dan terjadi kelebihan tempat tidur yang tidak dihuni. Beberapa rumah sakit (\> 198 tempat tidur) yang terletak di sektor 4, menunjukkan banyaknya rawat inap jangka panjang pada, hal ini terjadi terutama dikarenakan jenis penyakit yang ditangani di RS besar cenderung lebih sulit.
-
-Kami menemukan varians yang besar (wide variance) di rumah sakit kecil dan varians yang kecil (narrow variance) di rumah sakit besar. Model Pabon-Lasso menunjukkan bahwa rumah sakit swasta dan RS yang memiliki tempat tidur lebih sedikit memiliki kecenderungan lebih besar untuk berada di sektor pemanfaatan rendah daripada rumah sakit umum dan rumah sakit besar. Rumah sakit di sektor pemanfaatan tinggi cenderung menunjukkan karakteristik tertentu: mereka memiliki dokter medis nonspesialis penuh waktu (full-time-equivalent, fte) yang lebih banyak, memiliki populasi dengan tingkat pendidikan yang lebih rendah, dan berlokasi di Jawa atau Bali (Tabel C.1 dalam Lampiran C).
-
-![](../images/draf/image25.png){width="89%" fig-align="center"}
-
-![](../images/draf/image26.png){width="85%" fig-align="center"}
-
-#### Puskesmas
-
-Gambar 5.3 berisi empat model Pabon-Lasso untuk Puskesmas; 33% dari semua Puskesmas dengan layanan rawat inap berada di sektor pemanfaatan tinggi (Sektor 3), sedangkan 54% berada di sektor pemanfaatan rendah (Sektor 1). Puskesmas sebagian besar berada di sektor 1 yang menunjukkan penggunaan sumber daya yang tidak efisien, terutama di Puskesmas dengan tujuh hingga sembilan tempat tidur. Padahal, Puskesmas yang lebih besar (\> 12 tempat tidur) ternyata lebih efisien. Hanya ada sejumlah kecil Puskesmas yang berlokasi di sektor 4 (ditandai dengan rata-rata lama tinggal) karena peran utama Puskesmas adalah menangani kasus yang tidak terlalu parah. Kami tidak menemukan perbedaan signifikan dalam pemanfaatan berdasarkan lokasi pedesaan / perkotaan atau jumlah tempat tidur dalam model Pabon-Lasso. Namun, Puskesmas di sektor pemanfaatan rendah menghadapi gangguan air yang jauh lebih besar daripada Puskesmas di sektor pemanfaatan tinggi (Tabel C.2 dalam Lampiran C).
-
-### Biaya Total
-
-Gambar 5.4 menunjukkan struktur biaya fasilitas kesehatan. Dari sampel, ditemukan bahwa rata-rata total biaya penyediaan perawatan kesehatan di rumah sakit dan Puskesmas adalah masing-masing sebesar USD 3,8 juta (nilai tengah USD 2,9 juta) dan USD 205.000 USD (nilai tengah USD 189.000) per tahun. Total biaya rumah sakit Kelas A lebih dari 11 kali lipat rumah sakit Kelas D. Struktur biaya bervariasi berdasarkan jenis fasilitas kesehatan. Biaya kepegawaian, termasuk gaji dan insentif, merupakan komponen terbesar dari total biaya di semua jenis fasilitas. Rumah sakit swasta memiliki proporsi terendah dari biaya staf (35%) dan Puskesmas tanpa layanan rawat inap memiliki yang tertinggi (57%).
-
- 
-
-![](../images/draf/image27.png){width="80%" fig-align="center"}
-
-Biaya material, termasuk obat-obatan dan persediaan medis, juga merupakan bagian yang signifikan, mulai dari 24% di Puskesmas tanpa layanan rawat inap hingga 39% di rumah sakit swasta. Biaya modal menyumbang sekitar 14% dari total biaya di rumah sakit dan 19% di Puskesmas. Kami tidak menemukan pola spesifik dalam struktur biaya total berdasarkan ukuran rumah sakit, meskipun Puskesmas dengan dan tanpa layanan rawat inap menunjukkan struktur biaya yang serupa.
-
-### Satuan Biaya Pelayanan Kesehatan
-
-#### Rumah Sakit
-
-Satuan biaya (unit cost) rata-rata per pasien di rumah sakit berdasarkan kunjungan rawat jalan, rawat inap, dan tempat tidur masing-masing adalah USD 44, USD 299, dan USD 82, masing-masing (Tabel 5.4). Satuan biaya cenderung miring ke kanan; dengan demikian, nilai mdedian dari satuan biaya lebih rendah dibandingkan reratanya, yaitu sebesar: USD 24, USD 248, dan USD 68 untuk masing-masing kunjungan rawat jalan, rawat inap, dan hari tidur.
-
-Ada variasi yang penting pada satuan biaya dari layanan berdasarkan jenis kepemilikan rumah sakit. Rumah sakit swasta memiliki satuan biaya yang lebih tinggi yang signifikan secara statistik dibandingkan dengan rumah sakit umum. Biaya layanan rawat jalan di rumah sakit swasta hampir dua kali lipat dari rumah sakit umum; sementara biaya layanan rawat inap dan hari tidur lebih dari 1,2 kali lebih tinggi.
-
-Ukuran rumah sakit juga dikaitkan dengan biaya unit. Rumah sakit besar, seperti rumah sakit Kelas A dan B, memiliki biaya unit yang lebih rendah berdasarkan kunjungan rawat jalan dan tempat tidur dibandingkan dengan rumah sakit Kelas C dan D. Rumah sakit Kelas B memiliki biaya unit yang secara signifikan lebih rendah secara statistik dibandingkan dengan Rumah Sakit Kelas C dan D. Temuan ini bertentangan dengan harapan sejak rumah sakit Kelas B cenderung menangani kasus yang lebih kompleks daripada rumah sakit Kelas C dan D. Mengingat ukuran sampel yang kecil dari rumah sakit Kelas A, biaya unit menunjukkan varians yang luas. Oleh karena itu ukuran rumah sakit dikategorikan kembali menjadi tiga kelompok yang diproksi berdasarkan jumlah tempat tidur (Lasso, 1986; AHRQ, 2013): rumah sakit kecil (dengan kurang dari 100 tempat tidur), rumah sakit menengah (antara 100 dan 199 tempat tidur), dan rumah sakit besar (lebih dari 200 tempat tidur). Rumah sakit besar memiliki biaya unit rawat jalan yang signifikan secara statistik lebih rendah daripada rumah sakit menengah dan kecil. Rumah sakit kecil memiliki biaya unit rawat inap dan tempat tidur yang lebih tinggi, tetapi angka ini tidak signifikan secara statistik. Perbedaan dalam biaya unit campuran kasus menunjukkan bahwa hampir semua jenis rumah sakit merawat pasien dengan kasus yang kurang parah (menunjukkan nilai negatif). Namun, rumah sakit umum Kelas A dan rumah sakit swasta ditemukan untuk mengobati kasus yang lebih parah dibandingkan dengan jenis rumah sakit lainnya. Tabel C.3 dalam Lampiran C menunjukkan hubungan antara biaya unit dan karakteristik rumah sakit.
-
-#### Puskesmas
-
-Median dari unit biaya per pasien di Puskesmas dengan layanan rawat inap untuk kunjungan rawat jalan, rawat inap, dan hari tempat tidur masing-masing adalah USD 11, USD 135, dan USD 83, masing-masing (Tabel 5.5). Biaya satuan condong ke kiri (positively skewed) sehingga rata-rata terkait biaya unit lebih rendah: USD 9, USD 112, dan USD 61 untuk kunjungan rawat jalan, rawat inap, dan tempat tidur. Ketersediaan layanan seperti layanan rawat inap, perawatan kebidanan dasar dan perawatan bayi baru lahir (PONED), dan jam buka malam hari tidak memiliki dampak signifikan pada biaya unit. Namun, ukuran Puskesmas, diproksi dengan jumlah tempat tidur dan ketersediaan layanan darurat ditemukan berkorelasi negatif dengan biaya unit rawat jalan: Puskesmas yang lebih besar memiliki biaya unit rawat jalan yang lebih rendah daripada Puskesmas kecil (Tabel C.4 dalam Lampiran C).
-
-### Karakteristik Fasilitas Kesehatan yang Berperforma Tinggi
-
-Karakteristik faskes diperiksa dengan membandingkan faktor kontekstual dari fasilitas kesehatan berkinerja tinggi dan tidak berkinerja tinggi (lihat Tabel 5.6).
-
-#### Rumah sakit
-
-Analisis bivariat menunjukkan bahwa 40 rumah sakit berkinerja tinggi memiliki karakteristik khusus yang tidak ada di 152 rumah sakit lainnya yaitu mereka cenderung berukuran lebih besar, dimiliki oleh pemerintah, dan bekerja secara nirlaba. Rumah sakit berkinerja tinggi merawat lebih banyak pasien manula dan lebih banyak pasien yang merupakan anggota jaminan kesehatan untuk orang tidak mampu. Dalam hal kualitas, sebagian besar indikator tidak dapat disimpulkan, tetapi rumah sakit yang diakreditasi oleh komisi akreditasi rumah sakit Indonesia berkinerja lebih baik. Mengenai faktor-faktor eksternal, rumah sakit berkinerja tinggi umumnya terletak di daerah yang miskin di mana sebagian besar penduduknya tidak mampu, sebagian kecil penduduknya berpendidikan sekolah menengah atau pendidikan tinggi, dan penduduknya memiliki pengeluaran rumah tangga yang relatif rendah. Selain itu, rumah sakit di daerah dengan cakupan jaminan kesehatan untuk masyarakat miskin yang lebih besar cenderung lebih efisien daripada rumah sakit di daerah lain (Tabel C.5 dalam Lampiran C).
-
-Mengingat banyaknya data yang tersedia dan kerangka kerja yang dikembangkan pada Bab 2 analisis sensitivitas dilakukan dengan mengembangkan dua model regresi logistik yang berbeda untuk mengidentifikasi dan memahami faktor kontekstual yang mendorong rumah sakit berkinerja tinggi (Tabel 5.8). Akreditasi, jumlah pasien lansia yang lebih besar, ukuran rumah sakit yang lebih besar, kepemilikan publik, tingkat pendidikan masyarakat yang lebih rendah dan cakupan jaminan kesehatan bagi masyarakat miskin adalah prediktor independen bagi rumah sakit berkinerja tinggi dalam analisis multivariat. Rumah sakit yang terakreditasi dan memiliki cakupan jaminan kesehatan bagi masyarakat miskin yang lebih besar adalah prediktor pada Model 1. Rumah sakit terakreditasi memiliki tiga kali lipat kemungkinan berkinerja tinggi daripada rumah sakit lain. Untuk setiap tambahan 1% dari populasi yang tercakup dalam skema jaminan kesehatan untuk orang miskin, peluang rumah sakit untuk berkinerja tinggi naik sebesar 3%. Model 2 menunjukkan rumah sakit dengan proporsi pasien lansia yang lebih tinggi, klasifikasi Kelas A atau B, kepemilikan publik dan tingkat pendidikan populasi yang lebih rendah lebih cenderung berada di antara rumah sakit berkinerja tinggi. Untuk setiap 1% tambahan pasien yang lebih tua dari 65, peluang rumah sakit untuk menjadi di antara rumah sakit berkinerja tinggi meningkat sebesar 6%. Rumah sakit Kelas A dan B memiliki peluang 2,6 kali lebih tinggi untuk berkinerja tinggi daripada rumah sakit Kelas C dan D. Rumah sakit umum memiliki peluang empat kali lebih tinggi untuk berkinerja tinggi daripada rumah sakit swasta. Selain itu, untuk setiap tambahan 1% dari populasi dengan hanya tingkat pendidikan dasar, peluang rumah sakit untuk berkinerja tinggi naik sebesar 5%.
-
-Kedua model berguna bagi pemangku kepentingan yang berbeda. Kementerian Kesehatan akan lebih tertarik dengan hasil pada model 1 di mana kualitas rumah sakit dan cakupan asuransi nasional menjadi fokus kebijakan utama. Manajer fasilitas kesehatan cenderung fokus pada hasil model 2 karena mereka memiliki kontrol atas sebagian besar variabel. Untuk menemukan model terbaik, ROC digunakan karena memfasilitasi diskriminasi antar model. Model 2 meningkatkan area ROC menjadi 0,784 dari 0,656 pada Model 1, menunjukkan bahwa model 2 memiliki kesesuaian model yang lebih akurat. Model 2 juga menjelaskan lebih banyak variabel faktor eksternal dan internal rumah sakit. Hasil penelitian menunjukkan bahwa jenis dan kepemilikan rumah sakit terkait dengan akreditasi di mana rumah sakit umum besar lebih cenderung terakreditasi. Juga, proporsi populasi dengan tingkat sekolah dasar yang lebih tinggi mencerminkan populasi yang buruk.
-
-#### Puskesmas
-
-Analisis bivariat menunjukkan bahwa 17 Puskesmas yang berperforma tinggi memiliki karakteristik umum yang berbeda dengan yang ada di 76 Puskesmas yang tidak berperforma tinggi: Puskesmas berkinerja tinggi mengalami lebih sedikit gangguan listrik dan obat-obatan. Mengenai faktor kontekstual eksternal, Puskesmas berkinerja tinggi umumnya berada di daerah di mana proporsi populasi yang lebih rendah memiliki tingkat pendidikan sekolah dasar dan di mana Puskesmas melayani populasi yang lebih besar (lihat Tabel C.6 dalam Lampiran C).
-
-Analisis multivariat menunjukkan ada empat prediktor independen Puskesmas berkinerja tinggi (lihat Tabel 5.9). Puskesmas dengan gangguan listrik lebih sedikit dan gangguan obat memiliki peluang lima kali lebih besar untuk berada di antara Puskesmas berkinerja tinggi daripada yang lain. Untuk setiap tambahan 1 USD pengeluaran rumah tangga per bulan, peluang Puskesmas untuk berkinerja tinggi menurun sebesar 2%. Juga, untuk setiap 10.000 orang tambahan yang ditanggung, peluang Puskesmas untuk berkinerja tinggi naik 25 hingga 40%. Model 1 dan 2 keduanya memiliki kekuatan diskriminatif yang kuat, dengan area ROC 0,8. Namun, mengingat lebih banyak variabel dapat menjelaskan efisiensi fasilitas perawatan primer, model 2 lebih disukai.
-
-## Pembahasan
-
-Analisis rasio, analisis biaya satuan (*unit cost analysis*), dan model Pabon-Lasso adalah metode yang dapat digunakan untuk menilai efisiensi di fasilitas kesehatan (Lasso, 1986; Barnum & Kutzin, 1993). Sejauh pengetahuan kami, penelitian ini adalah yang pertama menggunakan kedua metode, dan karena itu telah menghasilkan hasil yang lebih kuat.
-
-### Penggunaaan layanan / utilisasi
-
-*Bed Occupancy Ratio (BOR)* adalah indikator dasar untuk menilai kinerja fasilitas kesehatan, dengan BOR 80-90% menunjukkan efisiensi yang tinggi (Chisholm & Evans, 2010; Chatterjee et al., 2013). Baik rumah sakit maupun Puskesmas di Indonesia tidak mencapai target itu; tingkat hunian tempat tidur tertinggi ditemukan adalah 60% di rumah sakit Indonesia dan 34% di Puskesmas. Demikian pula, Somanathan et al. (2000) menemukan rata-rata tingkat hunian untuk fasilitas perawatan primer di Sri Lanka berada di bawah 50%. Selain itu, dengan menggunakan model Pabon-Lasso, hanya beberapa fasilitas yang diidentifikasi berada di sektor pemanfaatan tinggi. Studi di Kolombia, Iran, dan Mali telah menunjukkan sekitar 20% hingga 45% fasilitas berada di sektor pemanfaatan tinggi (3) (Lasso, 1986; Mohammadkarim et al., 2011; Asbu et al., 2012; Mehrtak et al ., 2014). Hasil ini menunjukkan kelebihan kapasitas tempat tidur di fasilitas kesehatan mengingat tingkat pemanfaatan saat ini.
-
-Untuk menghindari kelebihan input, sangat penting untuk menemukan ukuran fasilitas kesehatan yang optimal. Kami menemukan bahwa ukuran rumah sakit dan Puskesmas, diproksi dengan jumlah tempat tidur, memang memengaruhi efisiensi. Temuan paling menarik menggunakan model Pabon-Lasso adalah pola ukuran fasilitas kesehatan di setiap sektor: proporsi terbesar dari fasilitas kesehatan berkinerja tinggi adalah ukuran sedang (antara 94 dan 205 tempat tidur).
-
-### Variasi Biaya
-
-Hasil perhitungan biaya yang kami lakukan menunjukkan bahwa fasilitas kesehatan di Indonesia lebih mahal daripada perkiraan WHO, terutama di tingkat rumah sakit (Gkountouras et al., 2011). Biaya per tempat tidur dan kunjungan rawat jalan yang diperkirakan di rumah sakit dalam penelitian ini masing-masing dua dan empat kali lebih tinggi daripada estimasi WHO. Selanjutnya, biaya per kunjungan rawat jalan di fasilitas perawatan primer tanpa layanan rawat inap dalam penelitian ini adalah dua kali lipat estimasi WHO. Namun, biaya kunjungan rawat jalan di fasilitas perawatan primer Indonesia dengan layanan rawat inap serupa dengan estimasi WHO. Ini menunjukkan bahwa ekspektasi biaya layanan kesehatan masih dapat dikurangi melalui efisiensi.
-
-Kepegawaian adalah komponen terbesar dari biaya fasilitas kesehatan. Studi di negara-negara berkembang menunjukkan bahwa biaya personil mencakup antara 41% dan 74% dari semua biaya di seluruh fasilitas kesehatan (Green et al., 2001; Minh et al., 2010). Chatterjee et al. (2013) juga menemukan bahwa rumah sakit swasta di India memiliki biaya staf yang lebih rendah daripada rumah sakit umum. Alasan utama dari proporsi biaya kepegawaian yang lebih rendah di rumah sakit swasta adalah bahwa rumah sakit swasta menawarkan struktur gaji di bawah tingkat pasar, memiliki lebih banyak fleksibilitas dalam menggunakan staf, dan lebih bergantung pada staf kontrak paruh waktu (Ensor & Indradjaya, 2012; Chatterjee et al., 2013) .
-
-Variasi yang luas dalam biaya satuan (*unit cost*) ditemukan di seluruh fasilitas sebagian karena perbedaan pola pemanfaatan. Ini lebih lanjut mendukung temuan biaya unit rawat inap yang tinggi di fasilitas perawatan primer karena tingkat output yang rendah (Somanathan et al., 2000). Somanathan et al. (2000) juga menemukan biaya rawat inap yang lebih tinggi di fasilitas besar karena fasilitas ini menangani kasus yang lebih kompleks; Namun, hasil kami menunjukkan bahwa fasilitas besar cenderung memiliki biaya rawat inap yang lebih rendah terlepas dari campuran kasus.
-
-### Faktor Internal
-
-Kepemilikan sangat penting ketika melakukan pengukuran efisiensi, terutama mengingat perbedaan penting dalam karakteristik yang disorot pada Tabel 5.8. Meskipun ulasan terakhir oleh Herrera et al. (2014) tidak menunjukkan hasil konklusif, apakah rumah sakit umum atau swasta berkinerja lebih baik, kami menemukan bahwa rumah sakit umum lebih sering efisien daripada rumah sakit swasta.
-
-Temuan ini sesuai dengan Herr (2008) yang menemukan bahwa rumah sakit swasta nirlaba dan nirlaba kurang efisien daripada rumah sakit umum. Ada beberapa kemungkinan penjelasan untuk hasil ini. Rumah sakit umum biasanya memiliki lebih banyak sumber daya seperti staf, tempat tidur, dan teknologi medis, dan oleh karena itu mereka dapat merawat lebih banyak pasien daripada rumah sakit swasta (Lee et al., 2008b; Asbu et al., 2012). Penjelasan lain adalah bahwa rumah sakit umum memiliki lebih banyak kesempatan untuk menginvestasikan kembali keuntungan mereka dalam peralatan medis berteknologi tinggi dan melatih tenaga medis, sementara rumah sakit swasta cenderung membayar lebih tinggi daripada publik untuk menarik dan mempertahankan dokter (Helmig & Lapsley, 2001; Lee et al., 2008b). Perbandingan kami dengan rumah sakit umum dan swasta menunjukkan bahwa rumah sakit umum umumnya berlokasi di daerah yang kekurangan dan merawat lebih banyak pasien dengan akses ke skema asuransi untuk masyarakat miskin. Dengan demikian, skema asuransi untuk masyarakat miskin mengurangi hambatan finansial terhadap akses layanan kesehatan dan meningkatkan tingkat pemanfaatan. Selain itu, skema asuransi Indonesia untuk masyarakat miskin menggunakan mekanisme pembayaran prospektif, yang memberikan insentif kuat kepada penyedia layanan kesehatan untuk beroperasi secara efisien (Hsu, 2010). Oleh karena itu, selain melindungi orang yang mungkin menghadapi pengeluaran kesehatan yang sangat besar, cakupan kesehatan universal di Indonesia memengaruhi efisiensi fasilitas kesehatan.
-
-Pengelola layanan kesehatan mungkin berpendapat bahwa memenuhi standar kualitas minimum memerlukan biaya yang lebih tinggi. Namun, penelitian kami membahas kualitas layanan, dan menemukan fasilitas kesehatan yang terakreditasi dan tidak mengalami gangguan listrik untuk berkinerja lebih baik. Untuk meningkatkan efisiensi sistem kesehatannya, Indonesia perlu menghadapi beberapa tantangan. Pada tahun 2011, 18% Puskesmas yang sebagian besar berada di bagian timur negara itu, tidak memiliki listrik; sedikit lebih dari 40% Puskesmas tidak memiliki staf teknis; dan hampir setengah dari rumah sakit di Indonesia belum terakreditasi (Kemenkes, 2012a, b).
-
-### Faktor eksternal
-
-Menilai fasilitas kesehatan berdasarkan lokasi geografis penting untuk pengambilan kebijakan, terutama yang terkait dengan distribusi fasilitas kesehatan suatu negara (Pham, 2011; Pavitra, 2013). Seperti yang dilakukan Barnum & Kutzin (1993), kami menemukan fasilitas kesehatan di Jawa lebih efisien dibandingkan dengan yang ada di pulau-pulau lain. Fasilitas kesehatan berkinerja tinggi efisien di area dengan akses mudah ke fasilitas kesehatan. Faktor-faktor ini menunjukkan bahwa infrastruktur transportasi dan fasilitas kesehatan yang lebih baik penting untuk mengurangi hambatan fisik terhadap akses pelayanan kesehatan.
-
-Pemerintah menyediakan Puskesmas satelit di daerah pedesaan untuk mendekatkan layanan kesehatan kepada penduduk. Namun, investasi infrastruktur besar dalam jaringan Puskesmas tanpa jumlah petugas kesehatan yang memadai akan menyebabkan inefisiensi (Bank Dunia, 2008). Oleh karena itu, sistem ini membutuhkan alokasi sumber daya yang lebih baik, misalnya untuk kegiatan penjangkauan, kendaraan yang sesuai, dan pemeliharaan, untuk meningkatkan efisiensi dalam fasilitas kesehatan (Mills et al., 1993).
-
-Selain itu, konsisten dengan temuan Rosko & Mutter (2010) dan Nedelea & Fannin (2012), kami juga menemukan adanya hubungan negatif antara efisensi faskes dengan pengeluaran rumah tangga. Hasil ini dapat dijelaskan oleh fakta bahwa Puskesmas dan rumah sakit umum cenderung dimanfaatkan oleh populasi berpenghasilan rendah.
-
-## Keterbatasan
-
-Penelitian ini memiliki beberapa keterbatasan karena sifat data dan metode yang digunakan. Pertama, hanya fasilitas kesehatan umum dengan layanan rawat inap yang dimasukkan; dengan demikian, hasilnya mungkin tidak berlaku untuk fasilitas perawatan primer tanpa layanan rawat inap. Kedua, pada tahap ini, analisis karakteristik fasilitas kesehatan dilakukan dengan menggunakan analisis rasio, metode sederhana berdasarkan pemanfaatan untuk membantu memperjelas hubungan antar variabel. Ketiga, kurangnya data hasil kesehatan seperti rasio kematian berarti bahwa analisis yang dilakukan tidak dapat mengukur kualitas layanan dan menyesuaikan output yang sesuai. Kualitas keluaran dibahas pada Bab 7. Dalam penelitian selanjutnya, akan berguna untuk mengidentifikasi apakah inefisiensi berasal dari penggunaan sumber daya yang berlebihan atau dari perawatan medis yang tidak tepat.
-
-Untuk mengurangi keterbatasan yang disebutkan di atas, penggunaan teknik perbatasan dalam pengukuran efisiensi dapat membantu mengidentifikasi inefisiensi dalam berbagai input dan output. Penelitian di masa depan dapat menggunakan analisis regresi untuk mengeksplorasi faktor-faktor yang menyebabkan inefisiensi dan mengusulkan cara praktis untuk mengatasi inefisiensi ini. Studi ini juga harus direplikasi dalam perawatan primer swasta dan menggunakan data longitudinal, yang akan menyoroti perubahan efisiensi karena perubahan kebijakan atau intervensi. Selain itu, data longitudinal akan membantu mengatasi data pencilan dan menentukan apakah pencilan yang diidentifikasi di sini adalah pencilan sejati atau hanya kesalahan pengukuran. Namun, penelitian ini menunjukkan bahwa layak untuk melakukan penilaian tingkat nasional dengan berbagai jenis fasilitas kesehatan menggunakan metode sederhana yang mudah digunakan dan direplikasi.
+Biaya satuan yang relatif tinggi di fasilitas kesehatan dapat mengindikasikan adanya ketidakefisienan dan memberikan informasi yang berharga dalam proses pengambilan keputusan kebijakan di fasilitas kesehatan milik pemerintah, baik di tingkat daerah maupun pusat (Barnum dan Kutzin, 1993; Witter *et al*., 2000). Seperti diilustrasikan pada Bab [II](#sec-pengukuran), variasi yang lebar pada kinerja fasilitas kesehatan dan heterogenitas di tingkat nasional menunjukkan bahwa ada hal yang bisa dipelajari dari fasilitas kesehatan yang berkinerja lebih baik. Penulis menggabungkan kedua jenis analisis rasio untuk mengidentifikasi fasilitas kesehatan yang berkinerja tinggi serta melakukan eksplorasi faktor-faktor yang mendasari kinerja yang relatif baik tersebut.
+
+Bab ini akan menjelaskan bagaimana melakukan pengukuran efisiensi rumah sakit di Indonesia menggunakan analisis rasio. Penjelasan pada bab ini akan dibagi menjadi beberapa bagian. Bagian awal akan menjelaskan sumber data yang digunakan dan bagaimana mempersiapkan data tersebut hingga siap untuk dilakukan analisis. Bagian selanjutnya akan menjelaskan model analisis Pabon-Lasso, kemudian dilanjutkan dengan penjelasan tentang metode perhitungan biaya. Terakhir, analisis karakteristik rumah sakit yang memengaruhi tingkat efisiensi akan dibahas lebih terperinci. Untuk memberikan panduan praktis bagi pembaca, setiap bagian pada bab ini akan disertai dengan skrip yang dapat langsung dipraktikkan.
+
+## Analisis Pabon-Lasso
+
+Seperti yang sudah dijelaskan pada Bab [I](#sec-dasar), salah satu jenis analisis rasio (AR) yang dapat digunakan ialah metode Pabon-Lasso (Lasso, 1986). Pada bagian ini, akan dijelaskan bagaimana membangun model Pabon-Lasso dan bagaimana menginterpretasikan hasilnya. Adapun tahapan perintah yang harus dikerjakan pada aplikasi R, yaitu sebagai berikut.
+
+### Tahap 1. Membuka *Dataset*
+
+Pada tahapan ini, pembaca dapat membuka *dataset* “hospital.csv” dan memberi nama objek *dataset* tersebut menjadi “hospital” menggunakan *R Script* berikut.
+
+```{r}
+# Mengaktifkan package
+library(tidyverse)
+# Mengimpor data dari format csv
+hospital <- read_csv("hospital.csv")
+```
+
+Selanjutnya, pembaca dapat melakukan pelabelan terhadap variabel-variabel dan nilai yang ada pada data tersebut dengan mengikuti langkah-langkah yang telah dijelaskan pada Bab [III](#sec-pengantar-r) bagian D.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Kode pelabelan data (lihat Bab III)"
+hospital <- hospital %>%
+  set_variable_labels(
+    id_rs = "ID Rumah Sakit", gp_FTE = "Jumlah Dokter Umum",
+    spec_FTE = "Jumlah Dokter Spesialis", nurse_total = "Jumlah Perawat",
+    other_prof = "Jumlah Karyawan Lain", beds = "Jumlah Bed",
+    outpatients = "Jumlah Kunjungan Rajal", bed_days = "Total Bed Days",
+    admissions1 = "Jumlah Admisi", bed_occ = "Bed Occupancy",
+    throughput = "Throughput", alos = "Average Length of Stay",
+    totalcost_op = "Total Biaya Rajal", total_cost_bd = "Total Biaya Bed Days",
+    totalcost_ip = "Total Biaya Ranap", publichospital = "Kepemilikan",
+    poorins = "Proporsi Jamkesmas", classCD = "Kelas", non_JavaBali = "Lokasi") %>%
+  set_value_labels(
+    publichospital = c("Pemerintah" = 1, "Swasta" = 0),
+    classCD = c("Kelas C/D" = 1, "Kelas A/B" = 0),
+    non_JavaBali = c("Non Java-Bali" = 1, "Java-Bali" = 0)) %>%
+  to_factor()
+```
+
+### Tahap 2. Mengaktifkan *Packages* yang Diperlukan
+
+Untuk membuat grafik Pabon-Lasso, *packages* yang diperlukan adalah “ggplot2” yang merupakan bagian dari paket induk “tidyverse” yang sudah diaktifkan pada tahap sebelumnya. “ggplot2” sendiri dikembangkan untuk menjadi suatu sistem pembuatan grafik atau visualisasi yang didasarkan pada “tata bahasa grafis” atau *The Grammar of Graphics*. Sistem ini memiliki komposisi utama berupa data, *aesthetics* (sumbu, posisi plot), skala, objek geometri/jenis diagram (garis, batang, titik), statistik (rerata dan lain-lain), *facets* (subplot), dan sistem koordinat.
+
+### Tahap 3. Membuat Grafik Pabon-Lasso
+
+Pada tahap ini, paket “ggplot2” akan digunakan untuk membuat grafik Pabon-Lasso seperti pada @fig-4-1. Secara sederhana, grafik ini membandingkan *bed occupancy* (pada sumbu x) dan *bed turnover* (pada sumbu y) dari masing-masing rumah sakit yang dianalisis dalam bentuk diagram titik (atau *scatter plot*). Untuk menambah kedalaman informasi yang disajikan, ukuran rumah sakit (berdasarkan jumlah tempat tidur) digambarkan dengan ukuran titik yang berbeda, sementara kepemilikan rumah sakit (milik pemerintah atau swasta) digambarkan dengan warna titik atau lingkaran yang berbeda. Selanjutnya, masing-masing sumbu dibagi menjadi dua bagian berdasarkan rerata nilai dari variabel *bed occupancy* (sumbu x) dan *bed turnover* (sumbu y). Adapun nilai rerata tersebut akan direkam pada suatu objek dengan nama masing-masing “mean_bor” dan “mean_btr” dapat dihitung menggunakan fungsi “mean()” yang menjadi bawaan dari R. Adapun untuk memilih suatu kolom atau variabel dari sebuah tabel atau *dataframe*, perintah yang digunakan adalah “\$” sehingga “hospital\$bed_occ” mewakili variabel “bed_occ” yang ada pada tabel “hospital”.
+
+```{r}
+# Rerata bed turnover dan bed occupancy
+mean_btr <-mean(hospital$throughput)
+mean_bor <-mean(hospital$bed_occ)
+```
+
+Seperti yang dicontohkan pada *script* di bawah ini, perintah untuk membuat grafik dengan “ggplot2” dimulai dengan mendefinisikan data yang digunakan, yaitu data “hospital”. Perintah tersebut berupa “hospital %>% ggplot()” yang artinya “buatlah grafik menggunakan data *hospital*”. Sampai di sini masih belum jelas jenis grafiknya apa, variabel apa saja yang dipakai, juga atribut-atribut lain yang diinginkan. Oleh karena itu, diperlukan lapisan selanjutnya, yaitu jenis diagram yang akan dibuat, pada “ggplot” diagram titik diwakilkan oleh “geom_point()”. Pada fungsi ini, parameter yang perlu ditentukan adalah variabel apa saja yang akan di-*mapping* menjadi bentuk visual (*aesthetics*). Dalam hal ini, variabel x yang diinginkan adalah *bed occupancy* (bed_occ), variabel y adalah *bed turnover* (throughput), *colour* adalah kepemilikan rumah sakit (publichospital), dan *size* adalah jumlah tempat tidur (beds). Parameter kedua yang bisa didefinisikan di sini adalah transparansi warna yang ditunjukkan dengan parameter “alpha=0.5”.
+
+Selanjutnya, garis yang membagi sumbu y dan x dihasilkan dengan menambah lapisan “geom_hline” untuk garis horizontal dan “geom_vline” untuk garis vertikal. Parameter yang perlu didefinisikan, yaitu masing-masing “yintercept” dan “xintercept” yang artinya pada nilai berapa garis tersebut akan memotong sumbu y dan x. Terakhir, untuk memudahkan pembaca, perlu ditambahkan juga lapisan “labs” yang berisi judul utama (*title*), judul untuk sumbu x dan y, serta label untuk keterangan warna dan ukuran.
+
+```{r}
+#| label: fig-4-1
+#| fig-cap: "Grafik Pabon-Lasso dari data rumah sakit yang dianalisis"
+# Menambahkan judul, label, dan keterangan kepemilikan dan ukuran RS
+hospital %>% ggplot() +
+  geom_point(mapping = aes(x=bed_occ, y=throughput,
+  colour=publichospital, size=beds), alpha=0.5) +
+  geom_hline(yintercept=mean_btr) +
+  geom_vline(xintercept=mean_bor) +
+  labs(title="Model Pabon-Lasso",
+  x="Bed Occupancy Rate",
+  y="Bed Turnover",
+  colour="Kepemilikan",
+  size= "Jumlah Tempat Tidur")
+```
+
+### Tahap 4. Interpretasi Grafik Pabon-Lasso
+
+Berdasarkan grafik Pabon-Lasso di atas, dapat dilihat secara visual bahwa sebagian besar rumah sakit berada pada kuadran 1 dan kuadran 3. Seperti yang sudah dibahas pada Bab [II](#sec-pengukuran), rumah sakit yang berada pada kuadran 1 merupakan rumah sakit dengan *bed occupancy rate* (BOR) dan *bed turnover rate* (BTR) yang rendah (di bawah rata-rata), atau bisa dikatakan tidak efisien. Sementara itu, rumah sakit yang berada pada kuadran 3 termasuk dalam kelompok yang efisien dengan BOR dan BTR yang tinggi (@fig-4-1).
+
+### Tahap 5. Membuat Variabel Sektor pada Masing-Masing Rumah Sakit
+
+Pada tahap ini, kita akan menambahkan informasi atau variabel “sektor” yang merupakan hasil analisis Pabon-Lasso pada *dataset* “hospital” sehingga dapat digunakan dalam analisis selanjutnya. Untuk menambahkan variabel “sector”, paket “dplyr” yang juga merupakan bagian dari paket “tidyverse” akan digunakan, terutama menggunakan fungsi “mutate()”. Fungsi ini bertujuan untuk membuat variabel baru (atau kolom baru pada suatu tabel atau *dataframe*). Sementara itu, fungsi “case_when()” digunakan untuk menentukan prasyarat atau *condition* yang lebih dari satu.
+
+Dalam hal ini, perintah “mutate( sector= case_when(throughput <= mean_btr) & (bed_occ <= mean_bor) ~ 1” dapat diterjemahkan menjadi: “buatlah variabel baru bernama ‘sector’ yang bernilai 1 jika rumah sakit berada pada kuadran kiri bawah di mana nilai BTR kurang dari atau sama dengan reratanya **DAN** nilai BOR kurang dari atau sama dengan reratanya”. Penjelasan yang sama berlaku pada perintah untuk mengidentifikasi sektor-sektor yang lain.
+
+```{r}
+# Membuat variabel sektor berdasarkan hasil Analisis Pabon-Lasso
+hospital <- hospital %>%
+  mutate(sector = case_when (
+  (throughput <= mean_btr) & (bed_occ <= mean_bor) ~ 1,
+  (throughput > mean_btr) & (bed_occ <= mean_bor) ~ 2,
+  (throughput > mean_btr) & (bed_occ > mean_bor) ~ 3,
+  (throughput <= mean_btr) & (bed_occ > mean_bor) ~ 4)
+)
+```
+
+Langkah selanjutnya, yaitu memberikan label pada variabel-variabel yang baru dibuat tersebut serta mengubahnya menjadi variabel kategorikal. Sekali lagi, paket “labelled” akan digunakan untuk menjalankan perintah ini, terutama dengan fungsi “var_label() <-” serta “val_labels() <-” seperti yang ditunjukkan pada perintah di bawah ini.
+
+```{r}
+# Mengaktifkan package
+library(labelled)
+# Label sector pada Model Pabon-Lasso
+var_label(hospital$sector) <- "Sektor"
+val_labels(hospital$sector) <- c("Sektor 1"=1,
+  "Sektor 2"=2,
+  "Sektor 3"=3,
+  "Sektor 4"=4)
+# Ubah menjadi variabel kategorik/factor variable
+hospital$sector <- to_factor(hospital$sector)
+```
+
+Perintah di bawah ini perlu dijalankan untuk mengetahui secara sekilas berapa jumlah RS yang masuk sektor 1–4. Dalam hal ini fungsi “summary()” yang merupakan bawaan (fungsi dasar atau *base function*) digunakan karena sifatnya yang sederhana dan cocok digunakan untuk melihat rangkuman data secara cepat.
+
+```{r}
+# Menampilkan proporsi sektor hasil analisis PL menggunakan fungsi bawaan
+summary(hospital$sector)
+```
+
+Sementara itu, jika pengguna menginginkan tampilan berupa tabel yang lebih rapi maka fungsi “tbl_summary()” dari paket “gtsummary” dapat digunakan seperti perintah di bawah ini.
+
+```{r}
+# Menampilkan proporsi sektor hasil analisis PL menggunakan package tbl_summary
+hospital %>% select(sector) %>% tbl_summary() %>%
+  as_flex_table()
+```
+
+Setelah menjalankan perintah di atas, dapat dilihat bahwa terdapat 77 RS yang berada di sektor 1, 18 RS di sektor 2, 75 RS di sektor 3, serta 28 lainnya berada di sektor 4. Dapat juga diartikan bahwa terdapat 75 rumah sakit (38%) dari 198 rumah sakit yang dapat dikelompokkan sebagai rumah sakit yang efisien berdasarkan analisis Pabon-Lasso.
+
+## Analisis Perhitungan Biaya
+
+Jenis analisis rasio (AR) lainnya yang akan dibahas, yaitu analisis biaya atau *costing analysis.* Menggunakan *dataset* rumah sakit, kita akan menghitung satuan biaya per layanan yang mencakup rawat jalan (*outpatient*), rawat inap (*inpatient*), dan per *bed*/hari (*bed-days*). Pada dasarnya, kita akan membuat variabel (kolom baru) pada *dataset* “hospital” menggunakan perintah “mutate” yang ada dalam *packages* “tidyverse”. Sebagai contoh, kita akan membuat variabel unitcost_ip = “totalcost_ip” (total biaya untuk rawat inap) dibagi dengan “admissions1” (jumlah total admisi rawat inap).
+
+```{r}
+# Menghitung unit cost per jenis layanan
+hospital <- hospital %>%
+  mutate(
+  unitcost_op = totalcost_op/outpatients,
+  unitcost_ip = totalcost_ip/admissions1,
+  unitcost_bd = total_cost_bd/bed_days)
+```
+
+Kita bisa menjalankan perintah “view(hospital)” untuk melihat variabel *unitcost* yang baru saja dibuat sehingga akan terlihat tambahan tiga kolom baru pada *dataset* “hospital” seperti @fig-4-2.
+
+![Kolom atau variabel “unitcost” pada *dataset*](../images/fig-4-2.png){#fig-4-2}
+
+## Kombinasi Model Pabon-Lasso dan Analisis Biaya
+
+Hasil analisis efisiensi pada model Pabon-Lasso dapat dikombinasikan dengan hasil analisis biaya untuk memberikan gambaran yang lebih lengkap. Fasilitas kesehatan dianggap berkinerja tinggi jika berada pada sektor 3 pada grafik Pabon-Lasso dan memiliki satuan biaya pelayanan (*unit cost*) di bawah rata-rata. Di luar itu, rumah sakit dikelompokkan menjadi faskes berkinerja rendah. Dengan demikian, tingkat kinerja rumah sakit dapat dijadikan suatu variabel biner (kinerja tinggi = 1; kinerja rendah = 0) dan bisa dianalisis hubungannya dengan variabel-variabel lain yang relevan.
+
+```{r}
+# Menghitung unit cost per jenis layanan
+hospital <- hospital %>%
+  mutate(
+  efisien_ar_ip = if_else((sector == "Sektor 3") &
+   (unitcost_ip < mean(hospital$unitcost_ip)), 1, 0),
+  efisien_ar_op = if_else((sector == "Sektor 3") &
+   (unitcost_op < mean(hospital$unitcost_op)), 1, 0),
+  efisien_ar_bd = if_else((sector == "Sektor 3") &
+   (unitcost_bd < mean(hospital$unitcost_bd)), 1, 0))
+```
+
+::: {.callout-note}
+## Catatan edisi daring
+
+Pada edisi cetak, kondisi sektor ditulis `(sector=3)`. Di dalam R, `=` pada posisi
+ini adalah **penugasan**, bukan perbandingan, sehingga kondisi sektor selalu dianggap
+benar dan hanya biaya satuan yang dibandingkan. Kode di atas memakai perbandingan
+`sector == "Sektor 3"` (variabel `sector` sudah diubah menjadi *factor* berlabel).
+Akibatnya, jumlah rumah sakit berkinerja tinggi pada tabel berikut lebih kecil
+daripada angka pada edisi cetak.
+:::
+
+Perintah di atas akan menghasilkan tambahan tiga kolom atau variabel pada data “hospital”. Variabel “efisien_ar_ip” merupakan suatu indikator biner yang bernilai 1 jika rumah sakit termasuk yang berkinerja tinggi (sektor 3 pada analisis PL) dan memiliki satuan biaya rawat inap (*inpatient*) di bawah rata-rata. Demikian juga dengan variabel “efisien_ar_op” dan “efisien_ar_bd” yang mengindikasikan informasi yang sama, namun pada ukuran satuan biaya rawat jalan (*outpatient*) dan *bed-days.* Untuk selanjutnya, hasil perhitungan dapat ditampilkan dalam bentuk tabel dengan menjalankan skrip di bawah ini (memberi label dengan fungsi “set_variable_labels” dari paket “labelled” dan membuat tabel siap pakai dengan fungsi “tbl_summary” dari paket “gtsummary”).
+
+```{r}
+# Memberi label pada lebih dari satu variabel
+hospital <- hospital %>%
+  set_variable_labels(
+  efisien_ar_ip="Efisiensi Rawat Inap",
+  efisien_ar_op="Efisiensi Rawat Jalan",
+  efisien_ar_bd="Efisiensi Bed Days")
+# Melihat proporsi/jumlah RS yang efisien pada masing-masing indikator menggunakan package tbl_summary
+hospital %>% select(efisien_ar_op, efisien_ar_ip, efisien_ar_bd) %>%
+  tbl_summary() %>%
+  as_flex_table()
+```
+
+Sebagai contoh, pada tabel di atas dapat dilihat bahwa terdapat 144 rumah sakit (73%) yang dapat dikategorikan sebagai rumah sakit berkinerja tinggi (dari analisis PL) dan memiliki satuan biaya di bawah rata-rata (dari analisis satuan biaya) dari segi layanan rawat inapnya.
+
+::: {.callout-note}
+## Catatan edisi daring
+
+Angka 144 rumah sakit (73%) di atas berasal dari kode edisi cetak (lihat catatan
+sebelumnya). Dengan kode yang telah diperbaiki, rumah sakit berkinerja tinggi dari
+segi layanan rawat inap berjumlah `r sum(hospital$efisien_ar_ip)` rumah sakit
+(`r round(100 * mean(hospital$efisien_ar_ip))`%). Label “Rawat Inap” dan “Rawat Jalan”
+untuk `efisien_ar_ip` dan `efisien_ar_op` juga telah dipertukarkan agar sesuai
+dengan isinya (*ip* = *inpatient*, *op* = *outpatient*).
+:::
+
+## Analisis Variabel Kontekstual
+
+Setelah mengetahui tingkat efisiensi relatif dari rumah sakit yang dianalisis—baik menggunakan model Pabon-Lasso, analisis biaya, maupun kombinasi keduanya—langkah selanjutnya, yaitu mencari tahu faktor apa saja yang berkaitan dengan tingkat efisiensi tersebut. Oleh karena itu, ada beberapa pendekatan yang dapat dilakukan.
+
+### Analisis Bivariat
+
+Analisis bivariat bertujuan untuk mendapatkan gambaran hubungan (asosiasi) antara dua variabel. Dalam hal ini, kita ingin mengetahui hubungan antara tingkat efisiensi suatu rumah sakit dan masing-masing karakteristiknya secara terpisah. Nilai asosiasi yang diperoleh dari analisis bivariat tidak dapat dikatakan bahwa ada hubungan sebab-akibat, tetapi lebih bersifat deskriptif.
+
+### Gambaran Biaya Satuan Berdasarkan Kelas Rumah Sakit
+
+Sebelum melakukan analisis bivariat terhadap satuan biaya rumah sakit, perlu diperhatikan distribusi datanya. Hal ini karena distribusi dari variabel biaya umumnya cenderung condong (*skew*). Dengan dilakukan transformasi log, variabel unit *cost* dapat dianalisis dengan pemodelan parametrik (lihat @fig-4-3). Sama seperti sebelumnya, fungsi “mutate()” digunakan untuk membuat variabel baru.
+
+```{r}
+# Membuat variabel log dari unit cost
+## Karena unit cost tidak berdistribusi normal
+hospital <- hospital %>% mutate(
+  lnuc_ip = log(unitcost_ip),
+  lnuc_op = log(unitcost_op),
+  lnuc_bd = log(unitcost_bd)
+)
+```
+
+@fig-4-3 dihasilkan menggunakan paket “ggplot2” dengan objek grafis berupa “geom_histogram” yang—sesuai namanya—digunakan untuk membuat histogram. Dapat dilihat bahwa penggunaan “ggplot2” sama dengan yang sudah dijelaskan pada bagian sebelumnya, hanya pilihan jenis diagramnya saja yang berbeda. Pada histogram bawah, variasi warna bisa dilakukan dengan menambahkan paramater “color” untuk warna garis dan “fill” untuk warna isiannya. Informasi mengenai jenis warna yang bisa dipilih dapat dilihat pada laman https://www.r-graph-gallery.com/ggplot2color.html.
+
+```{r}
+#| label: fig-4-3
+#| fig-cap: "Histogram dari variabel “unitcost_ip” sebelum (atas) dan sesudah (bawah) ditransformasi dengan fungsi log"
+#| fig-subcap:
+#|   - "Sebelum transformasi log"
+#|   - "Sesudah transformasi log"
+#| fig-height: 3.5
+# Histogram unitcost_ip dengan ggplot2
+hospital %>% ggplot() +
+  geom_histogram(mapping = aes(x=unitcost_ip))
+# Histogram log unitcost_ip dengan ggplot2, memodifikasi warna
+hospital %>% ggplot() +
+  geom_histogram(mapping = aes(x=lnuc_ip),
+  color="black",
+  fill="darkseagreen")
+```
+
+Jika belum dilakukan transformasi log, grafik *box-plot* dapat digunakan untuk memvisualisasikan perbedaan median dari nilai unit *cost* berdasarkan variabel tertentu. Dalam hal ini, kita tertarik untuk melihat gambaran tersebut berdasarkan kelas rumah sakit. Grafik ini juga dihasilkan menggunakan paket “ggplot2” dan pilihan jenis diagramnya adalah “geom_boxplot” dengan memberikan judul atau label pada sumbu x dan y untuk memudahkan pembaca.
+
+```{r}
+#| label: fig-4-4
+#| fig-cap: "Grafik *box-plot* dari variabel biaya satuan rawat inap berdasarkan kelas rumah sakit"
+#Boxplot berdasarkan kelas rumah sakit
+hospital %>% ggplot() +
+  geom_boxplot(mapping = aes(x=classCD, y=unitcost_ip)) +
+  labs(x="Kelas Rumah Sakit",
+  y="Unit Cost Ranap")
+```
+
+Berdasarkan @fig-4-4, dapat dilihat bahwa median (garis tegas di tengah kotak putih) biaya satuan rawat inap lebih tinggi pada rumah sakit kelas C/D, dibandingkan dengan rumah sakit kelas A atau B.
+
+### Uji Statistik
+
+Kita tidak dapat menarik kesimpulan secara statistik hanya dengan melihat grafik sehingga diperlukan suatu uji hipotesis formal. Pada aplikasi R, kita dapat menggunakan *packages* “gtsummary” yang sudah diinstal dan diaktifkan sebelumnya untuk melakukan uji beda rerata antara dua kelompok. Sebagai contoh, perintah di bawah ini melakukan analisis beda rerata antara rumah sakit milik pemerintah dan rumah sakit swasta. Perlu diperhatikan bahwa, berbeda dengan penggunaan fungsi “tbl_summary()” pada bagian sebelumnya, pada perintah kali ini terdapat parameter “by” yang bertujuan untuk menghitung statistik (dalam hal ini rerata dan deviasi standar) dari suatu variabel berdasarkan suatu variabel kategorik (dalam hal ini kepemilikan rumah sakit atau variabel “publichospital”). Perintah ini juga memanfaatkan fungsi “select()” yang ada pada paket “dplyr” untuk memilih variabel-variabel apa saja dari data “hospital” yang akan digunakan dan dianalisis.
+
+```{r}
+# Beda rerata berdasarkan kepemilikan RS
+hospital %>%
+  select(lnuc_op, lnuc_ip, lnuc_bd, publichospital) %>%
+  tbl_summary(
+  by = publichospital,
+  digits = all_continuous() ~ 3,
+  statistic = all_continuous() ~ "{mean} ({sd})") %>%
+  add_p(test=all_continuous() ~ "t.test") %>%
+  as_flex_table()
+```
+
+Berdasarkan tabel di atas, dapat dilihat bahwa berdasarkan *Welch Two Sample t-test* atau uji t tidak berpasangan dengan asumsi varian yang tidak sama, didapatkan perbedaan yang secara statistik bermakna (p < 0,05) antara rerata biaya satuan (dalam bentuk log) berdasarkan jenis kepemilikan rumah sakit. Secara umum, terlihat bahwa rumah sakit pemerintah mempunyai satuan biaya yang lebih rendah.
+
+### Analisis Multivariat
+
+Secara teoretis, tidak ada faktor tunggal yang memengaruhi efisiensi suatu fasilitas kesehatan. Oleh karena itu, perlu dilakukan analisis multivariat untuk mengetahui kontribusi dari masing-masing faktor yang secara bersama-sama berpengaruh pada tingkat efisiensi. Beberapa metode estimasi yang bisa digunakan, antara lain regresi linear berganda (model probabilitas linear) dan regresi logistik berganda. Pada contoh di bawah ini, kita akan menggunakan model regresi linear dengan variabel dependen “lnuc_ip” atau log biaya satuan rawat inap dan variabel independen: kelas rumah sakit, kepemilikan, dan lokasi.
+
+```{r}
+# Model regresi linear
+model_lpm_ip <- lm(lnuc_ip ~ classCD + publichospital + non_JavaBali, data = hospital)
+```
+
+Fungsi “lm()” merupakan bawaan dari *software* R yang dapat digunakan untuk melakukan analisis regresi linear, baik dengan satu variabel independen (regresi linear sederhana) maupun dengan banyak variabel independen (regresi linear berganda). Spesifikasi dasar dari fungsi ini adalah “lm(y ~ x, data=”nama_data”)”. Jika variabel independennya lebih dari satu maka “x” diganti dengan “x1 + x2 + x3 + dst.”. Perintah tersebut menghasilkan suatu objek bernama “model_lpm_ip” yang menyimpan hasil estimasi yang telah dilakukan.
+
+Untuk melihat hasil estimasi tersebut (koefisien dan statistik-statistik lainnya), ada banyak alternatif yang bisa dilakukan. *Pertama*, yaitu menggunakan fungsi “summary()” yang merupakan fungsi bawaan dari R. Perintah dan hasil dari fungsi tersebut seperti di bawah ini. Terlihat bahwa hasil yang dikeluarkan masih bersifat “kasar” dan tidak siap pakai.
+
+```{r}
+# Hasil regresi dengan fungsi dasar
+summary(model_lpm_ip)
+```
+
+Alternatif *kedua*, yaitu menggunakan fungsi “tbl_regression()” dari paket “gtsummary”. Dengan perintah yang sederhana seperti yang ada di bawah ini, tabel siap pakai bisa langsung dihasilkan. Akan tetapi, kelemahan fungsi ini terletak pada tampilannya yang tidak bisa banyak diubah.
+
+```{r}
+# Tabel regresi menggunakan package gtsummary
+tbl_regression(model_lpm_ip) %>%
+  as_flex_table()
+```
+
+Alternatif *ketiga*, yaitu menggunakan paket “modelsummary”. Paket ini terutama ditujukan untuk menghasilkan tabel (dengan fungsi “modelsummary()”) dan plot (dengan fungsi “modelplot”) dari hasil estimasi suatu model statistik. Kelebihan dari fungsi ini, yaitu fleksibilitas serta cakupan pemodelan yang bisa diakomodasi. Akan tetapi, hal ini menyebabkan kompleksitas penggunaannya yang cukup tinggi serta perlunya mendefinisikan label (menggunakan fungsi “names() <-” dari paket “labelled”) dari masing-masing variabel untuk menghasilkan tabel yang siap pakai.
+
+```{r}
+# Tabel regresi menggunakan package modelsummary
+## Memberi label koefisien
+model_lpm_ip_label <- model_lpm_ip
+names(model_lpm_ip_label$coefficients) <- c("Konstanta",
+  "Kelas A/B",
+  "Swasta", "Java-Bali")
+## Membuat tabel
+modelsummary(model_lpm_ip_label,
+  label="TRUE",
+  fmt=3,
+  estimate = "{estimate}{stars}",
+  gof_omit = ".*",
+  output = "flextable")
+```
+
+Hasilnya dapat dilihat bahwa koefisien yang secara statistik bermakna adalah kepemilikan rumah sakit. Hasil tersebut dapat diinterpretasikan bahwa secara rata-rata rumah sakit swasta memiliki biaya satuan rawat inap yang lebih kecil, yaitu sebesar 24% dibandingkan dengan rumah sakit milik pemerintah, jika variabel lain dianggap konstan. Hasil ini secara statistik signifikan dengan *p-value* < 0,05.
 
 ## Kesimpulan
 
-Studi ini menunjukkan bahwa ada ruang yang cukup besar untuk meningkatkan efisiensi fasilitas kesehatan di Indonesia. Beberapa fasilitas kesehatan berada di sektor pemanfaatan tinggi pada model Pabon-Lasso serta adanya variasi yang luas pada biaya satuan ditemukan. Variasi yang signifikan dalam biaya dan pemanfaatan unit dapat menjadi dasar yang kuat untuk melakukan *benchmarking* dan mengidentifikasi unit yang relatif efisien. Studi ini tidak hanya mengidentifikasi fasilitas kesehatan berkinerja tinggi dan karakteristik khusus mereka, tetapi juga memberikan informasi tentang bagaimana efisiensi dapat ditingkatkan. Benchmarking menggunakan analisis satuan biaya dan teknik model Pabon-Lasso adalah alat penting yang dapat dipahami oleh pembuat kebijakan dengan relatif mudah dan digunakan dalam pemantauan rutin kinerja fasilitas kesehatan.
+- Grafik Pabon-Lasso maupun analisis biaya dapat dilakukan menggunakan aplikasi R dengan cukup mudah.
+
+- Analisis bivariat maupun multivariat dapat digunakan untuk menjelaskan faktor-faktor yang memengaruhi tingkat efisiensi rumah sakit.
+
+- Pengambil kebijakan maupun manajemen rumah sakit dapat melihat hasil analisis pada bab ini untuk melakukan penyesuaian kebijakan maupun strategi.
