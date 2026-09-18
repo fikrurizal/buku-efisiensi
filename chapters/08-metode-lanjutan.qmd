@@ -97,6 +97,34 @@ head(hasil)
 stopifnot(all(hasil$theta_meta <= hasil$theta_group + 1e-6))
 ```
 
+## Dekomposisi Produktivitas Färe-Primont: Pendekatan O'Donnell (2018)
+
+Evaluasi kinerja fasilitas kesehatan antarperiode sering kali memerlukan pengukuran perubahan produktivitas total (*Total Factor Productivity*, TFP). Pendekatan tradisional umumnya memakai indeks Malmquist. Namun, Christopher J. O'Donnell (2018) dalam *Productivity and Efficiency Analysis: An Economic Approach to Measuring and Explaining Managerial Performance* menunjukkan bahwa indeks Malmquist standar tidak memenuhi sifat transitivitas (*circularity/transitivity failure*). Konsekuensinya, perbandingan produktivitas lintas fasilitas dan lintas tahun menjadi tidak konsisten karena hasilnya bergantung pada unit atau periode dasar yang dipilih.
+
+Guna mengatasi keterbatasan ini, O'Donnell (2018, Bab 2–4 & Bab 8) merekomendasikan **indeks Färe-Primont** atau **indeks Lowe**, yaitu indeks yang memenuhi uji transitivitas secara penuh (*proper productivity indexes*). Indeks Färe-Primont mengukur perubahan TFP sebagai rasio agregat output terhadap agregat input menggunakan teknologi referensi bersama. Lebih lanjut, O'Donnell (2018) mendekomposisi perubahan TFP ke dalam komponen-komponen manajerial yang terperinci:
+
+$$
+\text{TFP} = \text{TFPE} \times \text{TFP}^* = \text{OTE} \times \text{OSE} \times \text{OME} \times \text{ROSE} \times \text{TFP}^*
+$$
+
+Keterangan komponen:
+1. **OTE (*Output-oriented Technical Efficiency*)**: efisiensi teknis orientasi output pada skala dan bauran saat ini (mengukur jarak ke batas kemungkinan produksi).
+2. **OSE (*Output-oriented Scale Efficiency*)**: efisiensi skala orientasi output (mengukur jarak ke produktivitas optimal skala).
+3. **OME (*Output-oriented Mix Efficiency*)**: efisiensi bauran output (mengukur potensi peningkatan jika proporsi jenis layanan disesuaikan).
+4. **ROSE (*Residual Output-oriented Scale-Mix Efficiency*)**: interaksi sisa antara perubahan skala dan perubahan komposisi bauran.
+5. **Perubahan Teknologi (*Technical Change*, \(\Delta\text{TFP}^*\))**: pergeseran batas kemungkinan produksi maksimum antarperiode.
+
+Di ekosistem R, metodologi O'Donnell (2018) dapat diestimasi menggunakan paket **`productivity`** (melalui fungsi `fareprim()`), paket **`deaR`**, maupun pemodelan linear terprogram berbasis `lpSolve`. Script pendamping di [`R/advanced_cases.R`](../R/advanced_cases.R) menyediakan simulasi panel multi-periode rumah sakit untuk mengilustrasikan perbandingan TFP yang konsisten secara transitif.
+
+```r
+# Contoh konsep estimasi Färe-Primont di R (O'Donnell, 2018)
+# library(productivity)
+# hasil_fp <- fareprim(data = panel_rs, id.var = "id", time.var = "tahun",
+#                      x.vars = c("beds", "staff_fte"),
+#                      y.vars = c("outpatients", "admissions"),
+#                      rts = "vrs", orientation = "out")
+```
+
 ## Batas contoh dan arah pengembangan
 
 Contoh jaringan di atas adalah statis. *Dynamic DEA* membutuhkan stok penghubung antarperiode (*carry-over*), misalnya kapasitas yang tersedia atau akumulasi investasi; menumpuk baris beberapa tahun saja belum membentuk model dinamis. Demikian pula, perbandingan Lean sebelum–sesudah bukan indeks Malmquist. SFA panel dengan *true fixed/random effects* memisahkan heterogenitas tetap dari inefisiensi melalui asumsi tambahan, sehingga model lintas-seksi tidak cukup untuk mengajarkannya sebagai estimasi panel.
