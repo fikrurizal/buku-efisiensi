@@ -209,8 +209,7 @@ Sebagai contoh, pada tabel di atas dapat dilihat bahwa terdapat 144 rumah sakit 
 
 Angka 144 rumah sakit (73%) di atas berasal dari kode edisi cetak (lihat catatan
 sebelumnya). Dengan kode yang telah diperbaiki, rumah sakit berkinerja tinggi dari
-segi layanan rawat inap berjumlah `r sum(hospital$efisien_ar_ip)` rumah sakit
-(`r round(100 * mean(hospital$efisien_ar_ip))`%). Label “Rawat Inap” dan “Rawat Jalan”
+segi layanan rawat inap berjumlah 59 rumah sakit (30%). Label “Rawat Inap” dan “Rawat Jalan”
 untuk `efisien_ar_ip` dan `efisien_ar_op` juga telah dipertukarkan agar sesuai
 dengan isinya (*ip* = *inpatient*, *op* = *outpatient*).
 :::
