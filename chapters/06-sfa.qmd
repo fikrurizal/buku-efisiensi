@@ -1,9 +1,9 @@
 # *Stochastic Frontier Analysis* {#sec-sfa}
 
 ```{r}
-# Chunk B6.01
 #| label: setup
 #| include: false
+# Chunk B6.01
 source("R/setup.R")
 source("R/chunk_helpers.R")
 book_begin_chapter("Bab 6", c("tidyverse", "Benchmarking", "frontier", "gtsummary"))
@@ -81,9 +81,9 @@ Setelah model OLS, COLS, dan SFA selesai diestimasi, kita akan mencoba melihat b
 Seperti yang sudah dijelaskan pada bagian sebelumnya, parameter yang harus dimasukkan pada fungsi “geom_point()” adalah data dan variabel x dan y apa yang akan digunakan. Dalam hal ini, variabel x-nya adalah bentuk logaritma dari matriks “x” dan variabel y-nya adalah bentuk logaritma dari matriks “y”. Selanjutnya, pada fungsi “geom_abline()”, ada dua parameter yang perlu diisi, yaitu *intercept* dan *slope.* Dalam hal ini, perlu diingat lagi persamaan garis lurus, yaitu “y = a + bx”, di mana a adalah *intercept* (nilai y ketika x = 0), dan b adalah *slope* atau kemiringan garis lurus tersebut. Adapun nilai dari keduanya didapatkan dari hasil pemodelan OLS (menggunakan fungsi bawaan “coef()”) yang sudah dilakukan pada Tahap 4. Perhatikan bahwa daftar koefisien berupa matriks dua kolom dengan kolom pertama (“coef(ols)[1]”) menyimpan nilai *intercept* dan kolom kedua (“coef(ols) [2]”) menyimpan nilai *slope*.
 
 ```{r}
-# Chunk B6.06
 #| label: fig-6-1
 #| fig-cap: "Garis regresi linear (OLS) antara log(x) terhadap log(y)"
+# Chunk B6.06
 # 1. Membuat garis OLS
 plot_ols <- ggplot() +
   geom_point(mapping = aes(x=log(x), y=log(y))) +
@@ -95,9 +95,9 @@ plot_ols
 *Kedua*, garis COLS akan ditambahkan pada diagram yang sudah dibuat sebelumnya (objek “plot_ols”). Karena “ggplot” menggunakan pendekatan lapisan-lapisan grafis maka untuk menambahkan garis baru ini yang perlu dilakukan adalah menambah lapisan baru dengan fungsi “plot_ols + geom_abline()” lagi. Perlu diperhatikan bahwa *intercept* pada garis COLS merupakan *intercept* yang sama dengan garis OLS, namun ditambahkan dengan nilai tertinggi dari residual pada model OLS (“max(residuals(ols))”). Perintah berikut ini akan membuat sebuah objek dengan nama “plot_ols_ cols” dengan garis COLS berwarna merah (@fig-6-2).
 
 ```{r}
-# Chunk B6.07
 #| label: fig-6-2
 #| fig-cap: "Garis regresi linear (OLS) dan garis regresi terkoreksi (COLS) antara log(x) terhadap log(y)"
+# Chunk B6.07
 # 2. Menambahkan garis COLS
 plot_ols_cols <- plot_ols +
   geom_abline(intercept=coef(ols)[1]+max(residuals(ols)),
@@ -109,9 +109,9 @@ plot_ols_cols
 *Ketiga*, garis SFA akan ditambahkan pada diagram yang sudah dibuat sebelumnya (objek “plot_ols_cols”) dengan perintah “+ geom_abline()”. Sama seperti sebelumnya, parameter yang perlu diisi adalah *intercept* dan *slope*. Keduanya didapatkan dari objek “coef(msa)” yang merupakan matriks hasil estimasi SFA yang sudah dilakukan sebelumnya. Diagram yang dihasilkan pada langkah ini diberi nama “plot_ols_cols_sfa” (lihat @fig-6-3).
 
 ```{r}
-# Chunk B6.08
 #| label: fig-6-3
 #| fig-cap: "Garis regresi linear, garis regresi terkoreksi, dan garis SFA antara log(x) terhadap log(y)"
+# Chunk B6.08
 # 3. Menambahkan garis SFA
 plot_ols_cols_sfa <- plot_ols_cols +
   geom_abline(intercept=coef(msfa)[1], slope=coef(msfa)[2],
@@ -208,9 +208,9 @@ teDist <- milkDist %>% efficiencies()
 Setelah melakukan estimasi nilai efisiensi menggunakan dua alternatif bentuk fungsional (fungsi produksi dan fungsi jarak), kita akan membandingkan hasil keduanya dengan melihat secara visual. Caranya, nilai efisiensi dari fungsi produksi dan fungsi jarak diplotkan dalam suatu *scatter-plot* serta dibandingkan dengan suatu garis yang memiliki kemiringan atau *slope* 1 dan *intercept* 0 (artinya kedua nilai sama persis). Adapun skrip yang bisa dijalankan, yaitu sebagai berikut. Sekali lagi, grafik ini dibuat menggunakan fungsi “geom_point()” untuk membuat *scatter-plot* dan fungsi “geom_abline()” untuk membuat garis lurus seperti yang sudah pernah dibahas pada bagian-bagian sebelumnya. Sebagai tambahan, yaitu pengguna bisa menambahkan pilihan tema dari grafik yang dihasilkan. Pada perintah ini, tema yang dipilih adalah “theme_classic()”. Pilihan lain yang bisa digunakan dapat dilihat pada laman https://ggplot2.tidyverse.org/reference/ggtheme.html.
 
 ```{r}
-# Chunk B6.13
 #| label: fig-6-4
 #| fig-cap: "*Scatter-plot* antara skor efisiensi dari perhitungan SFA dengan fungsi jarak (teDist) dan fungsi produksi (teProd)"
+# Chunk B6.13
 # Membuat grafik korelasi antara nilai efisiensi dari Distance Function dan Production Function
 ggplot() +
   geom_point(mapping = aes(x=teDist, y=teProd)) +
@@ -240,9 +240,9 @@ hospital <- read_csv(
 ```
 
 ```{r}
-# Chunk B6.15
 #| code-fold: true
 #| code-summary: "Kode pelabelan data (lihat Bab III)"
+# Chunk B6.15
 hospital <- hospital %>%
   set_variable_labels(
     id_rs = "ID Rumah Sakit", gp_FTE = "Jumlah Dokter Umum",
@@ -316,9 +316,9 @@ Untuk mengetahui faktor-faktor kontekstual apa yang berpengaruh terhadap skor ef
 Pada tahap ini, kita dapat melihat perbedaan rerata skor efisiensi dengan menampilkan grafik *box-plot* menggunakan paket “ggplot2” seperti yang sudah dijelaskan pada bagian-bagian sebelumnya. Adapun contoh yang disajikan dalam hal ini, yaitu lokasi dan jenis rumah sakit.
 
 ```{r}
-# Chunk B6.19
 #| label: fig-6-5
 #| fig-cap: "Grafik *box-plot* antara skor efisiensi dari model SFA dengan lokasi rumah sakit"
+# Chunk B6.19
 # Membuat box-plot Lokasi
 hospital_sfa %>%
   ggplot() +
@@ -327,9 +327,9 @@ hospital_sfa %>%
 ```
 
 ```{r}
-# Chunk B6.20
 #| label: fig-6-6
 #| fig-cap: "Grafik *box-plot* antara skor efisiensi dari model SFA berdasarkan kepemilikan rumah sakit"
+# Chunk B6.20
 # Membuat box-plot Kepemilikan
 hospital_sfa %>%
   ggplot() +
@@ -396,9 +396,9 @@ lalu digabungkan dengan skor SFA.
 :::
 
 ```{r}
-# Chunk B6.23
 #| label: fig-6-7
 #| fig-cap: "*Scatter-plot* antara skor efisiensi dari DEA dan SFA"
+# Chunk B6.23
 library(Benchmarking)
 # Skor DEA berorientasi input dengan bootstrap (seperti Bab V)
 x_dea <- hospital_sfa %>% select(gp_FTE, nurse_total, other_prof, beds) %>% as.matrix()

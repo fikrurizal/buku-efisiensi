@@ -1,9 +1,9 @@
 # Analisis Rasio {#sec-rasio}
 
 ```{r}
-# Chunk B4.01
 #| label: setup
 #| include: false
+# Chunk B4.01
 source("R/setup.R")
 source("R/chunk_helpers.R")
 book_begin_chapter("Bab 4", c("tidyverse", "labelled", "gtsummary", "flextable"))
@@ -40,9 +40,9 @@ hospital <- read_csv(
 Selanjutnya, pembaca dapat melakukan pelabelan terhadap variabel-variabel dan nilai yang ada pada data tersebut dengan mengikuti langkah-langkah yang telah dijelaskan pada Bab [III](#sec-pengantar-r) bagian D.
 
 ```{r}
-# Chunk B4.03
 #| code-fold: true
 #| code-summary: "Kode pelabelan data (lihat Bab III)"
+# Chunk B4.03
 hospital <- hospital %>%
   set_variable_labels(
     id_rs = "ID Rumah Sakit", gp_FTE = "Jumlah Dokter Umum",
@@ -81,9 +81,9 @@ Seperti yang dicontohkan pada *script* di bawah ini, perintah untuk membuat graf
 Selanjutnya, garis yang membagi sumbu y dan x dihasilkan dengan menambah lapisan “geom_hline” untuk garis horizontal dan “geom_vline” untuk garis vertikal. Parameter yang perlu didefinisikan, yaitu masing-masing “yintercept” dan “xintercept” yang artinya pada nilai berapa garis tersebut akan memotong sumbu y dan x. Terakhir, untuk memudahkan pembaca, perlu ditambahkan juga lapisan “labs” yang berisi judul utama (*title*), judul untuk sumbu x dan y, serta label untuk keterangan warna dan ukuran.
 
 ```{r}
-# Chunk B4.05
 #| label: fig-4-1
 #| fig-cap: "Grafik Pabon-Lasso dari data rumah sakit yang dianalisis"
+# Chunk B4.05
 # Menambahkan judul, label, dan keterangan kepemilikan dan ukuran RS
 hospital %>% ggplot() +
   geom_point(mapping = aes(x=bed_occ, y=throughput,
@@ -254,13 +254,13 @@ hospital <- hospital %>% mutate(
 @fig-4-3 dihasilkan menggunakan paket “ggplot2” dengan objek grafis berupa “geom_histogram” yang—sesuai namanya—digunakan untuk membuat histogram. Dapat dilihat bahwa penggunaan “ggplot2” sama dengan yang sudah dijelaskan pada bagian sebelumnya, hanya pilihan jenis diagramnya saja yang berbeda. Pada histogram bawah, variasi warna bisa dilakukan dengan menambahkan paramater “color” untuk warna garis dan “fill” untuk warna isiannya. Informasi mengenai jenis warna yang bisa dipilih dapat dilihat pada laman https://www.r-graph-gallery.com/ggplot2color.html.
 
 ```{r}
-# Chunk B4.14
 #| label: fig-4-3
 #| fig-cap: "Histogram dari variabel “unitcost_ip” sebelum (atas) dan sesudah (bawah) ditransformasi dengan fungsi log"
 #| fig-subcap:
 #|   - "Sebelum transformasi log"
 #|   - "Sesudah transformasi log"
 #| fig-height: 3.5
+# Chunk B4.14
 # Histogram unitcost_ip dengan ggplot2
 hospital %>% ggplot() +
   geom_histogram(mapping = aes(x=unitcost_ip))
@@ -274,9 +274,9 @@ hospital %>% ggplot() +
 Jika belum dilakukan transformasi log, grafik *box-plot* dapat digunakan untuk memvisualisasikan perbedaan median dari nilai unit *cost* berdasarkan variabel tertentu. Dalam hal ini, kita tertarik untuk melihat gambaran tersebut berdasarkan kelas rumah sakit. Grafik ini juga dihasilkan menggunakan paket “ggplot2” dan pilihan jenis diagramnya adalah “geom_boxplot” dengan memberikan judul atau label pada sumbu x dan y untuk memudahkan pembaca.
 
 ```{r}
-# Chunk B4.15
 #| label: fig-4-4
 #| fig-cap: "Grafik *box-plot* dari variabel biaya satuan rawat inap berdasarkan kelas rumah sakit"
+# Chunk B4.15
 #Boxplot berdasarkan kelas rumah sakit
 hospital %>% ggplot() +
   geom_boxplot(mapping = aes(x=classCD, y=unitcost_ip)) +
