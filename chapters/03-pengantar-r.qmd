@@ -1,9 +1,9 @@
 # Menggunakan R, R Studio, dan Pengenalan *Dataset* {#sec-pengantar-r}
 
 ```{r}
-# Chunk B3.01
 #| label: setup
 #| include: false
+# Chunk B3.01
 source("R/setup.R")
 source("R/chunk_helpers.R")
 book_begin_chapter("Bab 3", c("tidyverse", "labelled", "gtsummary", "flextable"))
@@ -106,16 +106,16 @@ R merupakan program yang multifungsi, terutama dengan fleksibilitasnya untuk dap
 Beberapa *package* yang perlu diinstal untuk menjalankan analisis pada buku ini, di antaranya: *tidyverse*, *labelled*, *modelsummary*, *gtsummary*, *gt*, *flextable*, *benchmarking*, *frontier*, *AER*, dan *truncreg*. Untuk menambahkan *package* pada program R, kita dapat menuliskan perintah berikut ini pada *R Script*:
 
 ```{r}
-# Chunk B3.02
 #| eval: false
+# Chunk B3.02
 install.packages("nama_packages")
 ```
 
 Lebih khusus, untuk mengerjakan contoh-contoh analisis yang ada di buku ini, berikut merupakan skrip yang dapat digunakan untuk menginstal *packages* tersebut:
 
 ```{r}
-# Chunk B3.03
 #| eval: false
+# Chunk B3.03
 install.packages(c("tidyverse", "labelled",
                    "modelsummary", "gtsummary", "gt",
                    "flextable", "Benchmarking", "frontier",
@@ -241,9 +241,9 @@ hospital <- hospital %>%
 Selanjutnya, pengguna dapat membuat suatu tabel yang menggambarkan atau merangkum informasi yang ada dalam data. Dalam hal ini, data yang bersifat kontinu akan digambarkan dalam bentuk rerata dan simpang baku (*standard deviation*), sementara data yang bersifat kategorik akan digambarkan dalam bentuk jumlah dan persentase. Berikut merupakan perintah yang bisa dijalankan menggunakan *package* “gtsummary” dan “flextable” dengan hasil pada @tbl-3-2. Fitur utama dari paket “gtsummary” yang digunakan pada buku ini, yaitu “tbl_summary” yang sangat berguna untuk membuat tabel rangkuman statistik atau statistik deskriptif, termasuk juga untuk melakukan analisis bivariat sederhana.
 
 ```{r}
-# Chunk B3.08
 #| label: tbl-3-2
 #| tbl-cap: "Tabel deskripsi menggunakan *package* “gtsummary”"
+# Chunk B3.08
 # Mengaktifkan packages
 library(gtsummary)
 library(flextable)

@@ -1,9 +1,9 @@
 # *Data Envelopment Analysis* {#sec-dea}
 
 ```{r}
-# Chunk B5.01
 #| label: setup
 #| include: false
+# Chunk B5.01
 source("R/setup.R")
 source("R/chunk_helpers.R")
 book_begin_chapter("Bab 5", c("tidyverse", "labelled", "Benchmarking", "frontier"))
@@ -42,9 +42,9 @@ y <- matrix(c(20, 30, 50, 40, 60, 20), ncol=1)
 Tahap selanjutnya, yaitu membuat suatu grafik atau plot DEA berdasarkan matriks yang sudah kita *input* sebelumnya. Dengan menjalankan perintah yang ada di bawah ini secara berurutan, aplikasi R akan membuat suatu grafik DEA seperti pada @fig-5-1.
 
 ```{r}
-# Chunk B5.04
 #| label: fig-5-1
 #| fig-cap: "Grafik DEA yang dihasilkan dari perintah R"
+# Chunk B5.04
 # Membuat label huruf sebanyak baris pada matrix X
 txt <- LETTERS[1:dim(x)[1]]
 # Membuat plot DEA
@@ -91,8 +91,8 @@ dea_ff <- bind_cols(
 Untuk menampilkan tabel “dea_ff” yang baru saja dibuat, kita bisa menjalankan perintah “view” berikut ini sehingga pada *R Studio* akan terlihat tampilan seperti pada @fig-5-2.
 
 ```{r}
-# Chunk B5.07
 #| eval: false
+# Chunk B5.07
 # Menampilkan tabel kompilasi
 view(dea_ff)
 ```
@@ -134,9 +134,9 @@ hospital <- read_csv(
 Selanjutnya, pembaca dapat melakukan pelabelan terhadap variabel-variabel dan nilai yang ada pada data tersebut dengan mengikuti langkah yang telah dijelaskan pada Bab [III](#sec-pengantar-r) bagian D.
 
 ```{r}
-# Chunk B5.10
 #| code-fold: true
 #| code-summary: "Kode pelabelan data (lihat Bab III)"
+# Chunk B5.10
 hospital <- hospital %>%
   set_variable_labels(
     id_rs = "ID Rumah Sakit", gp_FTE = "Jumlah Dokter Umum",
