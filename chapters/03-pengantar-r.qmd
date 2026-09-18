@@ -16,7 +16,7 @@ Ada juga beberapa kekurangan yang dimiliki oleh R. *Pertama*, tidak terlalu *use
 
 R dan *R Studio* dapat digunakan pada perangkat berbasis Mac, Windows, dan Linux. Berikut merupakan tahapan-tahapan untuk menginstal R dan *R Studio*, terutama bagi pengguna Windows.
 
-1. Unduh *file* untuk instalasi R di [CRAN](https://cran.r-project.org). Klik salah satu dari “Download R for Linux, Mac, atau Windows” sesuai dengan sistem operasi yang Anda gunakan.
+1. Unduh *file* untuk instalasi R di [CRAN](https://cran.r-project.org){target="_blank" rel="noopener"}. Klik salah satu dari “Download R for Linux, Mac, atau Windows” sesuai dengan sistem operasi yang Anda gunakan.
 
 2. Untuk pengguna Windows, ketika Anda sudah mengeklik “Download R for Windows” maka akan muncul beberapa pilihan *file* yang bisa diunduh. Untuk keperluan analisis dasar, pilih “Base”. Setelah itu, di bagian paling atas akan muncul tautan untuk mengunduh R versi terakhir. Klik tautan tersebut dan tunggu hingga proses pengunduhan selesai.
 
@@ -24,7 +24,7 @@ R dan *R Studio* dapat digunakan pada perangkat berbasis Mac, Windows, dan Linux
 
 4. Setelah perangkat lunak R selesai di-*instal*, lakukanlah instalasi *R Studio*.
 
-5. Untuk menginstal *R Studio*, pertama buka https://www.rstudio.com/products/rstudio/download/.
+5. Untuk menginstal *R Studio*, pertama buka [https://www.rstudio.com/products/rstudio/download/](https://www.rstudio.com/products/rstudio/download/){target="_blank" rel="noopener"}.
 
 6. Klik “Download” pada paket “RStudio Desktop Open Source License” maka akan muncul berbagai pilihan *file* instalasi.
 
@@ -94,7 +94,7 @@ Setelah berhasil mengimpor *dataset*, kita akan belajar menuliskan *R Script*. S
 
 ![Proses *R Script* baru dan tampilan editor *R Script*](../images/fig-3-7.png){#fig-3-7}
 
-Cara menyimpan *R Script*, yaitu dengan mengeklik “File” → “Save”. Setelah itu, kita akan dibawa ke folder *project* yang sudah kita buat sebelumnya, kemudian kita bisa menuliskan nama *R Script* kita di situ (seperti menyimpan *file* pada aplikasi Office pada umumnya). Selain menggunakan *script* biasa, *R Studio* juga menyediakan fitur “R Markdown” yang merupakan sebuah bentuk *file* mirip dengan *R Script*, namun dapat digunakan untuk membuat dokumen dinamis dengan menggabungkan *code* (disusun dalam bentuk *chunks*) dan *text* (dengan bahasa *markdown*). Informasi lebih lanjut mengenai fitur ini dapat dibaca pada laman https://rmarkdown.rstudio.com/index.html.
+Cara menyimpan *R Script*, yaitu dengan mengeklik “File” → “Save”. Setelah itu, kita akan dibawa ke folder *project* yang sudah kita buat sebelumnya, kemudian kita bisa menuliskan nama *R Script* kita di situ (seperti menyimpan *file* pada aplikasi Office pada umumnya). Selain menggunakan *script* biasa, *R Studio* juga menyediakan fitur “R Markdown” yang merupakan sebuah bentuk *file* mirip dengan *R Script*, namun dapat digunakan untuk membuat dokumen dinamis dengan menggabungkan *code* (disusun dalam bentuk *chunks*) dan *text* (dengan bahasa *markdown*). Informasi lebih lanjut mengenai fitur ini dapat dibaca pada laman [https://rmarkdown.rstudio.com/index.html](https://rmarkdown.rstudio.com/index.html){target="_blank" rel="noopener"}.
 
 ## Menginstal dan Menggunakan Package
 
@@ -136,7 +136,7 @@ Cara kedua, yaitu dengan menuliskan, lalu menjalankan perintah “library(nama_p
 
 ## Dataset
 
-Buku ini akan menggunakan *dataset* yang dikompilasi dari berbagai sumber (lihat Bab [VII](#sec-isu) tentang sumber data) di Indonesia yang menggambarkan situasi *input* dan *output* rumah sakit di Indonesia. Data yang akan digunakan pada buku ini dapat diunduh pada laman http://ugm.id/hafidzrizalefisiensi dengan nama file “hospital.csv”.
+Buku ini akan menggunakan *dataset* yang dikompilasi dari berbagai sumber (lihat Bab [VII](#sec-isu) tentang sumber data) di Indonesia yang menggambarkan situasi *input* dan *output* rumah sakit di Indonesia. Data yang akan digunakan pada buku ini dapat diunduh pada laman [http://ugm.id/hafidzrizalefisiensi](http://ugm.id/hafidzrizalefisiensi){target="_blank" rel="noopener"} dengan nama file “hospital.csv”.
 
 #### Informasi tentang Variabel pada *Dataset* (*Codebook*)
 
@@ -179,14 +179,14 @@ library(tidyverse)
 
 Lalu, dilanjutkan dengan membuka data “hospital.csv” menggunakan perintah di bawah ini. Pada proses ini, pengguna dikenalkan dengan “tata bahasa” pada R ketika *package* **“tidyverse”** sudah diaktifkan. Pertama-tama, secara umum bahasa R dapat dibaca seperti kalimat pasif sehingga perintah di bawah ini dapat dibaca sebagai: buatlah sebuah objek bernama “hospital” (hospital <- ) yang diimpor (read_csv) dari suatu dokumen, yaitu “hospital.csv”, kemudian (%>%) ubahlah jenis objeknya menjadi “tibble” (as_tibble()).
 
-Perintah “%>%” biasa disebut sebagai “pipe” atau pipa yang berfungsi untuk mengaitkan suatu objek atau perintah satu dengan perintah selanjutnya. Sementara itu, “tibble” sendiri merupakan modifikasi dari bentuk dasar “data.frame” (bentuk dasar dari suatu tabel di R) yang bersifat lebih “tertib” mengikuti aturan-aturan terkini dari praktik pengelolaan dan analisis data. Informasi lebih lengkap mengenai *package* “tidyverse” serta komponen-komponen yang ada di dalamnya dapat dilihat pada laman https://www.tidyverse.org/ dan pada buku “*R for Data Science*” yang bisa diakses di https://r4ds.had.co.nz/.
+Perintah “%>%” biasa disebut sebagai “pipe” atau pipa yang berfungsi untuk mengaitkan suatu objek atau perintah satu dengan perintah selanjutnya. Sementara itu, “tibble” sendiri merupakan modifikasi dari bentuk dasar “data.frame” (bentuk dasar dari suatu tabel di R) yang bersifat lebih “tertib” mengikuti aturan-aturan terkini dari praktik pengelolaan dan analisis data. Informasi lebih lengkap mengenai *package* “tidyverse” serta komponen-komponen yang ada di dalamnya dapat dilihat pada laman [https://www.tidyverse.org/](https://www.tidyverse.org/){target="_blank" rel="noopener"} dan pada buku “*R for Data Science*” yang bisa diakses di [https://r4ds.had.co.nz/](https://r4ds.had.co.nz/){target="_blank" rel="noopener"}.
 
 ```{r}
 # Mengimpor data dari format csv
 hospital <- read_csv("hospital.csv") %>% as_tibble()
 ```
 
-Setelah berhasil mengimpor data ke sistem R, selanjutnya diberikan label pada variabel-variabel tersebut dan ditambahkan penjelasan terkait nilai pada variabel yang bersifat kategorik. Pada proses persiapan data (*data cleaning and preparation*), tahap ini penting untuk dilakukan agar pengguna dapat memahami informasi yang ada pada data dengan lebih mudah. Pada R, salah satu *package* yang cukup lengkap, yaitu “labelled”. Sebelum paket ini digunakan, jalankan terlebih dahulu perintah di bawah ini untuk mengaktifkannya. Adapun informasi dan penjelasan lebih terperinci mengenai paket “labelled” dapat dibaca pada laman https://larmarange.github.io/labelled/index.html.
+Setelah berhasil mengimpor data ke sistem R, selanjutnya diberikan label pada variabel-variabel tersebut dan ditambahkan penjelasan terkait nilai pada variabel yang bersifat kategorik. Pada proses persiapan data (*data cleaning and preparation*), tahap ini penting untuk dilakukan agar pengguna dapat memahami informasi yang ada pada data dengan lebih mudah. Pada R, salah satu *package* yang cukup lengkap, yaitu “labelled”. Sebelum paket ini digunakan, jalankan terlebih dahulu perintah di bawah ini untuk mengaktifkannya. Adapun informasi dan penjelasan lebih terperinci mengenai paket “labelled” dapat dibaca pada laman [https://larmarange.github.io/labelled/index.html](https://larmarange.github.io/labelled/index.html){target="_blank" rel="noopener"}.
 
 ```{r}
 # Mengaktifkan packages
@@ -244,7 +244,7 @@ hospital %>% select(-id_rs) %>%
 
 Pada perintah di atas, fungsi “select()” dari paket “tidyverse” digunakan untuk memilih variabel apa saja dari *dataset hospital* yang akan digunakan. Dalam hal ini yang dipilih, yaitu “-id_rs”. Tanda negatif sebelum variabel “id_rs” menandakan bahwa kita tidak memilih variabel tersebut. Selanjutnya, pada fungsi “tbl_summary()”, terdapat dua parameter pokok yang harus didefinisikan. *Pertama*, “digits” mengatur jumlah digit yang akan ditampilkan; “all_continous() ~ 2” menandakan bahwa semua variabel yang sifatnya kontinu akan ditampilkan dengan dua digit di belakang koma (titik). Sementara itu, parameter “statistic” mengatur ukuran statistik apa yang akan ditampilkan; “all_continuous() ~ “{mean} {sd}”” menandakan bahwa statistik yang akan ditampilkan merupakan rerata (*mean*) dan deviasi standar (*standard deviation, sd*). Jika kedua parameter ini tidak ditentukan maka secara otomatis R akan memilih ukuran statistik apa yang “paling tepat” sesuai dengan distribusi dari data yang ada. *Terakhir*, fungsi “as_flex_table()” bertujuan untuk mengubah format tabel yang dihasilkan agar lebih mudah digunakan pada aplikasi pengolah kata (misalnya Microsoft Word dan yang sejenisnya).
 
-Penjelasan lebih lanjut mengenai fungsi “tbl_summary()” dapat dilihat pada laman http://www.danieldsjoberg.com/gtsummary/articles/tbl_summary.html. Sementara itu, contoh aplikasinya pada keperluan lain akan dijelaskan pada bagian-bagian selanjutnya.
+Penjelasan lebih lanjut mengenai fungsi “tbl_summary()” dapat dilihat pada laman [http://www.danieldsjoberg.com/gtsummary/articles/tbl_summary.html](http://www.danieldsjoberg.com/gtsummary/articles/tbl_summary.html){target="_blank" rel="noopener"}. Sementara itu, contoh aplikasinya pada keperluan lain akan dijelaskan pada bagian-bagian selanjutnya.
 
 ## Kesimpulan
 
