@@ -143,18 +143,6 @@ Permasalahan selanjutnya yang perlu diperhatikan, yaitu banyaknya variabel konte
 
 Caranya, yaitu dengan melakukan pengelompokan variabel sebelum melakukan analisis PCA untuk tujuan interpretasi hasil. Kemudian, dengan melakukan analisis PCA, variabel-variabel tersebut diubah menjadi suatu variabel indeks baru berdasarkan kategori (misalkan indeks gangguan fasilitas kesehatan, indeks manajemen kualitas, indeks kemiskinan, indeks akses ke fasilitas kesehatan, dan indeks pendidikan penduduk). Ilustrasi dapat dilihat pada @fig-7-1.
 
-#### Indeks A
-
- var 3
-
- Var
-
-2
-
- Var
-
-1
-
 ![Ilustrasi penggunaan *principal component analysis* (PCA)](../images/fig-7-1.png){#fig-7-1}
 
 ### Keterbatasan Penelitian
