@@ -25,7 +25,7 @@ Di sini $x$ adalah input, $y$ output pelayanan, $b$ emisi, dan $s$ pada pembilan
 
 Script mengubah masalah pecahan menjadi program linear melalui transformasi Charnes–Cooper dan menyelesaikannya dengan `lpSolve`. Untuk model tanpa emisi, skor juga dibandingkan dengan `deaR::model_sbmeff`; selisih terbesar harus di bawah $10^{-5}$.
 
-```r
+```{r}
 #| label: fig-8-1
 #| fig-cap: "Perbandingan emisi CO2 awal dan target SBM pada rumah sakit sintetis."
 # Chunk B8.01 — persiapan mandiri Bab VIII dan semua hasil contoh 8.1–8.5.
@@ -63,7 +63,7 @@ Bagian ini merupakan tambahan edisi daring dan tidak ada pada edisi cetak.
 
 Dataset `lean-sintetis.csv` berisi 30 fasilitas sebelum dan sesudah perubahan proses. Input mencakup tenaga dan jam pelayanan; output mencakup kunjungan dan pelayanan yang diselesaikan. Dalam simulasi, output sengaja dinaikkan pada periode sesudah. Semua 60 observasi dibandingkan terhadap satu frontier VRS gabungan agar basis perbandingan sama.
 
-```r
+```{r}
 #| label: fig-8-2
 #| fig-cap: "Distribusi skor SBM proses sebelum dan sesudah pada simulasi Lean."
 # Chunk B8.02 — memakai file hasil yang dibuat Chunk B8.01.
@@ -95,7 +95,7 @@ Bagian ini merupakan tambahan edisi daring dan tidak ada pada edisi cetak.
 
 Setiap bagian mempunyai tenaga sebagai input. Pusat logistik menyediakan tiga jenis layanan antara (*links*) yang digunakan unit klinis untuk menghasilkan pelayanan akhir. Model mencari kontraksi proporsional input $\theta$ dengan output akhir setidaknya tetap. Bobot pembanding $\lambda$ berbeda untuk tiap bagian, jumlah bobot setiap bagian sama dengan satu (VRS), dan aliran antara yang diproyeksikan dari pusat harus sama dengan yang diterima unit klinis.
 
-```r
+```{r}
 #| label: fig-8-3
 #| fig-cap: "Skor Network DEA dan skor DEA unit terpisah pada rumah sakit sintetis."
 # Chunk B8.03 — memakai fungsi network_fit dan file dari Chunk B8.01.
@@ -134,7 +134,7 @@ Bagian ini merupakan tambahan edisi daring dan tidak ada pada edisi cetak.
 
 **Masalah nyata:** kabupaten dengan tenaga yang sama dapat mencapai cakupan layanan primer yang berbeda. **Tujuan belajar:** membaca DEA orientasi output sebagai potensi perluasan cakupan dengan tenaga saat ini. **Istilah sederhana:** faktor ekspansi $\phi$ menunjukkan seberapa jauh semua output dapat dinaikkan secara proporsional terhadap frontier VRS. Kode menghasilkan faktor dan target cakupan per kabupaten. Faktor tersebut adalah pembandingan relatif dalam sampel; jangan memperlakukannya sebagai persentase efisiensi tanpa konvensi, target penugasan tenaga, atau bukti bahwa cakupan berarti akses bermutu dan adil.
 
-```r
+```{r}
 #| label: fig-8-4
 #| fig-cap: "Cakupan ANC4 awal dan target DEA orientasi output menurut wilayah simulasi."
 # Chunk B8.04 — memakai file hasil yang dibuat Chunk B8.01.
@@ -175,7 +175,7 @@ Script menghitung `Benchmarking::sdea` dengan CRS. Unit yang dinilai dikeluarkan
 
 Contoh metafrontier membagi fasilitas sintetis menurut kapasitas tempat tidur. Pembagian ini hanya untuk menunjukkan perhitungan, bukan bukti adanya teknologi berbeda. Skor terhadap frontier gabungan memenuhi $\theta_M\leq\theta_G$ terhadap frontier kelompok. Rasio kesenjangan teknologi didefinisikan sebagai $TGR=\theta_M/\theta_G$. Rasio ini bergantung pada validitas kelompok dan asumsi teknologi; jangan menafsirkannya otomatis sebagai kualitas manajemen.
 
-```r
+```{r}
 #| label: fig-8-5
 #| fig-cap: "Perbandingan skor Super DEA aktual dan prediksi pohon keputusan pada data uji."
 # Chunk B8.05 — memakai file hasil yang dibuat Chunk B8.01.
@@ -229,7 +229,7 @@ Keterangan komponen:
 
 Di ekosistem R, metodologi O'Donnell (2018) dapat diestimasi menggunakan paket **`productivity`** (melalui fungsi `fareprim()`), paket **`deaR`**, maupun pemodelan linear terprogram berbasis `lpSolve`. Paket `productivity` belum divalidasi pada lingkungan buku ini; karena itu contoh berikut hanya menyediakan struktur panel yang dapat dijalankan, bukan pemanggilan fungsi yang belum diuji.
 
-```r
+```{r}
 #| label: fig-8-6
 #| fig-cap: "Tren rasio produktivitas deskriptif per fasilitas pada panel sintetis."
 # Chunk B8.06 — panel data mandiri untuk memahami struktur Färe-Primont.
@@ -263,7 +263,7 @@ Bagian ini merupakan tambahan edisi daring dan tidak ada pada edisi cetak.
 
 **Tujuan belajar:** membangun panel sintetis yang menyatakan hubungan periode sebelum memilih model dinamis formal. **Istilah sederhana:** *carry-over* adalah stok atau akibat yang berpindah dari periode \(t\) ke \(t+1\); *link* adalah keluaran satu divisi yang menjadi masukan divisi lain. Contoh berikut dapat dijalankan mandiri dengan `Benchmarking`. Ia menyiapkan *carry-over* dan menghitung DEA *pooled* yang memperlakukan kapasitas akhir sebagai **output stok yang diinginkan** bersama layanan. Dengan demikian pembaca memperoleh tabel skor, kapasitas awal/akhir, dan target output untuk setiap kabupaten-tahun. Ini adalah alur belajar yang sadar *carry-over*, **bukan** implementasi penuh Dynamic Network DEA artikel tersebut: `Benchmarking::dea()` tidak menegakkan kesamaan stok lintas-periode, *link* antardivisi, atau dekomposisi periode dengan kendala eksplisit.
 
-```r
+```{r}
 #| label: fig-8-7
 #| fig-cap: "Kapasitas awal dan kapasitas akhir sebagai carry-over pada panel sintetis."
 # Chunk B8.07 — contoh mandiri Dynamic DEA sederhana.
@@ -329,7 +329,7 @@ Bagian ini merupakan tambahan edisi daring dan tidak ada pada edisi cetak.
 
 **Masalah nyata:** kabupaten dapat tampak efisien karena menghasilkan banyak kunjungan, tetapi tetap meninggalkan desa terpencil atau kelompok miskin. **Tujuan belajar:** memodelkan capaian akses secara eksplisit dan membandingkan kompromi efisiensi–pemerataan. **Istilah sederhana:** DEA tetap mengukur kinerja relatif; `equity_access_pct` adalah output akses yang diinginkan—persentase penduduk rentan yang dapat menjangkau layanan primer—bukan sekadar catatan konteks.
 
-```r
+```{r}
 #| label: fig-8-8
 #| fig-cap: "Perbandingan faktor ekspansi dengan dan tanpa indikator akses pemerataan."
 # Chunk B8.08
