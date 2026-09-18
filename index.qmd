@@ -11,7 +11,7 @@ dan dicari di [Google Books](https://books.google.com/books?q=Analisis+Efisiensi
 
 Versi daring ini **terus berkembang**: materi dasar mengikuti naskah final edisi cetak,
 sedangkan contoh R, data sintetis, serta penjelasan tambahan dapat diperbaiki atau
-ditambah setelah penelaahan. Kode R pada Bab III–VI dijalankan ulang setiap kali buku
+ditambah setelah penelaahan. Kode R pada Bab IIIâ€“VI dijalankan ulang setiap kali buku
 dibangun, sehingga grafik dan tabel merupakan keluaran langsung dari kode yang
 ditampilkan. Setiap perbedaan bermakna dari edisi cetak ditandai dengan kotak
 **Catatan edisi daring**.
@@ -49,6 +49,7 @@ analisis pertama.
 | [V. *Data Envelopment Analysis*](chapters/05-dea.qmd) | Grafik DEA, DEA dengan *bootstrap*, dan analisis tahap kedua |
 | [VI. *Stochastic Frontier Analysis*](chapters/06-sfa.qmd) | OLS, COLS, dan SFA; fungsi produksi dan fungsi jarak; SFA satu tahap |
 | [VII. Isu-Isu pada Pengukuran Efisiensi](chapters/07-isu-pengukuran.qmd) | Sumber data di Indonesia, indeks *casemix*, dan izin etik |
+| [VIII. Metode Lanjutan](chapters/08-metode-lanjutan.qmd) | SBM dan emisi, Lean, Network DEA, super-efficiency, produktivitas, Dynamic DEA, serta pemerataan |
 
 ## Cara menggunakan buku ini {.unnumbered}
 
@@ -61,6 +62,8 @@ analisis pertama.
   manual.
 - **Bab VII** membahas isu praktis yang perlu dipertimbangkan sebelum
   melakukan studi efisiensi sendiri.
+- **Bab VIII** menyediakan kasus sintetis lanjutan dengan masalah, tujuan,
+  kode, tabel/diagram keluaran, dan batas interpretasi setiap metode.
 
 ## Penulis {.unnumbered}
 
@@ -68,6 +71,16 @@ analisis pertama.
 Manajemen Kesehatan, Fakultas Kedokteran, Kesehatan Masyarakat, dan
 Keperawatan, Universitas Gadjah Mada. Profil lengkap ada di halaman
 [Tentang Penulis](tentang-penulis.qmd).
+
+## Riwayat pengembangan edisi daring {.unnumbered}
+
+| Versi/tanggal | Perubahan utama | Dikerjakan oleh |
+|:--|:--|:--|
+| Edisi cetak (2021) | Naskah dasar *Analisis Efisiensi Fasilitas Kesehatan: Aplikasi Menggunakan Software R* | Firdaus Hafidz dan Muhammad Fikru Rizal |
+| Edisi daring awal | Publikasi buku, data latihan, dan naskah Quarto di GitHub | Penulis |
+| September 2026 | Data `hospital.csv` dapat dibaca langsung dari GitHub; glosarium dan singkatan disatukan; tautan UGM Press dan Google Books ditambahkan | Penulis dan kontributor edisi daring |
+| September 2026 | Tutorial R dasar, penyesuaian case-mix sintetis, penjelasan SFA, serta Bab VIII (SBM, Lean, Network DEA, super-efficiency, produktivitas, Dynamic DEA, dan equity) ditambahkan | Penulis dan kontributor edisi daring |
+| September 2026 | Chunk diberi nomor; publikasi menjalankan kode untuk menghasilkan tabel, grafik, dan rujukan silang pada situs | Penulis dan kontributor edisi daring |
 
 Jika menemukan kesalahan, silakan laporkan melalui tautan *Laporkan isu*
 di setiap halaman.

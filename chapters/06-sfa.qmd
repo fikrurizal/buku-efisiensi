@@ -164,27 +164,31 @@ Keterangan: $v$ adalah gangguan acak dua sisi, sedangkan $u\geq0$ adalah kompone
 y <- healthExample %>% select(services) %>% as.matrix()
 x <- healthExample %>% select(clinical_support_cost, utilities_cost, beds_proxy) %>% as.matrix()
 # Menghitung nilai efisiensi menggunakan package frontier
-milkProd <- frontier::sfa(log(y) ~ log(x))
+healthProd <- frontier::sfa(log(y) ~ log(x))
 # Menyimpan nilai efisiensi teknis dari hasil analisis SFA dg production function
-teProd <- milkProd %>% efficiencies()
+teProd <- efficiencies(healthProd)
+data.frame(facility_id = healthExample$facility_id,
+           efficiency_production = round(teProd, 3))
 ```
 
-Berbeda dengan contoh yang diberikan pada bagian A, estimasi nilai efisiensi dilakukan menggunakan fungsi “sfa()” dari paket “frontier”, bukan dari paket “benchmarking”. Hal ini dilakukan karena variabel *input* dan/atau *output* yang digunakan lebih dari satu. Karena namanya sama, pada tahap ini fungsi yang digunakan harus diperjelas dengan menyebutkan nama paketnya sehingga menjadi “frontier::sfa()”. Secara umum, spesifikasi atau parameter dasar dari fungsi ini sama dengan yang ada pada paket “benchmarking”, yaitu “sfa(y ~ x)”. Perintah tersebut akan menghasilkan objek hasil analisis SFA dengan nama “milkProd”. Selanjutnya, nilai efisiensi berdasarkan fungsi produksi disimpan sebagai sebuah vektor dengan nama “teProd” menggunakan fungsi“efficiencies()”.
+Berbeda dengan contoh yang diberikan pada bagian A, estimasi nilai efisiensi dilakukan menggunakan fungsi “sfa()” dari paket “frontier”, bukan dari paket “benchmarking”. Hal ini dilakukan karena variabel *input* dan/atau *output* yang digunakan lebih dari satu. Karena namanya sama, pada tahap ini fungsi yang digunakan harus diperjelas dengan menyebutkan nama paketnya sehingga menjadi “frontier::sfa()”. Secara umum, spesifikasi atau parameter dasar dari fungsi ini sama dengan yang ada pada paket “benchmarking”, yaitu “sfa(y ~ x)”. perintah tersebut akan menghasilkan objek hasil analisis SFA dengan nama “healthProd”. Selanjutnya, nilai efisiensi berdasarkan fungsi produksi disimpan sebagai sebuah vektor dengan nama “teProd” menggunakan fungsi“efficiencies()”. Tabel keluaran menampilkan skor setiap fasilitas contoh agar pembaca dapat langsung melihat hasil estimasi.
 
 Alternatif bentuk fungsional yang lain, yaitu dengan memodelkan hubungan variabel *input* dan *output* dengan fungsi jarak (*distance function*). Secara matematis, hal tersebut dapat dituliskan sebagai berikut.
 
-$$\log\left(\frac{1}{\text{cows}}\right) = \alpha_0 + \alpha_1\log\left(\frac{\text{energy}}{\text{cows}}\right) + \alpha_2\log\left(\frac{\text{vet}}{\text{cows}}\right) + \alpha_3\log(\text{milk}) + v - u$$
+$$\log\left(\frac{1}{\text{beds proxy}}\right) = \alpha_0 + \alpha_1\log\left(\frac{\text{utilities cost}}{\text{beds proxy}}\right) + \alpha_2\log\left(\frac{\text{clinical support cost}}{\text{beds proxy}}\right) + \alpha_3\log(\text{services}) + v - u$$
 
 Pada implementasinya, matriks baru yang mewakili variabel-variabel *input* (x) dan *output* (y) perlu didefinisikan terlebih dahulu. Hal ini dapat dilakukan menggunakan fungsi “transmute()” dari paket “dplyr” seperti yang ada pada perintah berikut. Fungsi “transmute()” tersebut mirip dengan fungsi “mutate()” yang sudah digunakan sebelumnya, tetapi fungsi ini akan menghasilkan variabel baru dan menghapus variabel-variabel lama yang ada pada *dataset*.
 
 ```{r}
 # Chunk B6.11
 # Menentukan variabel input (x) dan output (y) untuk spesifikasi fungsi jarak
-Y <- milkData %>% transmute(inv_cows=1/cows) %>%
+Y <- healthExample %>% transmute(inv_beds_proxy = 1 / beds_proxy) %>%
   as.matrix()
-X <- milkData %>% transmute(vet_cows=vet/cows,
-  energy_cows=energy/cows,
-  milk=milk) %>% as.matrix()
+X <- healthExample %>% transmute(
+  clinical_support_per_bed = clinical_support_cost / beds_proxy,
+  utilities_per_bed = utilities_cost / beds_proxy,
+  services = services
+) %>% as.matrix()
 ```
 
 Selanjutnya, fungsi “frontier::sfa()” kembali digunakan, namun dengan variabel *input* dan *output* yang berbeda. Perintah di bawah ini akan menghasilkan objek hasil analisis SFA dengan nama “milkDist”. Selanjutnya, nilai efisiensi berdasarkan fungsi produksi disimpan sebagai sebuah vektor dengan nama “teDist” menggunakan fungsi “efficiencies()”.
@@ -198,9 +202,11 @@ Pada edisi cetak, matriks untuk fungsi jarak diberi nama `y` dan `x` (huruf keci
 ```{r}
 # Chunk B6.12
 # Menghitung nilai efisiensi
-milkDist <- frontier::sfa(log(Y) ~ log(X))
+healthDist <- frontier::sfa(log(Y) ~ log(X))
 # Menyimpan nilai efisiensi teknis dari hasil analisis SFA dengan production function
-teDist <- milkDist %>% efficiencies()
+teDist <- efficiencies(healthDist)
+data.frame(facility_id = healthExample$facility_id,
+           efficiency_distance = round(teDist, 3))
 ```
 
 ### Tahap 3. Membandingkan Hasil SFA dari Dua Spesifikasi yang Berbeda
@@ -218,7 +224,7 @@ ggplot() +
   theme_classic()
 ```
 
-Grafik korelasi antara skor efisiensi yang diestimasi menggunakan fungsi produksi (sumbu vertikal) dan fungsi jarak (sumbu horizontal) dapat dilihat pada @fig-6-4. Terlihat bahwa tingkat korelasinya sangat tinggi (mendekati garis diagonal). Hal ini kemungkinan disebabkan oleh objek yang diukur sama, yaitu peternakan di Denmark dengan teknologi produksi yang sama, hanya cara estimasinya saja yang berbeda (Bogetoft dan Otto, 2010).
+Grafik korelasi antara skor efisiensi yang diestimasi menggunakan fungsi produksi (sumbu vertikal) dan fungsi jarak (sumbu horizontal) dapat dilihat pada @fig-6-4. Terlihat bahwa tingkat korelasinya sangat tinggi (mendekati garis diagonal). Hal ini kemungkinan disebabkan oleh kedua spesifikasi menggunakan data contoh yang sama dan hanya cara estimasinya berbeda. Nama analitis kesehatan membantu membaca contoh, tetapi asal data tetap produksi susu Denmark (Bogetoft dan Otto, 2010).
 
 
 ## Aplikasi pada Data Rumah Sakit di Indonesia
