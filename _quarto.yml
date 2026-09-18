@@ -25,7 +25,6 @@ book:
     - index.qmd
     - prakata.qmd
     - kata-pengantar.qmd
-    - singkatan.qmd
     - 00-petunjuk.qmd
     - 00-glosarium.qmd
     - chapters/01-dasar-efisiensi.qmd

@@ -10,8 +10,8 @@ Edisi daring dari buku terbitan UGM Press (2021), dibangun dengan
 
 | Berkas/folder | Isi |
 |---|---|
-| `index.qmd`, `kata-pengantar.qmd`, `singkatan.qmd` | Bagian awal buku |
-| `chapters/` | Bab I–VII; kode R pada Bab III–VI dijalankan saat buku dibangun |
+| `index.qmd`, `kata-pengantar.qmd`, `00-petunjuk.qmd`, `00-glosarium.qmd` | Bagian awal buku, petunjuk, glosarium, dan singkatan |
+| `chapters/` | Bab I–VIII; kode R pada Bab III–VI dijalankan saat buku dibangun |
 | `daftar-pustaka.qmd`, `tentang-penulis.qmd` | Bagian akhir buku |
 | `R/setup.R` | Opsi tampilan untuk bab berkode (dimuat oleh chunk tersembunyi) |
 | `data/hospital.csv` | Dataset latihan (198 rumah sakit) |
