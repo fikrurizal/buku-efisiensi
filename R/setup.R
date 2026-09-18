@@ -1,7 +1,7 @@
 # Dimuat oleh chunk tersembunyi di awal Bab III-VI.
 # - Opsi tampilan knitr/ggplot/flextable untuk edisi daring.
-# - Direktori kerja chunk diarahkan ke folder data/, sehingga kode buku
-#   read_csv("hospital.csv") berjalan persis seperti yang dicetak.
+# - Direktori kerja chunk diarahkan ke folder data/ agar contoh edisi cetak
+#   yang memakai berkas hospital.csv tetap kompatibel.
 
 suppressPackageStartupMessages({
   library(tidyverse)

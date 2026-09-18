@@ -48,9 +48,10 @@ analisis pertama.
 - **Bab I–II** memberikan dasar konsep dan tinjauan metode. Bacalah lebih dulu
   jika Anda baru mengenal pengukuran efisiensi.
 - **Bab III–VI** berisi kode yang dapat disalin (ikon di pojok kanan setiap blok
-  kode) dan dijalankan di R. Unduh dataset latihan
-  [`hospital.csv`](data/hospital.csv) terlebih dahulu dan simpan di folder
-  *project* Anda.
+  kode) dan dijalankan di R. Kode tersebut memuat dataset latihan
+  [`hospital.csv`](https://raw.githubusercontent.com/fikrurizal/buku-efisiensi/main/data/hospital.csv)
+  langsung dari repositori; tidak diperlukan unduhan atau penempatan berkas
+  manual.
 - **Bab VII** membahas isu praktis yang perlu dipertimbangkan sebelum
   melakukan studi efisiensi sendiri.
 

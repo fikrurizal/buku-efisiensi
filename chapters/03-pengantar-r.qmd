@@ -136,7 +136,7 @@ Cara kedua, yaitu dengan menuliskan, lalu menjalankan perintah “library(nama_p
 
 ## Dataset
 
-Buku ini akan menggunakan *dataset* yang dikompilasi dari berbagai sumber (lihat Bab [VII](#sec-isu) tentang sumber data) di Indonesia yang menggambarkan situasi *input* dan *output* rumah sakit di Indonesia. Data yang akan digunakan pada buku ini dapat diunduh pada laman [http://ugm.id/hafidzrizalefisiensi](http://ugm.id/hafidzrizalefisiensi){target="_blank" rel="noopener"} dengan nama file “hospital.csv”.
+Buku ini akan menggunakan *dataset* yang dikompilasi dari berbagai sumber (lihat Bab [VII](#sec-isu) tentang sumber data) di Indonesia yang menggambarkan situasi *input* dan *output* rumah sakit di Indonesia. Dataset latihan tersedia di repositori buku sebagai [`hospital.csv`](https://raw.githubusercontent.com/fikrurizal/buku-efisiensi/main/data/hospital.csv). Perintah R di bawah membacanya langsung dari sumber tersebut, sehingga tidak memerlukan unduhan manual.
 
 #### Informasi tentang Variabel pada *Dataset* (*Codebook*)
 
@@ -177,13 +177,15 @@ Karena sumber data yang akan kita gunakan memiliki format “csv” atau *comma 
 library(tidyverse)
 ```
 
-Lalu, dilanjutkan dengan membuka data “hospital.csv” menggunakan perintah di bawah ini. Pada proses ini, pengguna dikenalkan dengan “tata bahasa” pada R ketika *package* **“tidyverse”** sudah diaktifkan. Pertama-tama, secara umum bahasa R dapat dibaca seperti kalimat pasif sehingga perintah di bawah ini dapat dibaca sebagai: buatlah sebuah objek bernama “hospital” (hospital <- ) yang diimpor (read_csv) dari suatu dokumen, yaitu “hospital.csv”, kemudian (%>%) ubahlah jenis objeknya menjadi “tibble” (as_tibble()).
+Lalu, dilanjutkan dengan membuka data “hospital.csv” menggunakan perintah di bawah ini. Pada proses ini, pengguna dikenalkan dengan “tata bahasa” pada R ketika *package* **“tidyverse”** sudah diaktifkan. Pertama-tama, secara umum bahasa R dapat dibaca seperti kalimat pasif sehingga perintah di bawah ini dapat dibaca sebagai: buatlah sebuah objek bernama “hospital” (hospital <- ) yang diimpor (read_csv) dari dokumen “hospital.csv” di repositori buku, kemudian (%>%) ubahlah jenis objeknya menjadi “tibble” (as_tibble()).
 
 Perintah “%>%” biasa disebut sebagai “pipe” atau pipa yang berfungsi untuk mengaitkan suatu objek atau perintah satu dengan perintah selanjutnya. Sementara itu, “tibble” sendiri merupakan modifikasi dari bentuk dasar “data.frame” (bentuk dasar dari suatu tabel di R) yang bersifat lebih “tertib” mengikuti aturan-aturan terkini dari praktik pengelolaan dan analisis data. Informasi lebih lengkap mengenai *package* “tidyverse” serta komponen-komponen yang ada di dalamnya dapat dilihat pada laman [https://www.tidyverse.org/](https://www.tidyverse.org/){target="_blank" rel="noopener"} dan pada buku “*R for Data Science*” yang bisa diakses di [https://r4ds.had.co.nz/](https://r4ds.had.co.nz/){target="_blank" rel="noopener"}.
 
 ```{r}
 # Mengimpor data dari format csv
-hospital <- read_csv("hospital.csv") %>% as_tibble()
+hospital <- read_csv(
+  "https://raw.githubusercontent.com/fikrurizal/buku-efisiensi/main/data/hospital.csv"
+) %>% as_tibble()
 ```
 
 Setelah berhasil mengimpor data ke sistem R, selanjutnya diberikan label pada variabel-variabel tersebut dan ditambahkan penjelasan terkait nilai pada variabel yang bersifat kategorik. Pada proses persiapan data (*data cleaning and preparation*), tahap ini penting untuk dilakukan agar pengguna dapat memahami informasi yang ada pada data dengan lebih mudah. Pada R, salah satu *package* yang cukup lengkap, yaitu “labelled”. Sebelum paket ini digunakan, jalankan terlebih dahulu perintah di bawah ini untuk mengaktifkannya. Adapun informasi dan penjelasan lebih terperinci mengenai paket “labelled” dapat dibaca pada laman [https://larmarange.github.io/labelled/index.html](https://larmarange.github.io/labelled/index.html){target="_blank" rel="noopener"}.

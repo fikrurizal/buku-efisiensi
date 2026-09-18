@@ -22,6 +22,22 @@ Naskah dikonversi dari PDF final edisi cetak dengan skrip di `_sources/`
 (folder ini tidak ikut di-*commit*). Bab-bab di `chapters/` kini menjadi sumber
 utama; suntinglah langsung berkas `.qmd`.
 
+## Data
+
+Dataset latihan yang dipakai pada Bab III–VI adalah
+[`data/hospital.csv`](data/hospital.csv). Kode contoh membacanya langsung dari
+URL raw GitHub berikut, sehingga tetap dapat dijalankan setelah disalin ke
+*R script* di luar folder proyek:
+
+```text
+https://raw.githubusercontent.com/fikrurizal/buku-efisiensi/main/data/hospital.csv
+```
+
+Saat buku dirender, file yang sama juga tetap menjadi sumber daya proyek
+(`data/hospital.csv`). Tidak ada data eksternal yang harus diunduh secara
+manual: Bab VI memakai `charnes1981` dari paket **Benchmarking** dan `milkProd`
+dari paket **frontier**; data contoh lain dibuat langsung di dalam kode.
+
 ## Membangun buku secara lokal
 
 Membutuhkan Quarto ≥ 1.9 dan R 4.5. *Package* R dikelola dengan `renv`.
